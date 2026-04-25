@@ -1,12 +1,13 @@
-# HSB Website (Next.js + Tailwind)
+# AGENCY_NAME Website (Next.js + Tailwind)
 
-Corporate, conversion-focused marketing website for **HSB** in São Paulo, Brazil.
+A high-conversion, bold agency website for **AGENCY_NAME** in São Paulo, Brazil.
 
 ## Stack
 
 - Next.js (App Router)
 - Tailwind CSS
 - Framer Motion (subtle transitions)
+- Framer Motion
 - lucide-react
 - TypeScript
 
@@ -19,9 +20,9 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Validate
+## Build
 
 ```bash
-npm run lint
 npm run build
+npm start
 ```

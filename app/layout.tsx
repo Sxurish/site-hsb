@@ -2,25 +2,25 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'HSB | Marketing Agency in São Paulo',
+  title: 'AGENCY_NAME | Marketing & Audiovisual Agency in São Paulo',
   description:
-    'HSB is a corporate marketing and audiovisual agency in São Paulo focused on measurable growth, lead generation, SEO, paid media, and premium production.',
+    'AGENCY_NAME is a results-driven marketing agency in São Paulo delivering websites, SEO, paid ads, branding, video production, and commercial photography.',
   keywords: [
     'marketing agency São Paulo',
-    'lead generation agency Brazil',
+    'website development Brazil',
     'SEO São Paulo',
-    'paid media management',
+    'paid traffic management',
     'audiovisual production São Paulo'
   ],
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'HSB | Strategic Marketing & Production',
+    title: 'AGENCY_NAME | Bold Marketing & Production Studio',
     description:
-      'Professional marketing strategy, website performance, paid traffic, and audiovisual production for companies in São Paulo.',
+      'Performance-first digital strategy and high-impact audiovisual production for ambitious brands in São Paulo.',
     locale: 'en_US',
     type: 'website'
   },
-  metadataBase: new URL('https://hsbcompany.example')
+  metadataBase: new URL('https://agency-name.example')
 };
 
 export default function RootLayout({

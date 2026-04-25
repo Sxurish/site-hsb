@@ -14,35 +14,57 @@ export function LeadForm() {
   };
 
   return (
-    <form className="card p-6 md:p-8" onSubmit={handleSubmit}>
+    <form className="glass-card neon-outline rounded-3xl p-6 md:p-8" onSubmit={handleSubmit}>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="text-sm font-medium text-slate-300">
+        <label className="text-sm">
           Name
-          <input className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-cyan-300" type="text" name="name" required />
+          <input
+            className="mt-2 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-3 outline-none ring-hotPink/70 focus:ring"
+            type="text"
+            name="name"
+            required
+            placeholder="Your full name"
+          />
         </label>
-        <label className="text-sm font-medium text-slate-300">
+        <label className="text-sm">
           Email
-          <input className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-cyan-300" type="email" name="email" required />
+          <input
+            className="mt-2 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-3 outline-none ring-hotPink/70 focus:ring"
+            type="email"
+            name="email"
+            required
+            placeholder="you@brand.com"
+          />
         </label>
-        <label className="text-sm font-medium text-slate-300">
+        <label className="text-sm">
           Phone
-          <input className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-cyan-300" type="tel" name="phone" required />
+          <input
+            className="mt-2 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-3 outline-none ring-hotPink/70 focus:ring"
+            type="tel"
+            name="phone"
+            required
+            placeholder="+55 (11) 99999-9999"
+          />
         </label>
-        <label className="text-sm font-medium text-slate-300 md:col-span-2">
+        <label className="text-sm md:col-span-2">
           Message
-          <textarea className="mt-2 h-36 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-cyan-300" name="message" required />
+          <textarea
+            className="mt-2 h-36 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-3 outline-none ring-hotPink/70 focus:ring"
+            name="message"
+            required
+            placeholder="What are your main goals for the next 90 days?"
+          />
         </label>
       </div>
-
-      <label className="mt-4 flex items-start gap-2 text-xs text-slate-400">
-        <input type="checkbox" required className="mt-0.5" />
-        <span>I agree to receive communications from HSB according to privacy and LGPD practices.</span>
-      </label>
-
-      <button type="submit" className="mt-5 w-full rounded-lg bg-white px-6 py-3 font-semibold text-slate-900">
+      <button
+        type="submit"
+        className="mt-5 w-full rounded-xl bg-hotPink px-6 py-3 font-bold text-black transition hover:brightness-110"
+      >
         Request a Quote
       </button>
-      {status === 'success' ? <p className="mt-3 text-sm text-emerald-300">Message received. Our team will contact you shortly.</p> : null}
+      {status === 'success' ? (
+        <p className="mt-3 text-sm text-acidGreen">Thanks! Your message was received. We&apos;ll reach out shortly.</p>
+      ) : null}
     </form>
   );
 }

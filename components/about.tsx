@@ -1,21 +1,21 @@
-import { BarChart3, BriefcaseBusiness, Clock3 } from 'lucide-react';
+import { BrainCircuit, Rocket, ShieldCheck } from 'lucide-react';
 import { SectionShell } from './section-shell';
 
-const highlights = [
+const pillars = [
   {
-    icon: BriefcaseBusiness,
-    title: 'Business-First Strategy',
-    text: 'Every decision is aligned with revenue goals, not vanity metrics.'
+    icon: BrainCircuit,
+    title: 'Strategic Creativity',
+    text: 'Creative direction backed by market intelligence, intent data, and conversion architecture.'
   },
   {
-    icon: BarChart3,
-    title: 'Performance Focus',
-    text: 'Campaigns are optimized with transparent KPIs and weekly reporting.'
+    icon: Rocket,
+    title: 'Execution Velocity',
+    text: 'Rapid sprints from concept to launch, without sacrificing polish or performance.'
   },
   {
-    icon: Clock3,
-    title: 'Reliable Execution',
-    text: 'Agile process, clear timelines, and proactive communication.'
+    icon: ShieldCheck,
+    title: 'Reliable Growth',
+    text: 'Transparent process, measurable outcomes, and relentless optimization at every stage.'
   }
 ];
 
@@ -23,16 +23,16 @@ export function About() {
   return (
     <SectionShell
       id="about"
-      kicker="About HSB"
-      title="A modern minimalist agency built for serious growth."
-      description="From São Paulo, HSB supports companies with strategy, media, and production systems designed for sustainable performance."
+      kicker="About"
+      title="An urban-edge agency built for brands that refuse to blend in."
+      description="From São Paulo to ambitious markets worldwide, we combine precision strategy and loud creative energy to generate demand, authority, and revenue."
     >
-      <div className="grid gap-4 md:grid-cols-3">
-        {highlights.map(({ icon: Icon, title, text }) => (
-          <article key={title} className="card p-6">
-            <Icon className="h-6 w-6 text-cyan-300" />
-            <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
-            <p className="mt-2 text-slate-300">{text}</p>
+      <div className="grid gap-5 md:grid-cols-3">
+        {pillars.map(({ icon: Icon, title, text }) => (
+          <article key={title} className="glass-card neon-outline rounded-3xl p-6 transition hover:-translate-y-1 hover:border-brightCyan/60">
+            <Icon className="h-8 w-8 text-brightCyan" />
+            <h3 className="mt-4 text-xl font-bold">{title}</h3>
+            <p className="mt-3 text-white/75">{text}</p>
           </article>
         ))}
       </div>

@@ -1,28 +1,37 @@
-import { SectionShell } from './section-shell';
+'use client';
 
-const steps = [
-  ['01', 'Discovery', 'We audit your current operation and define priorities.'],
-  ['02', 'Strategy', 'We structure channels, budget logic, and KPI accountability.'],
-  ['03', 'Execution', 'We launch campaigns and creative assets with consistent quality.'],
-  ['04', 'Optimization', 'We continuously improve performance based on live data.']
-] as const;
+import { motion } from 'framer-motion';
+import { processSteps } from '@/data/site';
+import { SectionShell } from './section-shell';
 
 export function Process() {
   return (
     <SectionShell
       id="process"
       kicker="Process"
-      title="Minimal process, maximum control."
-      description="A clear framework designed for speed, alignment, and sustainable growth."
+      title="A high-speed framework designed for momentum."
+      description="Structured, transparent, and built to keep your campaigns moving from first brief to scalable growth."
     >
-      <div className="grid gap-4 md:grid-cols-4">
-        {steps.map(([number, title, description]) => (
-          <article key={number} className="card p-5">
-            <p className="text-sm font-semibold text-cyan-300">Step {number}</p>
-            <h3 className="mt-2 text-lg font-semibold text-white">{title}</h3>
-            <p className="mt-2 text-sm text-slate-300">{description}</p>
-          </article>
-        ))}
+      <div className="relative">
+        <div className="absolute left-[22px] top-8 hidden h-[calc(100%-4rem)] w-px bg-gradient-to-b from-brightCyan via-hotPink to-transparent md:block" />
+        <div className="space-y-5">
+          {processSteps.map((item, index) => (
+            <motion.article
+              key={item.step}
+              initial={{ opacity: 0, x: -15 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ delay: index * 0.05 }}
+              className="glass-card neon-outline relative rounded-2xl p-5 md:ml-14"
+            >
+              <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-brightCyan bg-black font-bold text-brightCyan md:-left-20">
+                {item.step}
+              </span>
+              <h3 className="pl-14 text-xl font-bold md:pl-0">{item.title}</h3>
+              <p className="mt-2 pl-14 text-white/75 md:pl-0">{item.description}</p>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </SectionShell>
   );

@@ -12,10 +12,8 @@ import {
 export const navLinks = [
   { href: '#about', label: 'About' },
   { href: '#services', label: 'Services' },
-  { href: '#results', label: 'Results' },
   { href: '#portfolio', label: 'Portfolio' },
   { href: '#process', label: 'Process' },
-  { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Contact' }
 ];
 
@@ -76,48 +74,4 @@ export const processSteps = [
   { step: '03', title: 'Production', description: 'Design, content, code, and media production executed at speed.' },
   { step: '04', title: 'Delivery', description: 'We launch, integrate, and QA every customer touchpoint.' },
   { step: '05', title: 'Growth', description: 'Continuous optimization driven by analytics and live campaign data.' }
-];
-
-export const trustItems = [
-  'LGPD-ready lead handling',
-  'Weekly performance reports',
-  'Dedicated strategist per account',
-  'Priority support via WhatsApp'
-];
-
-export const caseStudies = [
-  {
-    brand: 'NovaHub Fintech',
-    result: '+312% qualified leads in 90 days',
-    details: 'Rebuilt funnel, launched targeted paid media, and deployed conversion-first landing pages.'
-  },
-  {
-    brand: 'Drivex Auto Group',
-    result: '6.4x ROAS on Meta + Google Ads',
-    details: 'Combined commercial video production with full-funnel paid traffic optimization.'
-  },
-  {
-    brand: 'Clínica Vitta',
-    result: '+184% organic traffic in São Paulo',
-    details: 'Implemented local SEO architecture, technical fixes, and content strategy for medical services.'
-  }
-];
-
-export const faqs = [
-  {
-    question: 'How fast can we launch a project?',
-    answer: 'Most landing pages launch in 10 to 15 business days. Full web and production projects typically launch in 3 to 6 weeks.'
-  },
-  {
-    question: 'Do you work only in São Paulo?',
-    answer: 'We are based in São Paulo and operate across Brazil, but we also support international brands remotely.'
-  },
-  {
-    question: 'How do you report performance?',
-    answer: 'You get clear weekly updates and strategic monthly reviews with lead quality, CAC, ROAS, and growth actions.'
-  },
-  {
-    question: 'Do you provide both digital and video production together?',
-    answer: 'Yes. Our biggest advantage is integrating media production with digital performance campaigns for end-to-end execution.'
-  }
 ];

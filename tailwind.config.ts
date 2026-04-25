@@ -8,12 +8,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#1e3a8a',
-        secondary: '#312e81',
-        soft: '#f8fafc'
+        surface: '#05050A',
+        neonPurple: '#8f3dfd',
+        neonBlue: '#2f7dff',
+        hotPink: '#ff2d9a',
+        acidGreen: '#b9ff2d',
+        brightCyan: '#00e5ff'
       },
       boxShadow: {
-        soft: '0 8px 24px rgba(15, 23, 42, 0.08)'
+        neon: '0 0 30px rgba(143, 61, 253, 0.45)',
+        cyan: '0 0 28px rgba(0, 229, 255, 0.35)'
+      },
+      backgroundImage: {
+        grid: 'linear-gradient(to right, rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.07) 1px, transparent 1px)'
       }
     }
   },

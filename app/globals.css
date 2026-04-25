@@ -11,26 +11,26 @@
 }
 
 body {
-  @apply bg-slate-950 text-slate-100 antialiased;
+  @apply bg-surface text-white antialiased;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background-image: radial-gradient(circle at 20% 20%, rgba(143, 61, 253, 0.25), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(0, 229, 255, 0.18), transparent 35%),
+    radial-gradient(circle at 50% 100%, rgba(255, 45, 154, 0.18), transparent 35%);
 }
 
-.container-shell {
-  @apply mx-auto w-full max-w-7xl px-4 md:px-8;
+.neon-outline {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(143, 61, 253, 0.35);
 }
 
-.card {
-  @apply rounded-2xl border border-slate-800 bg-slate-900/70 shadow-sm;
+.glass-card {
+  @apply border border-white/15 bg-white/[0.03] backdrop-blur;
 }
 
 .section-title {
-  @apply text-3xl font-semibold tracking-tight text-white md:text-5xl;
+  @apply text-3xl font-black uppercase tracking-tight md:text-5xl;
 }
 
 .section-kicker {
-  @apply text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300;
-}
-
-.brand-gradient {
-  @apply bg-gradient-to-r from-fuchsia-500 via-violet-400 to-cyan-400 bg-clip-text text-transparent;
+  @apply text-sm uppercase tracking-[0.25em] text-brightCyan;
 }
