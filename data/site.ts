@@ -75,3 +75,47 @@ export const processSteps = [
   { step: '04', title: 'Delivery', description: 'We launch, integrate, and QA every customer touchpoint.' },
   { step: '05', title: 'Growth', description: 'Continuous optimization driven by analytics and live campaign data.' }
 ];
+
+export const caseStudies = [
+  {
+    brand: 'Fintech SP',
+    result: '+420% Leads in 90 days',
+    details: 'Full-funnel strategy combining landing pages, Google Ads, and Meta remarketing for a fintech startup.'
+  },
+  {
+    brand: 'Fashion Franchise',
+    result: '6.8x ROAS on Meta Ads',
+    details: 'Creative production + paid traffic operation scaling a fashion brand across São Paulo.'
+  },
+  {
+    brand: 'Clinica Vitta',
+    result: '#1 Local SEO ranking',
+    details: 'Technical SEO and content strategy that captured high-intent local search for a medical clinic.'
+  }
+];
+
+export const trustItems = [
+  '150+ websites delivered',
+  'Google Partner certified',
+  '1.2K+ video assets produced',
+  'São Paulo headquartered'
+];
+
+export const faqs = [
+  {
+    question: 'How long does a typical project take?',
+    answer: 'Website projects typically launch within 3–4 weeks. Campaign strategy and paid media go live within 7–10 business days after onboarding.'
+  },
+  {
+    question: 'Do you work with companies outside São Paulo?',
+    answer: 'Yes. While we are based in São Paulo, we serve clients across Brazil and internationally for digital and production services.'
+  },
+  {
+    question: 'What makes HSB Company different from other agencies?',
+    answer: 'We combine performance marketing and premium audiovisual production under one roof — no handoffs, no miscommunication, just one team executing end-to-end.'
+  },
+  {
+    question: 'How do you measure campaign success?',
+    answer: 'We track pipeline metrics: qualified leads, cost-per-acquisition, ROAS, and revenue attributed — not vanity metrics.'
+  }
+];
