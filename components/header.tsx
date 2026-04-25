@@ -13,7 +13,7 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-surface/70 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         <a href="#top" aria-label="HSB Company home">
-          <BrandLogo compact />
+          <BrandLogo />
         </a>
 
         <nav className="hidden items-center gap-6 md:flex">
