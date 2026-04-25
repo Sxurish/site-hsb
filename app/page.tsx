@@ -11,7 +11,7 @@ import { Testimonials } from '@/components/testimonials';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: 'AGENCY_NAME',
+  name: 'HSB Company',
   description:
     'Marketing agency in São Paulo focused on website development, SEO, paid traffic, branding, and audiovisual production.',
   areaServed: 'São Paulo, Brazil',
@@ -23,7 +23,7 @@ const schema = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'sales',
-    email: 'hello@agencyname.com',
+    email: 'contato@hsb.company',
     telephone: '+55-11-99999-9999'
   }
 };

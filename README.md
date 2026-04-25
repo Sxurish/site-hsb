@@ -6,6 +6,7 @@ A high-conversion, bold agency website for **AGENCY_NAME** in São Paulo, Brazil
 
 - Next.js (App Router)
 - Tailwind CSS
+- Framer Motion (subtle transitions)
 - Framer Motion
 - lucide-react
 - TypeScript
