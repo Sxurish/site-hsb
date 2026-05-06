@@ -1,66 +1,68 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import ScrollVideoPlayer from '@/components/ScrollVideoPlayer/ScrollVideoPlayer';
+import styles from './page.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className={styles.main}>
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className="text-gradient">CREATE • CONNECT • GROW</h1>
+          <p>Transformamos ideias em resultados exponenciais usando estratégias de ponta, automação inteligente e design premium.</p>
+          <a href="#services" className={styles.primaryBtn}>Conheça nossas soluções</a>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Scroll Storytelling Section */}
+      <section className={styles.storytelling}>
+        <ScrollVideoPlayer />
+      </section>
+
+      {/* Services Section */}
+      <section id="services" className={styles.services}>
+        <div className={styles.container}>
+          <h2>Nossos Serviços</h2>
+          <div className={styles.grid}>
+            {[
+              { title: 'Automação & IA', desc: 'Workflows inteligentes com n8n e assistentes de IA para escalar seu atendimento.' },
+              { title: 'Design de Alta Conversão', desc: 'Landing pages e interfaces premium focadas em maximizar resultados.' },
+              { title: 'Tráfego Pago', desc: 'Gestão de anúncios estratégica no Google Ads e Meta Ads.' }
+            ].map((service, i) => (
+              <div key={i} className={`${styles.serviceCard} glass-panel`}>
+                <h3 className="text-gradient">{service.title}</h3>
+                <p>{service.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Numbers / Results */}
+      <section className={styles.numbers}>
+        <div className={styles.container}>
+          <div className={styles.grid}>
+            {[
+              { num: '+150', label: 'Projetos Entregues' },
+              { num: 'R$ 5M+', label: 'Gerados em Vendas' },
+              { num: '98%', label: 'Clientes Satisfeitos' }
+            ].map((stat, i) => (
+              <div key={i} className={styles.statBox}>
+                <h2 className="text-gradient">{stat.num}</h2>
+                <p>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className={styles.cta}>
+        <div className={`${styles.ctaBox} glass-panel`}>
+          <h2>Pronto para escalar seu negócio?</h2>
+          <p>Fale com nossos especialistas e descubra o que a HSB Company pode fazer por você.</p>
+          <a href="#contato" className={styles.primaryBtn}>Falar com Especialista</a>
+        </div>
+      </section>
+    </main>
   );
 }
