@@ -25,17 +25,16 @@ export function Header() {
         </nav>
 
         <motion.a
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           href="#contact"
-          className="hidden rounded-full px-5 py-2 text-sm font-bold text-black md:inline-flex"
-          style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6B2C)' }}
+          className="hidden rounded-full bg-white px-5 py-2 text-sm font-bold text-black hover:bg-white/90 transition md:inline-flex"
         >
           Request a Quote
         </motion.a>
 
         <button
-          className="rounded-lg border border-white/20 p-2 md:hidden"
+          className="rounded-lg border border-white/[0.12] p-2 md:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((prev) => !prev)}
         >
@@ -65,8 +64,7 @@ export function Header() {
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-lg px-4 py-2 text-center text-sm font-bold text-black"
-                style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6B2C)' }}
+                className="mt-2 rounded-lg bg-white px-4 py-2 text-center text-sm font-bold text-black hover:bg-white/90 transition"
               >
                 Request a Quote
               </a>

@@ -2,37 +2,37 @@
 
 import { motion } from 'framer-motion';
 import { processSteps } from '@/data/site';
-import { SectionShell } from './section-shell';
 
 export function Process() {
   return (
-    <SectionShell
-      id="process"
-      kicker="Process"
-      title="A high-speed framework designed for momentum."
-      description="Structured, transparent, and built to keep your campaigns moving from first brief to scalable growth."
-    >
-      <div className="relative">
-        <div className="absolute left-[22px] top-8 hidden h-[calc(100%-4rem)] w-px bg-gradient-to-b from-brightCyan via-hotPink to-transparent md:block" />
-        <div className="space-y-5">
+    <section id="process" className="border-t border-white/[0.08] py-24 md:py-32">
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+        <div className="mb-16">
+          <p className="section-kicker mb-4">Process</p>
+          <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-xl">
+            A high-speed framework designed for momentum.
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-5 gap-0">
           {processSteps.map((item, index) => (
-            <motion.article
+            <motion.div
               key={item.step}
-              initial={{ opacity: 0, x: -15 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: index * 0.05 }}
-              className="glass-card neon-outline relative rounded-2xl p-5 md:ml-14"
+              transition={{ delay: index * 0.07 }}
+              className="border-t border-white/[0.08] pt-6 pb-10 md:border-l md:border-t-0 md:pl-6 first:md:border-l-0 first:md:pl-0"
             >
-              <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-brightCyan bg-black font-bold text-brightCyan md:-left-20">
+              <span className="block text-[5rem] font-black leading-none text-white/[0.06] select-none tabular-nums">
                 {item.step}
               </span>
-              <h3 className="pl-14 text-xl font-bold md:pl-0">{item.title}</h3>
-              <p className="mt-2 pl-14 text-white/75 md:pl-0">{item.description}</p>
-            </motion.article>
+              <h3 className="text-sm font-bold mt-4 mb-2">{item.title}</h3>
+              <p className="text-sm text-white/40 leading-relaxed">{item.description}</p>
+            </motion.div>
           ))}
         </div>
       </div>
-    </SectionShell>
+    </section>
   );
 }

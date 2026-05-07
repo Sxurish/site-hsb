@@ -1,77 +1,80 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Gauge, Sparkles, Zap } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
-const floating = {
-  y: [0, -18, 0],
-  transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' as const }
-};
+const metrics = [
+  { value: '150+', label: 'websites entregues' },
+  { value: '+312%', label: 'leads em 90 dias' },
+  { value: '6.4×', label: 'ROAS médio' },
+  { value: '70+', label: 'clientes em SP' },
+];
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32">
-      <div className="absolute inset-0 -z-10 bg-grid bg-[length:45px_45px] opacity-20" />
-      <div className="absolute left-1/4 top-24 -z-10 h-56 w-56 rounded-full bg-brand/25 blur-3xl" />
-      <div className="absolute right-8 top-40 -z-10 h-52 w-52 rounded-full bg-brandOrange/20 blur-3xl" />
+    <section className="relative min-h-screen flex flex-col justify-between pt-28 pb-16">
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="section-kicker mb-10"
+        >
+          Marketing Agency · São Paulo, Brazil
+        </motion.p>
 
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-4 pb-20 md:grid-cols-[1.1fr_0.9fr] md:px-8 md:pb-24">
-        <div>
-          <p className="section-kicker">Marketing Agency · São Paulo, Brazil · Create · Connect · Grow</p>
-          <h1 className="mt-5 text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-7xl">
-            Build a brand
-            <span style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6B2C, #FFD426)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}> that moves fast</span>
-            <br />
-            and sells harder.
-          </h1>
-          <p className="mt-6 max-w-xl text-base text-white/80 md:text-lg">
-            HSB Company fuses high-conversion digital strategy with premium audiovisual production to turn bold
-            ideas into measurable growth.
-          </p>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-[clamp(3.2rem,9vw,8.5rem)] font-black leading-[0.9] tracking-tight"
+        >
+          Build a brand
+          <br />
+          <em className="italic text-white/35 not-italic" style={{ fontStyle: 'italic' }}>
+            that moves fast
+          </em>
+          <br />
+          and sells harder.
+        </motion.h1>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-bold text-black transition hover:opacity-90"
-              style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6B2C)' }}
-            >
-              Request a Quote <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a href="#portfolio" className="rounded-full border border-white/30 px-6 py-3 font-semibold hover:border-white">
-              Explore Projects
-            </a>
-          </div>
-        </div>
-
-        <div className="relative">
-          <motion.div
-            animate={floating}
-            className="glass-card neon-outline relative rotate-[-3deg] rounded-3xl p-6 shadow-neon md:p-8"
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="mt-10 flex flex-wrap items-center gap-5"
+        >
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-2 bg-white text-black px-7 py-3.5 text-sm font-bold rounded-full hover:bg-white/90 transition"
           >
-            <div className="mb-6 flex items-center justify-between">
-              <p className="text-sm uppercase tracking-[0.2em]" style={{ color: '#FFD426' }}>Campaign Performance</p>
-              <Gauge className="h-5 w-5" style={{ color: '#FFD426' }} />
-            </div>
-            <p className="text-4xl font-black">+312%</p>
-            <p className="mt-2 text-white/70">Average lead increase in 90 days across managed campaigns.</p>
-            <div className="mt-7 grid grid-cols-2 gap-4">
-              {[
-                { label: 'Web Projects', value: '150+' },
-                { label: 'Video Assets', value: '1.2K' },
-                { label: 'ROAS Average', value: '6.4x' },
-                { label: 'Clients in SP', value: '70+' }
-              ].map((metric) => (
-                <div key={metric.label} className="rounded-2xl border border-white/15 bg-black/30 p-4">
-                  <p className="text-xl font-bold" style={{ color: '#FF6B2C' }}>{metric.value}</p>
-                  <p className="text-xs text-white/70">{metric.label}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <Zap className="absolute -right-2 -top-2 h-10 w-10 text-hotPink" />
-          <Sparkles className="absolute -bottom-4 left-2 h-8 w-8 text-neonBlue" />
-        </div>
+            Request a Quote
+            <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+          <a
+            href="#portfolio"
+            className="text-sm text-white/40 hover:text-white transition underline underline-offset-4 decoration-white/20 hover:decoration-white/50"
+          >
+            Explore Projects
+          </a>
+        </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="mx-auto w-full max-w-7xl px-4 md:px-8"
+      >
+        <div className="border-t border-white/10 pt-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+          {metrics.map((m) => (
+            <div key={m.label}>
+              <p className="text-4xl md:text-5xl font-black tabular-nums">{m.value}</p>
+              <p className="mt-1.5 text-sm text-white/35">{m.label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }
