@@ -1,4 +1,5 @@
 import { About } from '@/components/about';
+import { Chatbot } from '@/components/chatbot';
 import { ContactCta } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
@@ -43,6 +44,7 @@ export default function Home() {
         <ContactCta />
       </main>
       <Footer />
+      <Chatbot />
     </>
   );
 }
