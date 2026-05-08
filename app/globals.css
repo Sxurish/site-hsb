@@ -2,22 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Light theme ─────────────────────────────────── */
+/* ── Light (creme quente) ──────────────────────────── */
 :root {
-  --bg:      248 248 250;
+  --bg:      249 246 241;
   --surface: 255 255 255;
-  --fg:      10  10  12;
-  --border:  10  10  12;
-  --accent:  124 58  237;
+  --fg:      26  22  18;
+  --border:  26  22  18;
+  --accent:  194 105 42;
 }
 
-/* ── Dark theme ──────────────────────────────────── */
+/* ── Dark (near-black quente) ─────────────────────── */
 html.dark {
-  --bg:      8   8   12;
-  --surface: 15  15  20;
-  --fg:      245 245 247;
-  --border:  245 245 247;
-  --accent:  167 139 250;
+  --bg:      20  18  16;
+  --surface: 28  25  22;
+  --fg:      242 237 230;
+  --border:  242 237 230;
+  --accent:  240 160 90;
 }
 
 html {
@@ -34,7 +34,7 @@ body {
   @apply text-xs uppercase tracking-[0.3em] text-fg/35;
 }
 
-/* ── Scrollbar ───────────────────────────────────── */
+/* ── Scrollbar ─────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: rgb(var(--border) / 0.2); border-radius: 9999px; }
+::-webkit-scrollbar-thumb  { background: rgb(var(--border) / 0.18); border-radius: 9999px; }

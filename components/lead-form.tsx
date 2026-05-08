@@ -20,24 +20,24 @@ export function LeadForm() {
     <form onSubmit={handleSubmit}>
       <div className="grid gap-5 md:grid-cols-2">
         <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase">
-          Name
-          <input className={field} type="text" name="name" required placeholder="Your full name" />
+          Nome
+          <input className={field} type="text" name="name" required placeholder="Seu nome completo" />
         </label>
         <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase">
-          Email
-          <input className={field} type="email" name="email" required placeholder="you@brand.com" />
+          E-mail
+          <input className={field} type="email" name="email" required placeholder="voce@empresa.com" />
         </label>
         <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase md:col-span-2">
-          Phone
+          Telefone
           <input className={field} type="tel" name="phone" required placeholder="+55 (11) 99999-9999" />
         </label>
         <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase md:col-span-2">
-          Message
+          Mensagem
           <textarea
             className={`${field} h-32 resize-none`}
             name="message"
             required
-            placeholder="What are your main goals for the next 90 days?"
+            placeholder="Quais são seus principais objetivos para os próximos 90 dias?"
           />
         </label>
       </div>
@@ -46,12 +46,12 @@ export function LeadForm() {
         type="submit"
         className="mt-6 w-full rounded-xl bg-fg px-6 py-3.5 text-sm font-bold text-bg transition hover:opacity-85"
       >
-        Request a Quote
+        Solicitar Orçamento
       </button>
 
       {status === 'success' && (
         <p className="mt-4 text-sm text-accent">
-          Thanks! Your message was received. We&apos;ll reach out shortly.
+          Obrigado! Sua mensagem foi recebida. Entraremos em contato em breve.
         </p>
       )}
     </form>

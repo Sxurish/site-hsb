@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 const WEBHOOK = 'https://kaykywbraz.app.n8n.cloud/webhook/07948f96-2fac-4225-aaef-7b9d0cd37c99';
 
 const GREETING =
-  'Olá! Sou a Aria, assistente da HSB Company 👋\n\nPosso te ajudar a entender como podemos acelerar o crescimento do seu negócio. O que você está buscando?';
+  'Olá! Sou a Aria, assistente da HSB Company 👋\n\nEstou aqui para entender o que você precisa e te mostrar como podemos acelerar o crescimento do seu negócio.\n\nComo posso te ajudar hoje?';
 
 type Message = { id: string; role: 'user' | 'bot'; text: string };
 

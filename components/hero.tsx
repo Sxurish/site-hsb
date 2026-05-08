@@ -6,7 +6,7 @@ import { ArrowUpRight } from 'lucide-react';
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const metrics = [
-  { value: '150+',  label: 'websites entregues' },
+  { value: '150+',  label: 'sites entregues' },
   { value: '+312%', label: 'leads em 90 dias' },
   { value: '6.4×',  label: 'ROAS médio' },
   { value: '70+',   label: 'clientes em SP' },
@@ -15,8 +15,8 @@ const metrics = [
 export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col justify-between overflow-hidden pt-28 pb-16">
-      {/* Ambient glow — visible only in dark mode */}
-      <div className="pointer-events-none absolute -top-40 left-1/4 -z-10 h-[600px] w-[600px] rounded-full opacity-0 dark:opacity-20 blur-[130px] bg-accent" />
+      {/* Glow ambiente — apenas dark mode */}
+      <div className="pointer-events-none absolute -top-40 left-1/4 -z-10 h-[600px] w-[600px] rounded-full opacity-0 dark:opacity-15 blur-[130px] bg-accent" />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         <motion.p
@@ -25,14 +25,14 @@ export function Hero() {
           transition={{ duration: 0.5, ease }}
           className="section-kicker mb-10"
         >
-          Marketing Agency · São Paulo, Brazil
+          Agência de Marketing · São Paulo, Brasil
         </motion.p>
 
         <div className="overflow-hidden">
           {[
-            { text: 'Build a brand', style: '' },
-            { text: 'that moves fast', style: 'italic text-accent' },
-            { text: 'and sells harder.', style: '' },
+            { text: 'Construa uma marca',        style: '' },
+            { text: 'que cresce rápido',          style: 'italic text-accent' },
+            { text: 'e vende mais.',              style: '' },
           ].map((line, i) => (
             <div key={line.text} className="overflow-hidden">
               <motion.h1
@@ -54,22 +54,22 @@ export function Hero() {
           className="mt-10 flex flex-wrap items-center gap-5"
         >
           <a
-            href="#contact"
+            href="#contato"
             className="group inline-flex items-center gap-2 rounded-full bg-fg px-7 py-3.5 text-sm font-bold text-bg transition hover:opacity-85"
           >
-            Request a Quote
+            Solicitar Orçamento
             <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
           <a
             href="#portfolio"
             className="text-sm text-fg/40 underline underline-offset-4 decoration-fg/20 transition hover:text-fg hover:decoration-fg/50"
           >
-            Explore Projects
+            Ver Projetos
           </a>
         </motion.div>
       </div>
 
-      {/* Metrics strip */}
+      {/* Faixa de métricas */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

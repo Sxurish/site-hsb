@@ -7,33 +7,33 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 const projects = [
   {
-    title: 'Fintech Launch Campaign',
-    type: 'Landing Page + Paid Media',
-    result: '+420% leads in 90 days',
-    bg: '#100818',
-    accent: '#a78bfa',
+    title: 'Campanha Fintech',
+    type: 'Landing Page + Mídia Paga',
+    result: '+420% leads em 90 dias',
+    bg: '#14100c',
+    accent: '#f0a05a',
     span: 'md:col-span-2 md:row-span-2',
   },
   {
-    title: 'Fashion Brand Film',
-    type: 'Video Production',
-    result: '6.8× ROAS on Meta',
+    title: 'Filme de Marca Fashion',
+    type: 'Produção de Vídeo',
+    result: '6.8× ROAS no Meta',
     bg: '#0c1a0e',
     accent: '#4ade80',
     span: '',
   },
   {
-    title: 'Food Franchise Growth',
-    type: 'SEO + Local Domination',
-    result: '#1 local SEO ranking',
-    bg: '#160f00',
+    title: 'Crescimento Franquia',
+    type: 'SEO + Dominância Local',
+    result: '#1 em SEO local',
+    bg: '#180f06',
     accent: '#fb923c',
     span: '',
   },
   {
-    title: 'Automotive Social Ads',
-    type: 'Photography + Reels',
-    result: '3.2× engagement rate',
+    title: 'Ads Automotivo',
+    type: 'Fotografia + Reels',
+    result: '3.2× engajamento',
     bg: '#080e1a',
     accent: '#60a5fa',
     span: 'md:col-span-2',
@@ -51,9 +51,9 @@ export function Portfolio() {
           transition={{ duration: 0.7, ease }}
           className="mb-14"
         >
-          <p className="section-kicker mb-4">Portfolio</p>
+          <p className="section-kicker mb-4">Portfólio</p>
           <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-2xl">
-            Campaigns engineered to stop scrolls and start conversations.
+            Campanhas criadas para parar o scroll e iniciar conversas.
           </h2>
         </motion.div>
 
@@ -68,7 +68,6 @@ export function Portfolio() {
               className={`group relative overflow-hidden rounded-2xl p-6 cursor-pointer ${project.span}`}
               style={{ background: project.bg }}
             >
-              {/* Hover glow */}
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{

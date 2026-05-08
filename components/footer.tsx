@@ -13,8 +13,8 @@ export function Footer() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-12 md:flex-row md:items-end md:justify-between md:px-8">
         <div>
           <BrandLogo />
-          <p className="mt-4 text-sm text-fg/30">Digital + Audiovisual Growth Agency</p>
-          <p className="text-sm text-fg/30">São Paulo, Brazil</p>
+          <p className="mt-4 text-sm text-fg/30">Agência de Marketing Digital & Audiovisual</p>
+          <p className="text-sm text-fg/30">São Paulo, Brasil</p>
         </div>
 
         <div className="flex flex-col md:items-end gap-4">
@@ -31,7 +31,7 @@ export function Footer() {
             ))}
           </div>
           <p className="text-xs text-fg/20">
-            © {new Date().getFullYear()} HSB Company. All rights reserved.
+            © {new Date().getFullYear()} HSB Company. Todos os direitos reservados.
           </p>
         </div>
       </div>

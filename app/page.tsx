@@ -1,5 +1,6 @@
 import { About } from '@/components/about';
 import { Chatbot } from '@/components/chatbot';
+import { Clients } from '@/components/clients';
 import { ContactCta } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
@@ -7,15 +8,14 @@ import { Hero } from '@/components/hero';
 import { Portfolio } from '@/components/portfolio';
 import { Process } from '@/components/process';
 import { Services } from '@/components/services';
-import { Testimonials } from '@/components/testimonials';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: 'HSB Company',
   description:
-    'Marketing agency in São Paulo focused on website development, SEO, paid traffic, branding, and audiovisual production.',
-  areaServed: 'São Paulo, Brazil',
+    'Agência de marketing em São Paulo especializada em desenvolvimento de sites, SEO, tráfego pago, branding e produção audiovisual.',
+  areaServed: 'São Paulo, Brasil',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'São Paulo',
@@ -39,7 +39,7 @@ export default function Home() {
         <About />
         <Services />
         <Portfolio />
-        <Testimonials />
+        <Clients />
         <Process />
         <ContactCta />
       </main>

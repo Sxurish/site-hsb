@@ -7,7 +7,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Process() {
   return (
-    <section id="process" className="border-t border-border/[0.08] py-24 md:py-36">
+    <section id="processo" className="border-t border-border/[0.08] py-24 md:py-36">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -16,9 +16,9 @@ export function Process() {
           transition={{ duration: 0.7, ease }}
           className="mb-16"
         >
-          <p className="section-kicker mb-4">Process</p>
+          <p className="section-kicker mb-4">Processo</p>
           <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-xl">
-            A high-speed framework designed for momentum.
+            Um framework de alta velocidade projetado para gerar momentum.
           </h2>
         </motion.div>
 

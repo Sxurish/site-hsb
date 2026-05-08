@@ -13,7 +13,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/[0.08] bg-bg/70 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
-        <a href="#top" aria-label="HSB Company home">
+        <a href="#top" aria-label="HSB Company início">
           <BrandLogo />
         </a>
 
@@ -34,10 +34,10 @@ export function Header() {
           <motion.a
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            href="#contact"
+            href="#contato"
             className="rounded-full bg-fg px-5 py-2 text-sm font-bold text-bg transition hover:opacity-85"
           >
-            Request a Quote
+            Solicitar Orçamento
           </motion.a>
         </div>
 
@@ -45,7 +45,7 @@ export function Header() {
           <ThemeToggle />
           <button
             className="rounded-lg border border-border/[0.12] p-2 text-fg/50"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? 'Fechar menu' : 'Abrir menu'}
             onClick={() => setOpen((p) => !p)}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -73,11 +73,11 @@ export function Header() {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="#contato"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-lg bg-fg px-4 py-2.5 text-center text-sm font-bold text-bg"
               >
-                Request a Quote
+                Solicitar Orçamento
               </a>
             </div>
           </motion.nav>

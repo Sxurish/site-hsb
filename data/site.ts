@@ -10,112 +10,164 @@ import {
 } from 'lucide-react';
 
 export const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#services', label: 'Services' },
-  { href: '#portfolio', label: 'Portfolio' },
-  { href: '#process', label: 'Process' },
-  { href: '#contact', label: 'Contact' }
+  { href: '#sobre',     label: 'Sobre' },
+  { href: '#servicos',  label: 'Serviços' },
+  { href: '#portfolio', label: 'Portfólio' },
+  { href: '#processo',  label: 'Processo' },
+  { href: '#clientes',  label: 'Clientes' },
+  { href: '#contato',   label: 'Contato' },
 ];
 
 export const digitalServices = [
   {
-    title: 'Website Development',
-    description: 'High-performance business websites engineered to convert traffic into qualified leads.',
+    title: 'Desenvolvimento de Sites',
+    description: 'Sites empresariais de alta performance, projetados para converter tráfego em leads qualificados.',
     icon: Globe
   },
   {
     title: 'Landing Pages',
-    description: 'Campaign-driven landing pages with optimized UX and conversion-focused structure.',
+    description: 'Páginas de campanha focadas em conversão, com UX otimizada e estrutura orientada a resultados.',
     icon: WandSparkles
   },
   {
     title: 'SEO',
-    description: 'Technical and local SEO strategies to rank your brand for intent-rich searches in São Paulo.',
+    description: 'Estratégias técnicas e locais para posicionar sua marca nas buscas de alta intenção em São Paulo.',
     icon: Search
   },
   {
-    title: 'Paid Traffic',
-    description: 'Google Ads and Meta Ads operations built for measurable ROI and scale.',
+    title: 'Tráfego Pago',
+    description: 'Operações de Google Ads e Meta Ads focadas em ROI mensurável e escala sustentável.',
     icon: Megaphone
   },
   {
-    title: 'Branding & Identity',
-    description: 'Positioning, visual systems, and messaging designed for market differentiation.',
+    title: 'Branding & Identidade',
+    description: 'Posicionamento, sistemas visuais e mensagem criados para diferenciação de mercado.',
     icon: Palette
   }
 ];
 
 export const productionServices = [
   {
-    title: 'Video Production',
-    description: 'Cinematic brand videos and campaign content tailored for digital performance.',
+    title: 'Produção de Vídeo',
+    description: 'Vídeos de marca cinematográficos e conteúdo para campanhas de alta performance digital.',
     icon: Video
   },
   {
-    title: 'Commercial Photography',
-    description: 'Premium still photography for campaigns, product showcases, and brand storytelling.',
+    title: 'Fotografia Comercial',
+    description: 'Fotografia premium para campanhas, vitrines de produto e narrativa de marca.',
     icon: Camera
   },
   {
-    title: 'Audiovisual Production',
-    description: 'End-to-end creative production from concept and scripting to on-set execution.',
+    title: 'Produção Audiovisual',
+    description: 'Produção criativa completa: do conceito e roteiro à execução em set.',
     icon: Clapperboard
   },
   {
-    title: 'Editing & Post',
-    description: 'Fast-paced post-production, color grading, sound design, and versioning for every channel.',
+    title: 'Edição & Pós-produção',
+    description: 'Pós-produção ágil, color grading, design de som e versionamento para cada canal.',
     icon: WandSparkles
   }
 ];
 
 export const processSteps = [
-  { step: '01', title: 'Discovery', description: 'We map your goals, market, and growth bottlenecks.' },
-  { step: '02', title: 'Strategy', description: 'A tailored growth blueprint connecting creative and performance.' },
-  { step: '03', title: 'Production', description: 'Design, content, code, and media production executed at speed.' },
-  { step: '04', title: 'Delivery', description: 'We launch, integrate, and QA every customer touchpoint.' },
-  { step: '05', title: 'Growth', description: 'Continuous optimization driven by analytics and live campaign data.' }
+  { step: '01', title: 'Descoberta',   description: 'Mapeamos seus objetivos, mercado e os principais gargalos de crescimento.' },
+  { step: '02', title: 'Estratégia',   description: 'Um plano de crescimento personalizado conectando criativo e performance.' },
+  { step: '03', title: 'Produção',     description: 'Design, conteúdo, código e mídia executados com velocidade e qualidade.' },
+  { step: '04', title: 'Entrega',      description: 'Lançamos, integramos e validamos cada ponto de contato com o cliente.' },
+  { step: '05', title: 'Crescimento',  description: 'Otimização contínua guiada por dados analíticos e resultados de campanha.' },
+];
+
+export const clients = [
+  {
+    brand: 'Clínica Vitalidade',
+    initials: 'CV',
+    services: ['Website', 'SEO'],
+    quote: 'Saímos do zero e em 3 meses estávamos recebendo leads qualificados todo dia. A HSB entendeu exatamente o que precisávamos.',
+    name: 'Dra. Ana Beatriz',
+    role: 'Diretora Clínica'
+  },
+  {
+    brand: 'Construtora Horizonte',
+    initials: 'CH',
+    services: ['Identidade Visual', 'Landing Page'],
+    quote: 'A HSB redesenhou nossa presença digital do zero. Resultado direto: dobramos o número de orçamentos em 60 dias.',
+    name: 'Ricardo Mendes',
+    role: 'CEO & Fundador'
+  },
+  {
+    brand: 'Drivex Auto Group',
+    initials: 'DA',
+    services: ['Vídeo', 'Tráfego Pago'],
+    quote: 'As redes explodiram com as produções deles. Melhor investimento que fizemos no ano — ROI acima de tudo que esperávamos.',
+    name: 'Felipe Andrade',
+    role: 'Diretor de Marketing'
+  },
+  {
+    brand: 'NovaHub Fintech',
+    initials: 'NH',
+    services: ['Landing Page', 'Google Ads'],
+    quote: '+420% em leads qualificados em 90 dias. A combinação de criativo e performance que a HSB entrega é impressionante.',
+    name: 'Mariana Costa',
+    role: 'CMO'
+  },
+  {
+    brand: 'Fashion Studio SP',
+    initials: 'FS',
+    services: ['Fotografia', 'Reels'],
+    quote: 'Conteúdo de alto nível que finalmente refletiu a qualidade real da nossa marca. Nosso engajamento triplicou.',
+    name: 'Juliana Ferraz',
+    role: 'Diretora Criativa'
+  },
+  {
+    brand: 'Rede Alimentar',
+    initials: 'RA',
+    services: ['SEO Local', 'Website'],
+    quote: 'Número 1 no Google para nossas palavras-chave em menos de 4 meses. Atendimento consultivo e resultado real.',
+    name: 'Carlos Oliveira',
+    role: 'Sócio-fundador'
+  },
 ];
 
 export const caseStudies = [
   {
     brand: 'Fintech SP',
-    result: '+420% Leads in 90 days',
-    details: 'Full-funnel strategy combining landing pages, Google Ads, and Meta remarketing for a fintech startup.'
+    result: '+420% Leads em 90 dias',
+    details: 'Estratégia full-funnel combinando landing pages, Google Ads e remarketing no Meta para uma startup fintech.'
   },
   {
     brand: 'Fashion Franchise',
-    result: '6.8x ROAS on Meta Ads',
-    details: 'Creative production + paid traffic operation scaling a fashion brand across São Paulo.'
+    result: '6.8x ROAS no Meta Ads',
+    details: 'Produção criativa + operação de tráfego pago escalando uma marca de moda em São Paulo.'
   },
   {
     brand: 'Clinica Vitta',
-    result: '#1 Local SEO ranking',
-    details: 'Technical SEO and content strategy that captured high-intent local search for a medical clinic.'
+    result: '#1 ranking SEO Local',
+    details: 'SEO técnico e estratégia de conteúdo que capturou buscas locais de alta intenção para uma clínica médica.'
   }
 ];
 
 export const trustItems = [
-  '150+ websites delivered',
-  'Google Partner certified',
-  '1.2K+ video assets produced',
-  'São Paulo headquartered'
+  '150+ sites entregues',
+  'Certificado Google Partner',
+  '1.200+ ativos de vídeo',
+  'Sediados em São Paulo'
 ];
 
 export const faqs = [
   {
-    question: 'How long does a typical project take?',
-    answer: 'Website projects typically launch within 3–4 weeks. Campaign strategy and paid media go live within 7–10 business days after onboarding.'
+    question: 'Quanto tempo leva um projeto típico?',
+    answer: 'Sites normalmente são lançados em 3 a 4 semanas. Estratégias de campanha e mídia paga entram no ar em 7 a 10 dias úteis após o onboarding.'
   },
   {
-    question: 'Do you work with companies outside São Paulo?',
-    answer: 'Yes. While we are based in São Paulo, we serve clients across Brazil and internationally for digital and production services.'
+    question: 'Vocês atendem empresas fora de São Paulo?',
+    answer: 'Sim. Embora nossa sede seja em São Paulo, atendemos clientes em todo o Brasil e internacionalmente para serviços digitais e de produção.'
   },
   {
-    question: 'What makes HSB Company different from other agencies?',
-    answer: 'We combine performance marketing and premium audiovisual production under one roof — no handoffs, no miscommunication, just one team executing end-to-end.'
+    question: 'O que diferencia a HSB das outras agências?',
+    answer: 'Combinamos marketing de performance e produção audiovisual premium sob o mesmo teto — sem terceirizações, sem ruído de comunicação, só um time executando do início ao fim.'
   },
   {
-    question: 'How do you measure campaign success?',
-    answer: 'We track pipeline metrics: qualified leads, cost-per-acquisition, ROAS, and revenue attributed — not vanity metrics.'
+    question: 'Como vocês medem o sucesso das campanhas?',
+    answer: 'Rastreamos métricas de pipeline: leads qualificados, custo por aquisição, ROAS e receita atribuída — não métricas de vaidade.'
   }
 ];

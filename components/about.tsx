@@ -7,41 +7,39 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const pillars = [
   {
     num: '01',
-    title: 'Strategic Creativity',
-    text: 'Creative direction backed by market intelligence, intent data, and conversion architecture.',
+    title: 'Criatividade Estratégica',
+    text: 'Direção criativa embasada em inteligência de mercado, dados de intenção e arquitetura de conversão.',
   },
   {
     num: '02',
-    title: 'Execution Velocity',
-    text: 'Rapid sprints from concept to launch, without sacrificing polish or performance.',
+    title: 'Velocidade de Execução',
+    text: 'Sprints ágeis do conceito ao lançamento, sem abrir mão do acabamento e da performance.',
   },
   {
     num: '03',
-    title: 'Reliable Growth',
-    text: 'Transparent process, measurable outcomes, and relentless optimization at every stage.',
+    title: 'Crescimento Confiável',
+    text: 'Processo transparente, resultados mensuráveis e otimização contínua em cada etapa.',
   },
 ];
 
 export function About() {
   return (
-    <section id="about" className="border-t border-border/[0.08] py-24 md:py-36">
+    <section id="sobre" className="border-t border-border/[0.08] py-24 md:py-36">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         <div className="grid md:grid-cols-[1fr_1.4fr] gap-12 md:gap-24 items-start">
-          {/* Left column */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.8, ease }}
           >
-            <p className="section-kicker mb-5">About</p>
+            <p className="section-kicker mb-5">Sobre</p>
             <h2 className="text-4xl md:text-5xl font-black leading-tight">
-              An urban-edge agency for brands that{' '}
-              <em className="italic text-accent">refuse to blend in.</em>
+              Uma agência com identidade própria para marcas que{' '}
+              <em className="italic text-accent">recusam o ordinário.</em>
             </h2>
           </motion.div>
 
-          {/* Right column */}
           <div>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -50,8 +48,8 @@ export function About() {
               transition={{ duration: 0.7, delay: 0.1, ease }}
               className="text-lg text-fg/50 leading-relaxed mb-12"
             >
-              From São Paulo to ambitious markets worldwide, we combine precision strategy and loud
-              creative energy to generate demand, authority, and revenue.
+              De São Paulo para mercados ambiciosos, combinamos estratégia precisa e energia criativa
+              para gerar demanda, autoridade e receita.
             </motion.p>
 
             <div>

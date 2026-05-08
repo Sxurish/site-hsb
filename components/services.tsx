@@ -40,7 +40,7 @@ function ServiceList({ title, services }: { title: string; services: typeof digi
 
 export function Services() {
   return (
-    <section id="services" className="border-t border-border/[0.08] py-24 md:py-36">
+    <section id="servicos" className="border-t border-border/[0.08] py-24 md:py-36">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <motion.div
@@ -49,9 +49,9 @@ export function Services() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, ease }}
           >
-            <p className="section-kicker mb-4">Services</p>
+            <p className="section-kicker mb-4">Serviços</p>
             <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-xl">
-              Dual-engine capability: digital performance + audiovisual impact.
+              Capacidade dupla: performance digital + impacto audiovisual.
             </h2>
           </motion.div>
           <motion.p
@@ -61,8 +61,8 @@ export function Services() {
             transition={{ duration: 0.6, delay: 0.15, ease }}
             className="text-sm text-fg/40 max-w-xs md:text-right leading-relaxed"
           >
-            We build complete growth systems where your message looks world-class and performs like a
-            machine.
+            Construímos sistemas de crescimento completos onde sua mensagem parece premium e
+            performa como uma máquina.
           </motion.p>
         </div>
 
