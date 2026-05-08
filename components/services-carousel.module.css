@@ -1,0 +1,476 @@
+/* Services Carousel — ported from ClaudeDesign prototype */
+
+.sec {
+  position: relative;
+  max-width: 1440px;
+  margin: 60px auto 0;
+  padding: 64px 36px 0;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+
+.secHead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px 40px;
+  align-items: end;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.dotk {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--acc);
+  box-shadow: 0 0 12px var(--acc);
+}
+
+.h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 6.4vw, 84px);
+  line-height: .95;
+  letter-spacing: -.01em;
+  color: var(--bone);
+  margin: 0;
+}
+.h1 i  { font-style: italic; color: var(--bone-d); }
+.h1 em { font-style: italic; color: var(--acc); font-family: var(--serif); }
+
+.headRight {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-end;
+}
+
+.lede {
+  font-size: 14px;
+  color: var(--bone-d);
+  max-width: 36ch;
+  line-height: 1.5;
+  margin: 0 0 4px;
+  text-align: right;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--mute);
+}
+
+.counter {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+  padding: 8px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  color: var(--bone);
+}
+.counter b { color: var(--acc); font-weight: 500; }
+
+.tbtn {
+  appearance: none;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--bone-d);
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tbtn:hover { border-color: var(--bone); color: var(--bone); }
+.tbtn[aria-pressed="true"] { background: var(--bone); color: var(--ink-0); border-color: var(--bone); }
+
+.pip {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tbtn[aria-pressed="true"] .pip {
+  background: var(--acc-ink);
+  animation: pipPulse 1.6s ease-in-out infinite;
+}
+@keyframes pipPulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+/* ── Stage ──────────────────────────────────────────── */
+
+.stage {
+  position: relative;
+  margin-top: 48px;
+  height: 540px;
+  perspective: 1600px;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.card {
+  position: absolute;
+  width: min(560px, 70vw);
+  height: 480px;
+  border-radius: var(--r-card);
+  background: linear-gradient(180deg, var(--ink-3) 0%, var(--ink-2) 100%);
+  border: 1px solid var(--line-2);
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform .7s cubic-bezier(.2,.8,.2,1),
+    opacity   .7s ease,
+    filter    .7s ease;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform, opacity;
+  backdrop-filter: blur(2px);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 80% -10%, rgba(200,227,106,.07), transparent 60%);
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.card.active { border-color: rgba(200,227,106,.22); }
+.card.active::before { opacity: 1; }
+.card.active {
+  box-shadow:
+    0 40px 100px -20px rgba(0,0,0,.7),
+    0 0 0 1px rgba(200,227,106,.08),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.card.side   { cursor: pointer; filter: saturate(.5); }
+.card.far    { pointer-events: none; }
+
+/* ── Card content ───────────────────────────────────── */
+
+.crow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: rgba(236,228,208,.06);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  padding: 6px 10px;
+}
+
+.num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--mute);
+}
+
+.glyph {
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardtitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  color: var(--bone);
+  margin: 0 0 12px;
+}
+
+.carddesc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--bone-d);
+  margin: 0;
+  max-width: 46ch;
+}
+
+.cardfoot {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ctaMini {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--bone);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  transition: color .2s ease;
+}
+.ctaMini:hover { color: var(--acc); }
+
+.arr {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: width .3s ease;
+}
+.arr::after {
+  content: "";
+  position: absolute;
+  right: 0; top: -3px;
+  width: 7px; height: 7px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.ctaMini:hover .arr { width: 38px; }
+
+.expandHint {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+/* ── Nav arrows ─────────────────────────────────────── */
+
+.nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(28,26,20,.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line-2);
+  color: var(--bone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all .25s ease;
+}
+.nav:hover { background: var(--bone); color: var(--ink-0); border-color: var(--bone); }
+.prev { left:  max(12px, calc(50% - 460px)); }
+.next { right: max(12px, calc(50% - 460px)); }
+
+/* ── Dots ───────────────────────────────────────────── */
+
+.dotrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.dot {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--mute);
+  transition: color .25s ease;
+}
+.dot[aria-selected="true"] { color: var(--bone); }
+
+.bar {
+  width: 24px; height: 2px;
+  background: var(--line-2);
+  border-radius: 2px;
+  transition: all .35s ease;
+}
+.barActive { width: 48px; background: var(--acc); }
+.dot:hover .bar { background: var(--bone-d); }
+
+/* ── Detail panel ───────────────────────────────────── */
+
+.detail {
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+  transition: max-height .55s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+}
+
+.detailInner {
+  padding: 36px 0 0;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr auto;
+  gap: 48px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 36px;
+}
+
+.detCol h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+.detCol p,
+.detCol li {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--bone);
+  margin: 0;
+}
+
+.detCol ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detCol li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.detCol li::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--acc);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
+
+.detCta {
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.btnPrimary {
+  appearance: none;
+  border: 0;
+  background: var(--acc);
+  color: var(--acc-ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 14px 22px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .2s ease;
+}
+.btnPrimary:hover { transform: translateY(-1px); }
+
+.btnClose {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-2);
+  color: var(--bone-d);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.btnClose:hover { color: var(--bone); border-color: var(--bone); }
+
+/* ── Responsive ─────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .sec      { padding: 36px 20px 0; margin-top: 24px; }
+  .secHead  { grid-template-columns: 1fr; gap: 18px; }
+  .headRight { align-items: flex-start; }
+  .lede     { text-align: left; }
+  .stage    { height: 480px; }
+  .card     { width: min(420px, 84vw); height: 440px; padding: 24px; }
+  .cardtitle{ font-size: 30px; }
+  .glyph    { width: 160px; height: 160px; }
+  .prev     { left: 8px; }
+  .next     { right: 8px; }
+  .nav      { width: 44px; height: 44px; }
+  .detailInner { grid-template-columns: 1fr; gap: 28px; }
+  .detCta   { align-items: flex-start; }
+}
+
+@media (max-width: 520px) {
+  .h1       { font-size: 46px; }
+  .toolbar  { flex-wrap: wrap; }
+  .stage    { height: 460px; }
+  .card     { height: 420px; width: 88vw; padding: 22px; }
+  .cardtitle{ font-size: 26px; }
+}

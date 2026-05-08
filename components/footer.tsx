@@ -1,10 +1,10 @@
-import { Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Instagram, Linkedin, PlaySquare } from 'lucide-react';
 import { BrandLogo } from './brand-logo';
 
 const socials = [
-  { Icon: Instagram, href: '#', label: 'Instagram' },
-  { Icon: Linkedin,  href: '#', label: 'LinkedIn' },
-  { Icon: Youtube,   href: '#', label: 'YouTube' },
+  { Icon: Instagram,   href: '#', label: 'Instagram' },
+  { Icon: Linkedin,    href: '#', label: 'LinkedIn' },
+  { Icon: PlaySquare,  href: '#', label: 'YouTube' },
 ];
 
 export function Footer() {

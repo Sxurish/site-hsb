@@ -1,5 +1,4 @@
 import { About } from '@/components/about';
-import { Chatbot } from '@/components/chatbot';
 import { Clients } from '@/components/clients';
 import { ContactCta } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
@@ -7,7 +6,8 @@ import { Header } from '@/components/header';
 import { Hero } from '@/components/hero';
 import { Portfolio } from '@/components/portfolio';
 import { Process } from '@/components/process';
-import { Services } from '@/components/services';
+import { Services } from '@/components/services-carousel';
+import { ChatbotWidget } from '@/components/chatbot-widget';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -44,7 +44,7 @@ export default function Home() {
         <ContactCta />
       </main>
       <Footer />
-      <Chatbot />
+      <ChatbotWidget />
     </>
   );
 }

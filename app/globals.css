@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design-system tokens (CarouselDesign) ──────────── */
+:root {
+  --ink-0:  #0e0d0c;
+  --ink-1:  #15140f;
+  --ink-2:  #1c1a14;
+  --ink-3:  #26231b;
+  --line:   rgba(238,229,206,.10);
+  --line-2: rgba(238,229,206,.18);
+  --bone:   #ece4d0;
+  --bone-d: #bfb59e;
+  --mute:   #7c7565;
+  --acc:    #c8e36a;
+  --acc-ink:#0e0d0c;
+  --r-card: 22px;
+  --r-pill: 999px;
+  --serif:  var(--font-serif, "Instrument Serif"), ui-serif, Georgia, serif;
+  --sans:   var(--font-sans,  "Inter Tight"),      ui-sans-serif, system-ui, sans-serif;
+  --mono:   var(--font-mono,  "JetBrains Mono"),   ui-monospace, monospace;
+}
+
 /* ── Light (creme quente) ──────────────────────────── */
 :root {
   --bg:      249 246 241;
