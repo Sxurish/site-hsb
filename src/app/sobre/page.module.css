@@ -1,134 +1,367 @@
 .main {
-  padding-top: 100px;
+  min-height: 100vh;
+  padding-top: 72px;
+  position: relative;
+}
+
+.bgOrb {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  top: -200px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(123, 47, 190, 0.12) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 20s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(-80px, 60px); }
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* ─── Tags / labels ───────────────────────────────── */
+
+.tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 1rem;
+}
+
+/* ─── Hero ────────────────────────────────────────── */
+
 .hero {
-  padding: 6rem 0;
+  padding: 7rem 0 5rem;
   text-align: center;
 }
 
 .hero h1 {
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin-bottom: 1.4rem;
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  color: #a0a0a0;
-  max-width: 600px;
+  font-size: 1.08rem;
+  color: var(--fg-muted);
+  max-width: 560px;
   margin: 0 auto;
+  line-height: 1.75;
 }
 
-.mission {
-  padding: 4rem 0;
+/* ─── Pillars ─────────────────────────────────────── */
+
+.pillars {
+  padding: 4rem 0 7rem;
 }
 
-.grid {
+.pillarGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-.card {
+.pillarCard {
   padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform   0.4s var(--ease-out-expo),
+    box-shadow  0.4s ease,
+    border-color 0.4s ease;
+  cursor: default;
 }
 
-.card h3 {
-  font-size: 1.8rem;
+.pillarCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(circle at 50% -10%, var(--card-accent, #4361EE), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.pillarCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.pillarCard:hover::after {
+  opacity: 0.09;
+}
+
+.pillarIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.pillarCard:hover .pillarIcon {
+  transform: scale(1.1) rotate(-4deg);
+}
+
+.pillarCard h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  position: relative;
+  z-index: 1;
+}
+
+.pillarCard p {
+  color: var(--fg-muted);
+  line-height: 1.65;
+  font-size: 0.93rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Story ───────────────────────────────────────── */
+
+.story {
+  padding: 4rem 0 8rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.storyInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  padding-top: 4rem;
+}
+
+.storyText h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.storyText p {
+  color: var(--fg-muted);
+  line-height: 1.75;
+  font-size: 0.97rem;
   margin-bottom: 1rem;
 }
 
-.card p {
-  color: #d0d0d0;
-  line-height: 1.6;
+.storyVisual {
+  display: flex;
+  justify-content: center;
 }
+
+.storyCard {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 4rem 3rem;
+  text-align: center;
+  backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 320px;
+}
+
+.storyCard::before {
+  content: '';
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle at 50% 50%, rgba(67, 97, 238, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.storyCard span {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.storyCard p {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+/* ─── Team ────────────────────────────────────────── */
 
 .team {
-  padding: 8rem 0;
-  text-align: center;
+  padding: 6rem 0 8rem;
 }
 
-.team h2 {
-  font-size: 3rem;
+.sectionHead {
+  text-align: center;
   margin-bottom: 4rem;
+}
+
+.sectionHead h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
 .teamGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
 }
 
-.teamMember {
+.memberCard {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: 0.8rem;
+  transition: transform 0.4s var(--ease-out-expo);
 }
 
-.photoPlaceholder {
-  width: 200px;
-  height: 250px;
+.memberCard:hover {
+  transform: translateY(-6px);
+}
+
+.photoBox {
+  width: 160px;
+  height: 200px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  color: #666;
-  background: rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.4s ease;
 }
 
-.teamMember h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+.memberCard:hover .photoBox {
+  box-shadow: var(--glow-violet);
 }
 
-.teamMember p {
-  color: var(--hsb-pink);
-  font-size: 0.9rem;
+.photoInitial {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
+.memberCard h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.memberCard p {
+  font-size: 0.82rem;
+  color: var(--rose);
+  font-weight: 600;
+}
+
+/* ─── CTA ─────────────────────────────────────────── */
 
 .cta {
-  padding: 8rem 2rem;
+  padding: 6rem 2rem 8rem;
   display: flex;
   justify-content: center;
 }
 
 .ctaBox {
-  padding: 4rem;
+  background: rgba(255, 255, 255, 0.028);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 5rem 4rem;
   text-align: center;
-  max-width: 800px;
+  max-width: 740px;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+}
+
+.ctaGlow {
+  position: absolute;
+  inset: -80px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(67, 97, 238, 0.18) 0%, transparent 60%);
+  pointer-events: none;
+  animation: pulseGlow 4.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
 }
 
 .ctaBox h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 0.9rem;
+  position: relative;
+  z-index: 1;
 }
 
 .ctaBox p {
-  color: #a0a0a0;
-  margin-bottom: 2.5rem;
-  font-size: 1.1rem;
+  color: var(--fg-muted);
+  margin-bottom: 2.2rem;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  line-height: 1.7;
 }
 
 .primaryBtn {
-  background: var(--hsb-gradient);
-  color: white;
-  padding: 1rem 2.5rem;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  background: var(--gradient);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 100px;
+  font-size: 0.97rem;
   font-weight: 600;
-  display: inline-block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  position: relative;
+  z-index: 1;
+  transition:
+    transform    0.35s var(--ease-out-expo),
+    box-shadow   0.35s ease;
 }
 
 .primaryBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(255, 64, 129, 0.3);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(123, 47, 190, 0.42);
+}
+
+/* ─── Responsive ──────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .storyInner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .ctaBox { padding: 3rem 1.5rem; }
 }
