@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const { message } = await req.json();
 
-    const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/hsb-chatbot-site';
+    const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/07948f96-2fac-4225-aaef-7b9d0cd37c99';
 
     try {
       const res = await fetch(webhookUrl, {
@@ -13,19 +13,12 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({ message }),
       });
 
-      console.log('[n8n] status:', res.status);
-
-      const text = await res.text();
-      console.log('[n8n] body:', text);
-
       if (res.ok) {
-        const data = JSON.parse(text);
-        return NextResponse.json({ reply: data.reply || data.message || data.output || text });
+        const data = await res.json();
+        return NextResponse.json({ reply: data.reply || data.message || data.output });
       }
-
-      return NextResponse.json({ reply: `[DEBUG] n8n status ${res.status}: ${text}` });
-    } catch (fetchErr) {
-      return NextResponse.json({ reply: `[DEBUG] fetch error: ${String(fetchErr)}` });
+    } catch {
+      // fallthrough to fallback
     }
 
     // Fallback concierge response
