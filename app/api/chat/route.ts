@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     const lower = (message as string).toLowerCase();
     const match = Object.keys(fallbacks).find(k => lower.includes(k));
     const reply = match
-      ? fallbacks[match]
+      ? fallbacks[match!]
       : 'Obrigado pela mensagem! Um especialista da HSB vai entrar em contato em breve. Enquanto isso, explore nossos serviços na página.';
 
     return NextResponse.json({ reply });
