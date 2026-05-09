@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const { message } = await req.json();
 
-    const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/07948f96-2fac-4225-aaef-7b9d0cd37c99';
+    const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/hsb-chatbot-site';
 
     try {
       const res = await fetch(webhookUrl, {
