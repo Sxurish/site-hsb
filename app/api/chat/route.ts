@@ -5,16 +5,27 @@ export async function POST(req: NextRequest) {
     const { message } = await req.json();
 
     const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/hsb-chatbot-site';
-    if (webhookUrl) {
+
+    try {
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message }),
       });
+
+      console.log('[n8n] status:', res.status);
+
+      const text = await res.text();
+      console.log('[n8n] body:', text);
+
       if (res.ok) {
-        const data = await res.json();
-        return NextResponse.json({ reply: data.reply || data.message || data.output });
+        const data = JSON.parse(text);
+        return NextResponse.json({ reply: data.reply || data.message || data.output || text });
       }
+
+      console.error('[n8n] non-ok response:', res.status, text);
+    } catch (fetchErr) {
+      console.error('[n8n] fetch error:', fetchErr);
     }
 
     // Fallback concierge response
