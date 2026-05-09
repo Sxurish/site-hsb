@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ reply: data.reply || data.message || data.output || text });
       }
 
-      console.error('[n8n] non-ok response:', res.status, text);
+      return NextResponse.json({ reply: `[DEBUG] n8n status ${res.status}: ${text}` });
     } catch (fetchErr) {
-      console.error('[n8n] fetch error:', fetchErr);
+      return NextResponse.json({ reply: `[DEBUG] fetch error: ${String(fetchErr)}` });
     }
 
     // Fallback concierge response
