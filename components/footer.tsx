@@ -1,20 +1,23 @@
 import { Instagram, Linkedin, PlaySquare } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { BrandLogo } from './brand-logo';
 
-const socials = [
-  { Icon: Instagram,   href: '#', label: 'Instagram' },
-  { Icon: Linkedin,    href: '#', label: 'LinkedIn' },
-  { Icon: PlaySquare,  href: '#', label: 'YouTube' },
-];
-
 export function Footer() {
+  const t = useTranslations('Footer');
+
+  const socials = [
+    { Icon: Instagram,  href: '#', label: t('social.instagram') },
+    { Icon: Linkedin,   href: '#', label: t('social.linkedin') },
+    { Icon: PlaySquare, href: '#', label: t('social.youtube') },
+  ];
+
   return (
     <footer className="border-t border-border/[0.08]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-12 md:flex-row md:items-end md:justify-between md:px-8">
         <div>
           <BrandLogo />
-          <p className="mt-4 text-sm text-fg/30">Agência de Marketing Digital & Audiovisual</p>
-          <p className="text-sm text-fg/30">São Paulo, Brasil</p>
+          <p className="mt-4 text-sm text-fg/30">{t('tagline')}</p>
+          <p className="text-sm text-fg/30">{t('location')}</p>
         </div>
 
         <div className="flex flex-col md:items-end gap-4">
@@ -31,7 +34,7 @@ export function Footer() {
             ))}
           </div>
           <p className="text-xs text-fg/20">
-            © {new Date().getFullYear()} HSB Company. Todos os direitos reservados.
+            {t('copyright', { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

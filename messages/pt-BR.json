@@ -1,0 +1,47 @@
+{
+  "Header": {
+    "logoAriaLabel": "HSB Company início",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "navAriaPrimary": "Principal",
+    "navAriaMobile": "Mobile",
+    "ctaQuote": "Solicitar Orçamento",
+    "nav": {
+      "about": "Sobre",
+      "services": "Serviços",
+      "portfolio": "Portfólio",
+      "process": "Processo",
+      "clients": "Clientes",
+      "contact": "Contato"
+    }
+  },
+  "Hero": {
+    "kicker": "Agência de Marketing · São Paulo, Brasil",
+    "srTitle": "Construa uma marca que cresce rápido e vende mais.",
+    "line1": "Construa uma marca",
+    "line2": "que cresce rápido",
+    "line3": "e vende mais.",
+    "ctaPrimary": "Solicitar Orçamento",
+    "ctaSecondary": "Ver Projetos",
+    "metrics": {
+      "sitesLabel": "sites entregues",
+      "leadsLabel": "leads em 90 dias",
+      "roasLabel": "ROAS médio",
+      "clientsLabel": "clientes em SP"
+    }
+  },
+  "Footer": {
+    "tagline": "Agência de Marketing Digital & Audiovisual",
+    "location": "São Paulo, Brasil",
+    "copyright": "© {year} HSB Company. Todos os direitos reservados.",
+    "social": {
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "ariaLabel": "Selecionar idioma"
+  }
+}

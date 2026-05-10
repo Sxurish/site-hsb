@@ -2,20 +2,30 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const metrics = [
-  { value: '150+',  label: 'sites entregues' },
-  { value: '+312%', label: 'leads em 90 dias' },
-  { value: '6.4×',  label: 'ROAS médio' },
-  { value: '70+',   label: 'clientes em SP' },
-];
-
 export function Hero() {
   const reduce = useReducedMotion();
+  const t = useTranslations('Hero');
 
-  const lineInitial = reduce ? { y: 0, opacity: 1 } : { y: '110%' };
+  const metrics = [
+    { value: '150+',  label: t('metrics.sitesLabel') },
+    { value: '+312%', label: t('metrics.leadsLabel') },
+    { value: '6.4×',  label: t('metrics.roasLabel') },
+    { value: '70+',   label: t('metrics.clientsLabel') },
+  ];
+
+  const lines = [
+    { text: t('line1'), style: '' },
+    { text: t('line2'), style: 'italic gold-sheen' },
+    { text: t('line3'), style: '' },
+  ];
+
+  const lineInitial: { y: number | string; opacity?: number } = reduce
+    ? { y: 0, opacity: 1 }
+    : { y: '110%' };
   const lineAnimate = { y: 0, opacity: 1 };
 
   return (
@@ -32,17 +42,13 @@ export function Hero() {
           className="section-kicker mb-8 md:mb-10"
         >
           <span className="mr-2 inline-block h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-accent shadow-glow-sm" />
-          Agência de Marketing · São Paulo, Brasil
+          {t('kicker')}
         </motion.p>
 
-        <h1 className="sr-only">Construa uma marca que cresce rápido e vende mais.</h1>
+        <h1 className="sr-only">{t('srTitle')}</h1>
 
         <div aria-hidden="true">
-          {[
-            { text: 'Construa uma marca',   style: '' },
-            { text: 'que cresce rápido',    style: 'italic gold-sheen' },
-            { text: 'e vende mais.',        style: '' },
-          ].map((line, i) => (
+          {lines.map((line, i) => (
             <div key={line.text} className="overflow-hidden">
               <motion.span
                 initial={lineInitial}
@@ -68,7 +74,7 @@ export function Hero() {
             href="#contato"
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-fg px-6 py-3.5 text-sm font-bold text-bg shadow-glow-sm transition-shadow hover:shadow-glow sm:px-7"
           >
-            <span className="relative z-10">Solicitar Orçamento</span>
+            <span className="relative z-10">{t('ctaPrimary')}</span>
             <ArrowUpRight className="relative z-10 h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             <span
               aria-hidden="true"
@@ -81,7 +87,7 @@ export function Hero() {
             className="group inline-flex items-center gap-1.5 text-sm text-fg/55 transition hover:text-fg"
           >
             <span className="border-b border-fg/20 transition group-hover:border-accent">
-              Ver Projetos
+              {t('ctaSecondary')}
             </span>
             <ArrowUpRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
