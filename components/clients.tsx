@@ -1,78 +1,240 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { clients } from '@/data/site';
+import styles from './clients.module.css';
 
-const ease = [0.16, 1, 0.3, 1] as const;
+const ChevronL = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" width="18" height="18">
+    <polyline points="15 6 9 12 15 18" />
+  </svg>
+);
+const ChevronR = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" width="18" height="18">
+    <polyline points="9 6 15 12 9 18" />
+  </svg>
+);
+
+type Client = (typeof clients)[number] & { photo?: string };
 
 export function Clients() {
+  const list = clients as Client[];
+  const N = list.length;
+
+  const [idx, setIdx] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const SPEED = 8000;
+
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  const go = useCallback((d: number) => setIdx((p) => (p + d + N) % N), [N]);
+  const goTo = (n: number) => setIdx(((n % N) + N) % N);
+
+  /* viewport mode */
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  /* autoplay */
+  useEffect(() => {
+    if (!autoplay || hover) return;
+    const t = setInterval(() => setIdx((p) => (p + 1) % N), SPEED);
+    return () => clearInterval(t);
+  }, [autoplay, hover, N]);
+
+  /* touch swipe */
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    let sx = 0, dx = 0, active = false;
+    const ts = (e: TouchEvent) => { active = true; sx = e.touches[0].clientX; dx = 0; };
+    const tm = (e: TouchEvent) => { if (active) dx = e.touches[0].clientX - sx; };
+    const te = () => { if (!active) return; active = false; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); };
+    el.addEventListener('touchstart', ts, { passive: true });
+    el.addEventListener('touchmove', tm, { passive: true });
+    el.addEventListener('touchend', te);
+    return () => {
+      el.removeEventListener('touchstart', ts);
+      el.removeEventListener('touchmove', tm);
+      el.removeEventListener('touchend', te);
+    };
+  }, [go]);
+
+  /* card transform */
+  const cardStyle = (cardIdx: number): React.CSSProperties => {
+    let off = cardIdx - idx;
+    if (off >  N / 2) off -= N;
+    if (off < -N / 2) off += N;
+    const abs = Math.abs(off);
+
+    if (isMobile) {
+      if (abs === 0) return { transform: 'translateX(0)', opacity: 1, zIndex: 30 };
+      if (abs === 1) {
+        const dir = Math.sign(off);
+        return { transform: `translateX(${dir * 96}%) scale(.92)`, opacity: 0, zIndex: 20 };
+      }
+      return { transform: `translateX(${Math.sign(off) * 180}%)`, opacity: 0, zIndex: 0 };
+    }
+
+    const d = 0.9;
+    if (abs === 0) return { transform: 'translateX(0) translateZ(0) scale(1)', opacity: 1, zIndex: 30 };
+    if (abs === 1) {
+      const dir = Math.sign(off);
+      return {
+        transform: `translateX(${dir * (360 + 60 * d)}px) translateZ(${-140 * d}px) scale(${1 - 0.13 * d}) rotateY(${dir * -8 * d}deg)`,
+        opacity: 0.55,
+        zIndex: 20,
+      };
+    }
+    if (abs === 2) {
+      const dir = Math.sign(off);
+      return {
+        transform: `translateX(${dir * (640 + 80 * d)}px) translateZ(${-280 * d}px) scale(${1 - 0.24 * d}) rotateY(${dir * -12 * d}deg)`,
+        opacity: 0.18,
+        zIndex: 10,
+      };
+    }
+    return { transform: `translateX(${Math.sign(off) * 900}px) scale(.6)`, opacity: 0, zIndex: 0 };
+  };
+
+  const cur = list[idx];
+
   return (
-    <section id="clientes" className="border-t border-border/[0.08] py-24 md:py-36">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease }}
-          className="mb-14"
-        >
-          <p className="section-kicker mb-4">Clientes</p>
-          <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-2xl">
-            Marcas que confiaram na HSB para{' '}
-            <em className="italic text-accent">crescer de verdade.</em>
+    <section className={styles.sec} id="clientes" aria-labelledby="clients-heading">
+      <header className={styles.secHead}>
+        <div>
+          <div className={styles.kicker}>
+            <span className={styles.dotk} />
+            CLIENTES • RESULTADOS REAIS
+          </div>
+          <h2 id="clients-heading" className={styles.h1}>
+            Marcas que confiaram na <em>HSB</em>.<br />
+            <i>Para crescer de verdade.</i>
           </h2>
-        </motion.div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {clients.map((client, i) => (
-            <motion.article
-              key={client.brand}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.6, delay: i * 0.07, ease }}
-              className="group flex flex-col justify-between gap-6 rounded-2xl border border-border/[0.08] bg-surface p-6 transition-colors hover:border-accent/25"
-            >
-              {/* Topo: avatar + nome + badges */}
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent">
-                    {client.initials}
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">{client.brand}</p>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {client.services.map((s) => (
-                        <span
-                          key={s}
-                          className="rounded-full bg-fg/[0.06] px-2 py-0.5 text-[10px] font-medium text-fg/50 tracking-wide"
-                        >
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Depoimento */}
-                <blockquote className="text-sm text-fg/65 leading-relaxed">
-                  &ldquo;{client.quote}&rdquo;
-                </blockquote>
-              </div>
-
-              {/* Rodapé: autor */}
-              <figcaption className="flex items-center gap-2 border-t border-border/[0.06] pt-4">
-                <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center text-[10px] font-bold text-accent shrink-0">
-                  {client.initials[0]}
-                </div>
-                <div>
-                  <p className="text-xs font-semibold">{client.name}</p>
-                  <p className="text-[10px] text-fg/35">{client.role}</p>
-                </div>
-              </figcaption>
-            </motion.article>
-          ))}
         </div>
+        <div className={styles.headRight}>
+          <p className={styles.lede}>
+            Histórias reais de operações que transformaram marketing em máquina de receita previsível.
+          </p>
+          <div className={styles.toolbar}>
+            <span className={styles.counter}>
+              <b>{String(idx + 1).padStart(2, '0')}</b> / {String(N).padStart(2, '0')}
+            </span>
+            <button
+              className={styles.tbtn}
+              aria-pressed={autoplay}
+              aria-label={autoplay ? 'Pausar autoplay' : 'Iniciar autoplay'}
+              onClick={() => setAutoplay((v) => !v)}
+            >
+              <span className={styles.pip} />
+              {autoplay ? 'Auto' : 'Manual'}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div
+        className={styles.stage}
+        ref={stageRef}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        role="region"
+        aria-roledescription="carrossel"
+        aria-label="Depoimentos de clientes HSB"
+      >
+        <button className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label="Cliente anterior">
+          <ChevronL />
+        </button>
+        <button className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label="Próximo cliente">
+          <ChevronR />
+        </button>
+
+        <div className={styles.track}>
+          {list.map((c, i) => {
+            let off = i - idx;
+            if (off >  N / 2) off -= N;
+            if (off < -N / 2) off += N;
+            const abs = Math.abs(off);
+            const isActive = abs === 0;
+            const isSide = abs === 1 || abs === 2;
+
+            return (
+              <article
+                key={c.brand}
+                className={[
+                  styles.card,
+                  isActive ? styles.active : '',
+                  isSide ? styles.side : '',
+                  abs > 2 ? styles.far : '',
+                ].join(' ')}
+                style={cardStyle(i)}
+                aria-hidden={!isActive}
+                tabIndex={isActive ? 0 : -1}
+                onClick={() => { if (!isActive) goTo(i); }}
+              >
+                <div className={styles.photo}>
+                  {c.photo ? (
+                    <img src={c.photo} alt={`Foto - ${c.brand}`} loading="lazy" />
+                  ) : (
+                    <div className={styles.photoFallback}>
+                      <span className={styles.photoInitials}>{c.initials}</span>
+                    </div>
+                  )}
+                  <div className={styles.photoOverlay} />
+                  <div className={styles.brandTop}>
+                    <span className={styles.brandLabel}>{c.brand}</span>
+                    <span className={styles.numLabel}>
+                      {String(i + 1).padStart(2, '0')} / {String(N).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className={styles.photoBadges}>
+                    {c.services.map((s) => (
+                      <span key={s} className={styles.badge}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={styles.content}>
+                  <blockquote className={styles.quote}>{c.quote}</blockquote>
+                  <div className={styles.author}>
+                    <div className={styles.authorMeta}>
+                      <div className={styles.avatar}>{c.initials}</div>
+                      <div>
+                        <p className={styles.authorName}>{c.name}</p>
+                        <p className={styles.authorRole}>{c.role}</p>
+                      </div>
+                    </div>
+                    <a href="#contato" className={styles.cta} onClick={(e) => e.stopPropagation()}>
+                      Quero igual <span className={styles.arr} />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className={styles.dotrow} role="tablist" aria-label="Selecionar depoimento">
+        {list.map((c, i) => (
+          <button
+            key={c.brand}
+            className={styles.dot}
+            role="tab"
+            aria-selected={i === idx}
+            aria-label={`Ir para depoimento de ${c.brand}`}
+            onClick={() => goTo(i)}
+          >
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            <span className={[styles.bar, i === idx ? styles.barActive : ''].join(' ')} />
+          </button>
+        ))}
       </div>
     </section>
   );
