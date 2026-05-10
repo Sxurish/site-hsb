@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { clients } from '@/data/site';
+import { useTranslations } from 'next-intl';
 import styles from './clients.module.css';
 
 const ChevronL = () => (
@@ -16,10 +16,40 @@ const ChevronR = () => (
   </svg>
 );
 
-type Client = (typeof clients)[number] & { photo?: string };
+type Client = {
+  brand: string;
+  initials: string;
+  services: string[];
+  quote: string;
+  name: string;
+  role: string;
+  photo?: string;
+};
+
+const CLIENT_META = [
+  { brand: 'Clínica Vitalidade',    initials: 'CV' },
+  { brand: 'Construtora Horizonte', initials: 'CH' },
+  { brand: 'Drivex Auto Group',     initials: 'DA' },
+  { brand: 'NovaHub Fintech',       initials: 'NH' },
+  { brand: 'Fashion Studio SP',     initials: 'FS' },
+  { brand: 'Rede Alimentar',        initials: 'RA' },
+];
 
 export function Clients() {
-  const list = clients as Client[];
+  const t = useTranslations('Clients');
+
+  const list: Client[] = CLIENT_META.map((m, i) => {
+    const n = i + 1;
+    return {
+      brand: m.brand,
+      initials: m.initials,
+      services: [t(`items.c${n}S1`), t(`items.c${n}S2`)],
+      quote: t(`items.c${n}Quote`),
+      name: t(`items.c${n}Name`),
+      role: t(`items.c${n}Role`),
+    };
+  });
+
   const N = list.length;
 
   const [idx, setIdx] = useState(0);
@@ -33,7 +63,6 @@ export function Clients() {
   const go = useCallback((d: number) => setIdx((p) => (p + d + N) % N), [N]);
   const goTo = (n: number) => setIdx(((n % N) + N) % N);
 
-  /* viewport mode */
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
     const update = () => setIsMobile(mq.matches);
@@ -42,14 +71,12 @@ export function Clients() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  /* autoplay */
   useEffect(() => {
     if (!autoplay || hover) return;
     const t = setInterval(() => setIdx((p) => (p + 1) % N), SPEED);
     return () => clearInterval(t);
   }, [autoplay, hover, N]);
 
-  /* touch swipe */
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -67,7 +94,6 @@ export function Clients() {
     };
   }, [go]);
 
-  /* card transform */
   const cardStyle = (cardIdx: number): React.CSSProperties => {
     let off = cardIdx - idx;
     if (off >  N / 2) off -= N;
@@ -110,17 +136,15 @@ export function Clients() {
         <div>
           <div className={styles.kicker}>
             <span className={styles.dotk} />
-            CLIENTES • RESULTADOS REAIS
+            {t('kicker')}
           </div>
           <h2 id="clients-heading" className={styles.h1}>
-            Marcas que confiaram na <em>HSB</em>.<br />
-            <i>Para crescer de verdade.</i>
+            {t('title')} <em>{t('titleEm')}</em>.<br />
+            <i>{t('subtitle')}</i>
           </h2>
         </div>
         <div className={styles.headRight}>
-          <p className={styles.lede}>
-            Histórias reais de operações que transformaram marketing em máquina de receita previsível.
-          </p>
+          <p className={styles.lede}>{t('lede')}</p>
           <div className={styles.toolbar}>
             <span className={styles.counter}>
               <b>{String(idx + 1).padStart(2, '0')}</b> / {String(N).padStart(2, '0')}
@@ -128,11 +152,11 @@ export function Clients() {
             <button
               className={styles.tbtn}
               aria-pressed={autoplay}
-              aria-label={autoplay ? 'Pausar autoplay' : 'Iniciar autoplay'}
+              aria-label={autoplay ? t('autoplayAriaPause') : t('autoplayAriaPlay')}
               onClick={() => setAutoplay((v) => !v)}
             >
               <span className={styles.pip} />
-              {autoplay ? 'Auto' : 'Manual'}
+              {autoplay ? t('autoOn') : t('autoOff')}
             </button>
           </div>
         </div>
@@ -145,12 +169,12 @@ export function Clients() {
         onMouseLeave={() => setHover(false)}
         role="region"
         aria-roledescription="carrossel"
-        aria-label="Depoimentos de clientes HSB"
+        aria-label={t('regionAria')}
       >
-        <button className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label="Cliente anterior">
+        <button className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label={t('prevAria')}>
           <ChevronL />
         </button>
-        <button className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label="Próximo cliente">
+        <button className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label={t('nextAria')}>
           <ChevronR />
         </button>
 
@@ -181,7 +205,7 @@ export function Clients() {
                   {c.photo ? (
                     <Image
                       src={c.photo}
-                      alt={`Foto - ${c.brand}`}
+                      alt={t('photoAlt', { brand: c.brand })}
                       fill
                       sizes="(max-width: 900px) 86vw, 640px"
                       style={{ objectFit: 'cover' }}
@@ -216,7 +240,7 @@ export function Clients() {
                       </div>
                     </div>
                     <a href="#contato" className={styles.cta} onClick={(e) => e.stopPropagation()}>
-                      Quero igual <span className={styles.arr} />
+                      {t('ctaWantSame')} <span className={styles.arr} />
                     </a>
                   </div>
                 </div>
@@ -226,14 +250,14 @@ export function Clients() {
         </div>
       </div>
 
-      <div className={styles.dotrow} role="tablist" aria-label="Selecionar depoimento">
+      <div className={styles.dotrow} role="tablist" aria-label={t('dotsAria')}>
         {list.map((c, i) => (
           <button
             key={c.brand}
             className={styles.dot}
             role="tab"
             aria-selected={i === idx}
-            aria-label={`Ir para depoimento de ${c.brand}`}
+            aria-label={t('goToAria', { brand: c.brand })}
             onClick={() => goTo(i)}
           >
             <span>{String(i + 1).padStart(2, '0')}</span>

@@ -1,92 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './services-carousel.module.css';
 
-/* ── Data ──────────────────────────────────────────── */
+/* ── Data (ids + numeração; conteúdo textual vem do i18n) ─ */
 
-const SERVICES = [
-  {
-    id: 'ai', num: '01', tag: 'IA',
-    title: 'Automação & IA',
-    desc: 'Workflows inteligentes com n8n, assistentes de IA e automações para escalar atendimento, vendas e operações.',
-    detail: {
-      includes: ['Mapeamento de processos', 'Implementação n8n + APIs', 'Assistentes GPT customizados', 'Integrações com CRM e WhatsApp'],
-      audience: 'Operações que lidam com volume alto de leads, atendimento ou tarefas repetitivas.',
-      outcome: 'Redução de até 70% em tarefas manuais e SLA de resposta abaixo de 1 minuto.',
-    },
-  },
-  {
-    id: 'site', num: '02', tag: 'Design',
-    title: 'Sites & Landing Pages',
-    desc: 'Sites institucionais, páginas de captura e landing pages premium focadas em conversão.',
-    detail: {
-      includes: ['UX writing e wireframe', 'Design de alta conversão', 'Desenvolvimento responsivo', 'Integração com analytics e A/B'],
-      audience: 'Marcas que precisam de presença digital editorial e páginas que vendem.',
-      outcome: 'Aumento médio de 2-3x em conversão de visitantes em leads qualificados.',
-    },
-  },
-  {
-    id: 'ads', num: '03', tag: 'Performance',
-    title: 'Tráfego Pago',
-    desc: 'Estratégias de anúncios em Google Ads, Meta Ads e outras plataformas com foco em performance e crescimento.',
-    detail: {
-      includes: ['Estratégia de mídia', 'Estrutura de campanhas', 'Criativos e copy', 'Otimização e relatórios semanais'],
-      audience: 'Empresas que querem previsibilidade de aquisição e escala controlada.',
-      outcome: 'CAC reduzido e ROAS otimizado em ciclos curtos de 30 dias.',
-    },
-  },
-  {
-    id: 'social', num: '04', tag: 'Conteúdo',
-    title: 'Social Media & Conteúdo',
-    desc: 'Planejamento, criação e gestão de conteúdo para fortalecer posicionamento e presença digital.',
-    detail: {
-      includes: ['Planejamento editorial', 'Roteiro e copy', 'Design e edição', 'Publicação e community'],
-      audience: 'Marcas que querem virar referência no seu nicho com consistência.',
-      outcome: 'Audiência qualificada, autoridade e geração contínua de demanda inbound.',
-    },
-  },
-  {
-    id: 'brand', num: '05', tag: 'Branding',
-    title: 'Branding & Identidade Visual',
-    desc: 'Construção de marcas, identidade visual, direção criativa e posicionamento premium.',
-    detail: {
-      includes: ['Estratégia e arquétipos', 'Naming e narrativa', 'Sistema visual completo', 'Brand book e diretrizes'],
-      audience: 'Negócios em construção, reposicionamento ou prontos para subir de tier.',
-      outcome: 'Marca coerente, percebida como premium e pronta para escalar.',
-    },
-  },
-  {
-    id: 'video', num: '06', tag: 'Audiovisual',
-    title: 'Produção Audiovisual',
-    desc: 'Criação de vídeos, criativos, reels, campanhas visuais e conteúdos para redes sociais.',
-    detail: {
-      includes: ['Pré-produção e roteiro', 'Captação e direção', 'Edição e motion', 'Pacotes de criativos para mídia'],
-      audience: 'Marcas que precisam alimentar mídia paga e orgânica com qualidade cinematográfica.',
-      outcome: 'Material que para o feed, gera engajamento e converte em performance.',
-    },
-  },
-  {
-    id: 'funnel', num: '07', tag: 'Estratégia',
-    title: 'Estratégia Comercial & Funis',
-    desc: 'Construção de jornadas, funis de vendas, páginas, automações e estratégias para geração de leads.',
-    detail: {
-      includes: ['Mapa de jornada', 'Funil top → bottom', 'Páginas e automações', 'Métricas e dashboards'],
-      audience: 'Times comerciais que querem máquina de vendas previsível.',
-      outcome: 'Pipeline organizado, leads qualificados e taxa de fechamento maior.',
-    },
-  },
-  {
-    id: 'consult', num: '08', tag: 'Consultoria',
-    title: 'Consultoria Estratégica',
-    desc: 'Diagnóstico, planejamento e orientação para empresas que desejam estruturar marketing, vendas e presença digital.',
-    detail: {
-      includes: ['Diagnóstico 360º', 'Plano de 90 dias', 'Mentoria executiva', 'Acompanhamento mensal'],
-      audience: 'Founders e diretores que precisam de clareza estratégica antes de executar.',
-      outcome: 'Direção clara, prioridades validadas e roadmap pronto para execução.',
-    },
-  },
-];
+const SERVICE_IDS = ['ai', 'site', 'ads', 'social', 'brand', 'video', 'funnel', 'consult'] as const;
 
 /* ── Glyphs ─────────────────────────────────────────── */
 
@@ -217,6 +137,26 @@ const ChevronR = () => (
 /* ── Carousel ───────────────────────────────────────── */
 
 export function Services() {
+  const t = useTranslations('Services');
+
+  const SERVICES = SERVICE_IDS.map((id, i) => ({
+    id,
+    num: String(i + 1).padStart(2, '0'),
+    tag: t(`items.${id}.tag`),
+    title: t(`items.${id}.title`),
+    desc: t(`items.${id}.desc`),
+    detail: {
+      includes: [
+        t(`items.${id}.include1`),
+        t(`items.${id}.include2`),
+        t(`items.${id}.include3`),
+        t(`items.${id}.include4`),
+      ],
+      audience: t(`items.${id}.audience`),
+      outcome: t(`items.${id}.outcome`),
+    },
+  }));
+
   const N = SERVICES.length;
   const [idx, setIdx]   = useState(0);
   const [open, setOpen] = useState(false);
@@ -225,7 +165,12 @@ export function Services() {
   const [isMobile, setIsMobile] = useState(false);
   const SPEED = 7000;
 
-  /* viewport-aware transform mode */
+  const stageRef  = useRef<HTMLDivElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  const go   = useCallback((d: number) => { setIdx(p => (p + d + N) % N); }, [N]);
+  const goTo = (n: number) => setIdx(((n % N) + N) % N);
+
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
     const update = () => setIsMobile(mq.matches);
@@ -234,20 +179,12 @@ export function Services() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  const stageRef  = useRef<HTMLDivElement>(null);
-  const detailRef = useRef<HTMLDivElement>(null);
-
-  const go   = useCallback((d: number) => { setIdx(p => (p + d + N) % N); }, [N]);
-  const goTo = (n: number) => setIdx(((n % N) + N) % N);
-
-  /* autoplay */
   useEffect(() => {
     if (!autoplay || hover || open) return;
     const t = setInterval(() => setIdx(p => (p + 1) % N), SPEED);
     return () => clearInterval(t);
   }, [autoplay, hover, open, N]);
 
-  /* keyboard */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
@@ -258,7 +195,6 @@ export function Services() {
     return () => window.removeEventListener('keydown', onKey);
   }, [go, open]);
 
-  /* touch swipe */
   useEffect(() => {
     const el = stageRef.current; if (!el) return;
     let sx = 0, dx = 0, active = false;
@@ -275,7 +211,6 @@ export function Services() {
     };
   }, [go]);
 
-  /* card transform — 2D simples no mobile, 3D no desktop */
   const cardStyle = (cardIdx: number): React.CSSProperties => {
     let off = cardIdx - idx;
     if (off >  N/2) off -= N;
@@ -313,24 +248,21 @@ export function Services() {
   const cur = SERVICES[idx];
 
   return (
-    <section className={styles.sec} id="services" aria-labelledby="services-heading">
+    <section className={styles.sec} id="servicos" aria-labelledby="services-heading">
 
-      {/* Header */}
       <header className={styles.secHead}>
         <div>
           <div className={styles.kicker}>
             <span className={styles.dotk} />
-            CREATE • CONNECT • GROW
+            {t('kicker')}
           </div>
           <h2 id="services-heading" className={styles.h1}>
-            Nossos <em>Serviços</em>.<br />
-            <i>Estratégia que vira resultado.</i>
+            {t('title')} <em>{t('titleEm')}</em>.<br />
+            <i>{t('subtitle')}</i>
           </h2>
         </div>
         <div className={styles.headRight}>
-          <p className={styles.lede}>
-            Soluções premium em marketing, tecnologia e crescimento — desenhadas sob medida para cada operação.
-          </p>
+          <p className={styles.lede}>{t('lede')}</p>
           <div className={styles.toolbar}>
             <span className={styles.counter}>
               <b>{cur.num}</b> / {String(N).padStart(2,'0')}
@@ -338,17 +270,16 @@ export function Services() {
             <button
               className={styles.tbtn}
               aria-pressed={autoplay}
-              aria-label={autoplay ? 'Pausar autoplay' : 'Iniciar autoplay'}
+              aria-label={autoplay ? t('autoplayAriaPause') : t('autoplayAriaPlay')}
               onClick={() => setAutoplay(v => !v)}
             >
               <span className={styles.pip} />
-              {autoplay ? 'Auto' : 'Manual'}
+              {autoplay ? t('autoOn') : t('autoOff')}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Stage */}
       <div
         className={styles.stage}
         ref={stageRef}
@@ -356,12 +287,12 @@ export function Services() {
         onMouseLeave={() => setHover(false)}
         role="region"
         aria-roledescription="carrossel"
-        aria-label="Serviços HSB"
+        aria-label={t('regionAria')}
       >
-        <button className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label="Serviço anterior">
+        <button className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label={t('prevAria')}>
           <ChevronL />
         </button>
-        <button className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label="Próximo serviço">
+        <button className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label={t('nextAria')}>
           <ChevronR />
         </button>
 
@@ -408,13 +339,16 @@ export function Services() {
                   <button
                     className={styles.ctaMini}
                     onClick={(e) => { e.stopPropagation(); if (isActive) setOpen(o => !o); else goTo(i); }}
-                    aria-label={`${isActive && open ? 'Fechar detalhes' : 'Ver solução'}: ${svc.title}`}
+                    aria-label={t('ctaAria', {
+                      state: isActive && open ? t('closeDetails') : t('viewSolution'),
+                      title: svc.title,
+                    })}
                   >
-                    {isActive && open ? 'Fechar' : 'Ver solução'}
+                    {isActive && open ? t('close') : t('viewSolution')}
                     <span className={styles.arr} />
                   </button>
                   <span className={styles.expandHint}>
-                    {isActive ? (open ? '▲ Recolher' : '▼ Expandir') : ''}
+                    {isActive ? (open ? t('collapse') : t('expand')) : ''}
                   </span>
                 </div>
               </article>
@@ -423,15 +357,14 @@ export function Services() {
         </div>
       </div>
 
-      {/* Dots */}
-      <div className={styles.dotrow} role="tablist" aria-label="Selecionar serviço">
+      <div className={styles.dotrow} role="tablist" aria-label={t('dotsAria')}>
         {SERVICES.map((svc, i) => (
           <button
             key={svc.id}
             className={styles.dot}
             role="tab"
             aria-selected={i === idx}
-            aria-label={`Ir para ${svc.title}`}
+            aria-label={t('goToAria', { title: svc.title })}
             onClick={() => goTo(i)}
           >
             <span>{svc.num}</span>
@@ -440,7 +373,6 @@ export function Services() {
         ))}
       </div>
 
-      {/* Detail panel */}
       <div
         ref={detailRef}
         className={styles.detail}
@@ -454,25 +386,25 @@ export function Services() {
       >
         <div className={styles.detailInner}>
           <div className={styles.detCol}>
-            <h4>O que está incluso</h4>
+            <h4>{t('details.includes')}</h4>
             <ul>
               {cur.detail.includes.map((x, k) => <li key={k}>{x}</li>)}
             </ul>
           </div>
           <div className={styles.detCol}>
-            <h4>Para quem é</h4>
+            <h4>{t('details.audience')}</h4>
             <p>{cur.detail.audience}</p>
           </div>
           <div className={styles.detCol}>
-            <h4>Resultado esperado</h4>
+            <h4>{t('details.outcome')}</h4>
             <p>{cur.detail.outcome}</p>
           </div>
           <div className={styles.detCta}>
             <button className={styles.btnPrimary}>
-              Solicitar proposta <span aria-hidden>→</span>
+              {t('details.requestProposal')} <span aria-hidden>→</span>
             </button>
-            <button className={styles.btnClose} onClick={() => setOpen(false)} aria-label="Fechar detalhes">
-              Fechar
+            <button className={styles.btnClose} onClick={() => setOpen(false)} aria-label={t('closeDetails')}>
+              {t('close')}
             </button>
           </div>
         </div>

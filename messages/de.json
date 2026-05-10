@@ -1,0 +1,313 @@
+{
+  "Header": {
+    "logoAriaLabel": "HSB Company Startseite",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "navAriaPrimary": "Primär",
+    "navAriaMobile": "Mobil",
+    "ctaQuote": "Angebot anfordern",
+    "nav": {
+      "about": "Über uns",
+      "services": "Leistungen",
+      "portfolio": "Portfolio",
+      "process": "Prozess",
+      "clients": "Kunden",
+      "contact": "Kontakt"
+    }
+  },
+  "Hero": {
+    "kicker": "Marketingagentur · São Paulo, Brasilien",
+    "srTitle": "Bauen Sie eine Marke, die schnell wächst und mehr verkauft.",
+    "line1": "Bauen Sie eine Marke,",
+    "line2": "die schnell wächst",
+    "line3": "und mehr verkauft.",
+    "ctaPrimary": "Angebot anfordern",
+    "ctaSecondary": "Projekte ansehen",
+    "metrics": {
+      "sitesLabel": "Websites geliefert",
+      "leadsLabel": "Leads in 90 Tagen",
+      "roasLabel": "Ø ROAS",
+      "clientsLabel": "Kunden in SP"
+    }
+  },
+  "About": {
+    "kicker": "Über uns",
+    "titlePart1": "Eine Agentur mit eigener Identität für Marken, die",
+    "titleEm": "das Gewöhnliche ablehnen.",
+    "intro": "Von São Paulo aus für ehrgeizige Märkte: präzise Strategie kombiniert mit kreativer Energie für Nachfrage, Autorität und Umsatz.",
+    "pillars": {
+      "p1Title": "Strategische Kreativität",
+      "p1Text": "Kreativdirektion auf Basis von Marktintelligenz, Intent-Daten und Conversion-Architektur.",
+      "p2Title": "Ausführungsgeschwindigkeit",
+      "p2Text": "Agile Sprints vom Konzept bis zum Launch — ohne Abstriche bei Qualität und Performance.",
+      "p3Title": "Verlässliches Wachstum",
+      "p3Text": "Transparenter Prozess, messbare Ergebnisse und kontinuierliche Optimierung in jeder Phase."
+    }
+  },
+  "Services": {
+    "kicker": "CREATE • CONNECT • GROW",
+    "title": "Unsere",
+    "titleEm": "Leistungen",
+    "subtitle": "Strategie, die zu Ergebnissen wird.",
+    "lede": "Premium-Lösungen in Marketing, Technologie und Wachstum — maßgeschneidert für jede Operation.",
+    "autoOn": "Auto",
+    "autoOff": "Manuell",
+    "autoplayAriaPause": "Autoplay pausieren",
+    "autoplayAriaPlay": "Autoplay starten",
+    "prevAria": "Vorherige Leistung",
+    "nextAria": "Nächste Leistung",
+    "regionAria": "HSB Leistungen",
+    "dotsAria": "Leistung auswählen",
+    "goToAria": "Zu {title} gehen",
+    "expand": "▼ Aufklappen",
+    "collapse": "▲ Zuklappen",
+    "viewSolution": "Lösung ansehen",
+    "close": "Schließen",
+    "ctaAria": "{state}: {title}",
+    "closeDetails": "Details schließen",
+    "details": {
+      "includes": "Was enthalten ist",
+      "audience": "Für wen es ist",
+      "outcome": "Erwartetes Ergebnis",
+      "requestProposal": "Angebot anfordern"
+    },
+    "items": {
+      "ai": {
+        "tag": "KI",
+        "title": "Automatisierung & KI",
+        "desc": "Intelligente Workflows mit n8n, KI-Assistenten und Automatisierungen zur Skalierung von Support, Vertrieb und Operations.",
+        "include1": "Prozessanalyse",
+        "include2": "n8n + API Implementierung",
+        "include3": "Custom GPT-Assistenten",
+        "include4": "CRM- und WhatsApp-Integrationen",
+        "audience": "Operations mit hohem Volumen an Leads, Support oder Routineaufgaben.",
+        "outcome": "Bis zu 70 % weniger manuelle Aufgaben und Antwort-SLA unter 1 Minute."
+      },
+      "site": {
+        "tag": "Design",
+        "title": "Websites & Landing Pages",
+        "desc": "Corporate-Websites, Lead-Capture- und Premium-Landing-Pages mit klarem Conversion-Fokus.",
+        "include1": "UX Writing und Wireframe",
+        "include2": "Conversion-starkes Design",
+        "include3": "Responsive Entwicklung",
+        "include4": "Analytics- und A/B-Integration",
+        "audience": "Marken mit Bedarf an redaktioneller Online-Präsenz und Pages, die verkaufen.",
+        "outcome": "Durchschnittlich 2-3× höhere Conversion vom Besucher zum qualifizierten Lead."
+      },
+      "ads": {
+        "tag": "Performance",
+        "title": "Paid Media",
+        "desc": "Anzeigenstrategien auf Google Ads, Meta Ads und weiteren Plattformen — Fokus Performance und Wachstum.",
+        "include1": "Media-Strategie",
+        "include2": "Kampagnenstruktur",
+        "include3": "Creatives und Copy",
+        "include4": "Optimierung und Wochenreports",
+        "audience": "Unternehmen, die planbare Akquise und kontrollierte Skalierung wollen.",
+        "outcome": "Niedrigere CAC und optimierter ROAS in kurzen 30-Tage-Zyklen."
+      },
+      "social": {
+        "tag": "Content",
+        "title": "Social Media & Content",
+        "desc": "Planung, Erstellung und Steuerung von Content zur Stärkung von Positionierung und Online-Präsenz.",
+        "include1": "Redaktionsplan",
+        "include2": "Skript und Copy",
+        "include3": "Design und Schnitt",
+        "include4": "Veröffentlichung und Community",
+        "audience": "Marken, die durch Konsistenz zur Referenz in ihrer Nische werden wollen.",
+        "outcome": "Qualifizierte Audience, Autorität und kontinuierliche Inbound-Nachfrage."
+      },
+      "brand": {
+        "tag": "Branding",
+        "title": "Branding & Visuelle Identität",
+        "desc": "Markenaufbau, visuelle Identität, kreative Direktion und Premium-Positionierung.",
+        "include1": "Strategie und Archetypen",
+        "include2": "Naming und Narrative",
+        "include3": "Komplettes visuelles System",
+        "include4": "Brand Book und Richtlinien",
+        "audience": "Unternehmen in Aufbau, Repositionierung oder bereit für den nächsten Tier.",
+        "outcome": "Kohärente Marke, als Premium wahrgenommen und bereit zum Skalieren."
+      },
+      "video": {
+        "tag": "Audiovisuell",
+        "title": "Audiovisuelle Produktion",
+        "desc": "Erstellung von Videos, Creatives, Reels, visuellen Kampagnen und Social-Media-Content.",
+        "include1": "Pre-Produktion und Skript",
+        "include2": "Aufnahme und Regie",
+        "include3": "Schnitt und Motion",
+        "include4": "Creative-Pakete für Paid Media",
+        "audience": "Marken, die Paid und Organic Media mit Kino-Qualität bespielen müssen.",
+        "outcome": "Material, das im Feed stoppt, Engagement erzeugt und in Performance konvertiert."
+      },
+      "funnel": {
+        "tag": "Strategie",
+        "title": "Vertriebsstrategie & Funnels",
+        "desc": "Customer Journeys, Sales-Funnels, Pages, Automatisierungen und Lead-Gen-Strategien.",
+        "include1": "Journey-Mapping",
+        "include2": "Top → Bottom Funnel",
+        "include3": "Pages und Automatisierungen",
+        "include4": "Metriken und Dashboards",
+        "audience": "Vertriebsteams, die eine planbare Verkaufsmaschine wollen.",
+        "outcome": "Strukturierte Pipeline, qualifizierte Leads und höhere Abschlussraten."
+      },
+      "consult": {
+        "tag": "Beratung",
+        "title": "Strategische Beratung",
+        "desc": "Diagnose, Planung und Begleitung für Unternehmen, die Marketing, Sales und Online-Präsenz strukturieren wollen.",
+        "include1": "360°-Diagnose",
+        "include2": "90-Tage-Plan",
+        "include3": "Executive Mentoring",
+        "include4": "Monatliche Begleitung",
+        "audience": "Gründer und Direktoren, die strategische Klarheit vor der Umsetzung brauchen.",
+        "outcome": "Klare Richtung, validierte Prioritäten und umsetzungsbereite Roadmap."
+      }
+    }
+  },
+  "Portfolio": {
+    "kicker": "Portfolio",
+    "title": "Kampagnen, die das Scrollen stoppen und Gespräche starten.",
+    "projects": {
+      "p1Title": "Fintech-Kampagne",
+      "p1Type": "Landing Page + Paid Media",
+      "p1Result": "+420 % Leads in 90 Tagen",
+      "p2Title": "Fashion-Brandfilm",
+      "p2Type": "Videoproduktion",
+      "p2Result": "6,8× ROAS auf Meta",
+      "p3Title": "Franchise-Wachstum",
+      "p3Type": "SEO + Lokale Dominanz",
+      "p3Result": "#1 in lokalem SEO",
+      "p4Title": "Automotive Ads",
+      "p4Type": "Fotografie + Reels",
+      "p4Result": "3,2× Engagement"
+    }
+  },
+  "Clients": {
+    "kicker": "KUNDEN • ECHTE ERGEBNISSE",
+    "title": "Marken, die",
+    "titleEm": "HSB",
+    "subtitle": "Für echtes Wachstum vertraut haben.",
+    "lede": "Echte Geschichten von Operations, die Marketing in eine planbare Umsatzmaschine verwandelt haben.",
+    "autoOn": "Auto",
+    "autoOff": "Manuell",
+    "autoplayAriaPause": "Autoplay pausieren",
+    "autoplayAriaPlay": "Autoplay starten",
+    "prevAria": "Vorheriger Kunde",
+    "nextAria": "Nächster Kunde",
+    "regionAria": "HSB Kundenstimmen",
+    "dotsAria": "Stimme auswählen",
+    "goToAria": "Zur Stimme von {brand}",
+    "photoAlt": "Foto - {brand}",
+    "ctaWantSame": "Will ich auch",
+    "items": {
+      "c1Quote": "Wir starteten bei null und nach 3 Monaten kamen täglich qualifizierte Leads. HSB hat genau verstanden, was wir brauchten.",
+      "c1Name": "Dr. Ana Beatriz",
+      "c1Role": "Klinikleitung",
+      "c1S1": "Website",
+      "c1S2": "SEO",
+      "c2Quote": "HSB hat unsere Online-Präsenz von Grund auf neu gemacht. Direktes Ergebnis: doppelt so viele Angebotsanfragen in 60 Tagen.",
+      "c2Name": "Ricardo Mendes",
+      "c2Role": "CEO & Gründer",
+      "c2S1": "Visuelle Identität",
+      "c2S2": "Landing Page",
+      "c3Quote": "Unsere Kanäle sind mit ihren Produktionen explodiert. Beste Investition des Jahres — ROI weit über unseren Erwartungen.",
+      "c3Name": "Felipe Andrade",
+      "c3Role": "Marketingleiter",
+      "c3S1": "Video",
+      "c3S2": "Paid Media",
+      "c4Quote": "+420 % qualifizierte Leads in 90 Tagen. Die Kombi aus Kreation und Performance, die HSB liefert, ist beeindruckend.",
+      "c4Name": "Mariana Costa",
+      "c4Role": "CMO",
+      "c4S1": "Landing Page",
+      "c4S2": "Google Ads",
+      "c5Quote": "Hochwertiger Content, der endlich die echte Qualität unserer Marke widerspiegelte. Unser Engagement hat sich verdreifacht.",
+      "c5Name": "Juliana Ferraz",
+      "c5Role": "Creative Director",
+      "c5S1": "Fotografie",
+      "c5S2": "Reels",
+      "c6Quote": "Nummer 1 bei Google für unsere Keywords in unter 4 Monaten. Beratender Service und echte Ergebnisse.",
+      "c6Name": "Carlos Oliveira",
+      "c6Role": "Mitgründer",
+      "c6S1": "Lokales SEO",
+      "c6S2": "Website"
+    }
+  },
+  "Process": {
+    "kicker": "Prozess",
+    "title": "Ein High-Velocity-Framework, das Momentum erzeugt.",
+    "steps": {
+      "s1Title": "Discovery",
+      "s1Desc": "Wir kartieren Ziele, Markt und die wichtigsten Wachstumsengpässe.",
+      "s2Title": "Strategie",
+      "s2Desc": "Ein maßgeschneiderter Wachstumsplan, der Kreation und Performance verbindet.",
+      "s3Title": "Produktion",
+      "s3Desc": "Design, Content, Code und Media — schnell und in hoher Qualität umgesetzt.",
+      "s4Title": "Auslieferung",
+      "s4Desc": "Wir launchen, integrieren und validieren jeden Kundenkontaktpunkt.",
+      "s5Title": "Wachstum",
+      "s5Desc": "Kontinuierliche Optimierung anhand von Analytics-Daten und Kampagnen-Ergebnissen."
+    }
+  },
+  "Contact": {
+    "kicker": "Lass uns bauen",
+    "title": "Bereit, Ihren Markt zu dominieren?",
+    "lede": "Erzählen Sie uns Ihr Wachstumsziel. Wir zeichnen den schnellsten Weg zu mehr Leads, stärkerer Positionierung und skalierbarem Umsatz.",
+    "whatsapp": "WhatsApp",
+    "email": "E-Mail",
+    "location": "Standort",
+    "locationValue": "São Paulo, Brasilien"
+  },
+  "LeadForm": {
+    "name": "Name",
+    "namePlaceholder": "Ihr vollständiger Name",
+    "email": "E-Mail",
+    "emailPlaceholder": "sie@unternehmen.com",
+    "phone": "Telefon",
+    "phonePlaceholder": "+49 30 12345678",
+    "message": "Nachricht",
+    "messagePlaceholder": "Was sind Ihre wichtigsten Ziele für die nächsten 90 Tage?",
+    "submit": "Angebot anfordern",
+    "submitting": "Senden…",
+    "success": "Nachricht gesendet",
+    "successDetail": "Danke! Ihre Nachricht ist bei uns. Wir melden uns in Kürze.",
+    "error": "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder per WhatsApp schreiben."
+  },
+  "Chatbot": {
+    "fabAria": "Chat mit HSB öffnen",
+    "fabLabel": "Lass uns reden",
+    "dialogAria": "HSB Company Chat",
+    "title": "HSB Concierge",
+    "status": "Online · antwortet in Sekunden",
+    "clearAria": "Konversation löschen",
+    "clearTitle": "Konversation löschen",
+    "closeAria": "Chat schließen",
+    "typingAria": "Concierge tippt",
+    "retry": "↻ Erneut versuchen",
+    "quickAria": "Schnelle Vorschläge",
+    "inputPlaceholder": "Nachricht schreiben…",
+    "inputAria": "Nachricht",
+    "sendAria": "Senden",
+    "greeting": "Hi 👋 Ich bin der HSB-Concierge. Erzähl mir, was du bauen willst — Traffic, KI, Marke, Funnel — und ich zeige dir die richtige Lösung.",
+    "fallback": "Wir haben Ihre Nachricht erhalten. Ein Experte meldet sich in Kürze bei Ihnen!",
+    "errorMsg": "Hier gab es ein Problem. Bitte erneut versuchen oder über den Button „Angebot anfordern\" kontaktieren.",
+    "tooLong": "Nachricht zu lang (max. 500 Zeichen).",
+    "quick": {
+      "q1": "Ich will mit KI skalieren",
+      "q2": "Ich brauche eine Landing Page",
+      "q3": "Paid Media",
+      "q4": "Mit einem Menschen sprechen"
+    }
+  },
+  "Footer": {
+    "tagline": "Agentur für Digitales Marketing & Audiovisuelles",
+    "location": "São Paulo, Brasilien",
+    "copyright": "© {year} HSB Company. Alle Rechte vorbehalten.",
+    "social": {
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache",
+    "ariaLabel": "Sprache wählen"
+  }
+}

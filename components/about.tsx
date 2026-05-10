@@ -1,28 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const pillars = [
-  {
-    num: '01',
-    title: 'Criatividade Estratégica',
-    text: 'Direção criativa embasada em inteligência de mercado, dados de intenção e arquitetura de conversão.',
-  },
-  {
-    num: '02',
-    title: 'Velocidade de Execução',
-    text: 'Sprints ágeis do conceito ao lançamento, sem abrir mão do acabamento e da performance.',
-  },
-  {
-    num: '03',
-    title: 'Crescimento Confiável',
-    text: 'Processo transparente, resultados mensuráveis e otimização contínua em cada etapa.',
-  },
-];
-
 export function About() {
+  const t = useTranslations('About');
+
+  const pillars = [
+    { num: '01', title: t('pillars.p1Title'), text: t('pillars.p1Text') },
+    { num: '02', title: t('pillars.p2Title'), text: t('pillars.p2Text') },
+    { num: '03', title: t('pillars.p3Title'), text: t('pillars.p3Text') },
+  ];
+
   return (
     <section id="sobre" className="border-t border-border/[0.08] py-24 md:py-36">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
@@ -33,10 +24,10 @@ export function About() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.8, ease }}
           >
-            <p className="section-kicker mb-5">Sobre</p>
+            <p className="section-kicker mb-5">{t('kicker')}</p>
             <h2 className="text-4xl md:text-5xl font-black leading-tight">
-              Uma agência com identidade própria para marcas que{' '}
-              <em className="italic text-accent">recusam o ordinário.</em>
+              {t('titlePart1')}{' '}
+              <em className="italic text-accent">{t('titleEm')}</em>
             </h2>
           </motion.div>
 
@@ -48,8 +39,7 @@ export function About() {
               transition={{ duration: 0.7, delay: 0.1, ease }}
               className="text-lg text-fg/50 leading-relaxed mb-12"
             >
-              De São Paulo para mercados ambiciosos, combinamos estratégia precisa e energia criativa
-              para gerar demanda, autoridade e receita.
+              {t('intro')}
             </motion.p>
 
             <div>

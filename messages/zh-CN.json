@@ -1,0 +1,313 @@
+{
+  "Header": {
+    "logoAriaLabel": "HSB Company 首页",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "navAriaPrimary": "主导航",
+    "navAriaMobile": "移动端",
+    "ctaQuote": "获取报价",
+    "nav": {
+      "about": "关于",
+      "services": "服务",
+      "portfolio": "案例",
+      "process": "流程",
+      "clients": "客户",
+      "contact": "联系"
+    }
+  },
+  "Hero": {
+    "kicker": "营销机构 · 巴西圣保罗",
+    "srTitle": "打造一个快速增长、销售更多的品牌。",
+    "line1": "打造一个品牌",
+    "line2": "快速增长",
+    "line3": "卖得更多。",
+    "ctaPrimary": "获取报价",
+    "ctaSecondary": "查看项目",
+    "metrics": {
+      "sitesLabel": "已交付网站",
+      "leadsLabel": "90天潜在客户",
+      "roasLabel": "平均ROAS",
+      "clientsLabel": "圣保罗客户"
+    }
+  },
+  "About": {
+    "kicker": "关于",
+    "titlePart1": "一家有独特身份的机构,专为那些",
+    "titleEm": "拒绝平庸的品牌。",
+    "intro": "从圣保罗走向雄心勃勃的市场,我们将精准策略与创意能量结合,创造需求、权威与收入。",
+    "pillars": {
+      "p1Title": "战略性创意",
+      "p1Text": "基于市场洞察、意图数据和转化架构的创意指导。",
+      "p2Title": "执行速度",
+      "p2Text": "从概念到上线的敏捷冲刺,不牺牲品质与性能。",
+      "p3Title": "可靠增长",
+      "p3Text": "透明流程、可衡量结果,每个阶段持续优化。"
+    }
+  },
+  "Services": {
+    "kicker": "CREATE • CONNECT • GROW",
+    "title": "我们的",
+    "titleEm": "服务",
+    "subtitle": "将策略转化为结果。",
+    "lede": "营销、技术和增长的高端解决方案 — 为每个业务量身定制。",
+    "autoOn": "自动",
+    "autoOff": "手动",
+    "autoplayAriaPause": "暂停自动播放",
+    "autoplayAriaPlay": "开始自动播放",
+    "prevAria": "上一个服务",
+    "nextAria": "下一个服务",
+    "regionAria": "HSB 服务",
+    "dotsAria": "选择服务",
+    "goToAria": "前往 {title}",
+    "expand": "▼ 展开",
+    "collapse": "▲ 收起",
+    "viewSolution": "查看方案",
+    "close": "关闭",
+    "ctaAria": "{state}:{title}",
+    "closeDetails": "关闭详情",
+    "details": {
+      "includes": "包含内容",
+      "audience": "适合人群",
+      "outcome": "预期结果",
+      "requestProposal": "申请方案"
+    },
+    "items": {
+      "ai": {
+        "tag": "AI",
+        "title": "自动化与 AI",
+        "desc": "基于 n8n 的智能工作流、AI 助手与自动化,扩展客服、销售与运营。",
+        "include1": "流程梳理",
+        "include2": "n8n + API 实施",
+        "include3": "定制 GPT 助手",
+        "include4": "CRM 与 WhatsApp 集成",
+        "audience": "处理大量潜在客户、客服或重复任务的运营团队。",
+        "outcome": "人工任务减少高达 70%,响应 SLA 低于 1 分钟。"
+      },
+      "site": {
+        "tag": "设计",
+        "title": "网站与落地页",
+        "desc": "企业网站、线索捕获页和高端落地页,专注于转化。",
+        "include1": "UX 文案与原型",
+        "include2": "高转化设计",
+        "include3": "响应式开发",
+        "include4": "分析与 A/B 集成",
+        "audience": "需要编辑级数字形象与能销售的页面的品牌。",
+        "outcome": "访客到合格线索的转化平均提升 2-3 倍。"
+      },
+      "ads": {
+        "tag": "效果",
+        "title": "付费媒体",
+        "desc": "Google Ads、Meta Ads 等平台的广告策略,专注效果与增长。",
+        "include1": "媒体策略",
+        "include2": "广告系列结构",
+        "include3": "创意与文案",
+        "include4": "优化与周报",
+        "audience": "希望获得可预测获客与可控规模的企业。",
+        "outcome": "在 30 天短周期内降低 CAC 并优化 ROAS。"
+      },
+      "social": {
+        "tag": "内容",
+        "title": "社交媒体与内容",
+        "desc": "内容规划、创作与管理,强化品牌定位与数字存在感。",
+        "include1": "内容规划",
+        "include2": "脚本与文案",
+        "include3": "设计与剪辑",
+        "include4": "发布与社群管理",
+        "audience": "希望以持续输出成为细分领域权威的品牌。",
+        "outcome": "高质量受众、权威感与持续的入站需求。"
+      },
+      "brand": {
+        "tag": "品牌",
+        "title": "品牌与视觉识别",
+        "desc": "品牌构建、视觉识别、创意指导与高端定位。",
+        "include1": "策略与原型",
+        "include2": "命名与叙事",
+        "include3": "完整视觉体系",
+        "include4": "品牌手册与规范",
+        "audience": "处于建设、重塑或准备升级阶段的品牌。",
+        "outcome": "一致的品牌,被视为高端,准备好扩展。"
+      },
+      "video": {
+        "tag": "视听",
+        "title": "视听制作",
+        "desc": "视频、创意素材、Reels、视觉广告和社交内容的制作。",
+        "include1": "前期制作与脚本",
+        "include2": "拍摄与导演",
+        "include3": "剪辑与动效",
+        "include4": "广告创意包",
+        "audience": "需要以电影级品质供给付费与自然媒体的品牌。",
+        "outcome": "停下信息流的素材,带来互动并转化为效果。"
+      },
+      "funnel": {
+        "tag": "策略",
+        "title": "商业策略与漏斗",
+        "desc": "用户旅程、销售漏斗、页面、自动化与线索获取策略的构建。",
+        "include1": "旅程地图",
+        "include2": "上至下漏斗",
+        "include3": "页面与自动化",
+        "include4": "指标与仪表盘",
+        "audience": "希望打造可预测销售引擎的商业团队。",
+        "outcome": "有序的销售管道、合格的潜在客户与更高的成交率。"
+      },
+      "consult": {
+        "tag": "咨询",
+        "title": "战略咨询",
+        "desc": "为希望系统化营销、销售与数字存在的企业提供诊断、规划与指导。",
+        "include1": "360° 诊断",
+        "include2": "90 天计划",
+        "include3": "高管辅导",
+        "include4": "月度跟进",
+        "audience": "执行前需要战略清晰的创始人与高管。",
+        "outcome": "清晰的方向、经验证的优先级与可执行的路线图。"
+      }
+    }
+  },
+  "Portfolio": {
+    "kicker": "案例",
+    "title": "为停下滑动、开启对话而设计的广告战役。",
+    "projects": {
+      "p1Title": "金融科技战役",
+      "p1Type": "落地页 + 付费媒体",
+      "p1Result": "90 天内潜在客户 +420%",
+      "p2Title": "时尚品牌影片",
+      "p2Type": "视频制作",
+      "p2Result": "Meta 平台 6.8× ROAS",
+      "p3Title": "连锁品牌增长",
+      "p3Type": "SEO + 本地主导",
+      "p3Result": "本地 SEO 第 1 名",
+      "p4Title": "汽车广告",
+      "p4Type": "摄影 + Reels",
+      "p4Result": "3.2× 互动"
+    }
+  },
+  "Clients": {
+    "kicker": "客户 • 真实结果",
+    "title": "信任",
+    "titleEm": "HSB",
+    "subtitle": "实现真正增长的品牌。",
+    "lede": "把营销变成可预测收入引擎的真实故事。",
+    "autoOn": "自动",
+    "autoOff": "手动",
+    "autoplayAriaPause": "暂停自动播放",
+    "autoplayAriaPlay": "开始自动播放",
+    "prevAria": "上一个客户",
+    "nextAria": "下一个客户",
+    "regionAria": "HSB 客户评价",
+    "dotsAria": "选择评价",
+    "goToAria": "前往 {brand} 的评价",
+    "photoAlt": "照片 - {brand}",
+    "ctaWantSame": "我也要",
+    "items": {
+      "c1Quote": "我们从零开始,3 个月后每天都有合格的潜在客户。HSB 完全理解我们需要什么。",
+      "c1Name": "Ana Beatriz 博士",
+      "c1Role": "诊所主任",
+      "c1S1": "网站",
+      "c1S2": "SEO",
+      "c2Quote": "HSB 从零重塑了我们的数字形象。直接结果:60 天内报价数量翻倍。",
+      "c2Name": "Ricardo Mendes",
+      "c2Role": "CEO 兼创始人",
+      "c2S1": "视觉识别",
+      "c2S2": "落地页",
+      "c3Quote": "他们的制作让我们的社交媒体爆发。今年最好的投资 — ROI 超出所有预期。",
+      "c3Name": "Felipe Andrade",
+      "c3Role": "营销总监",
+      "c3S1": "视频",
+      "c3S2": "付费媒体",
+      "c4Quote": "90 天内合格潜在客户 +420%。HSB 交付的创意与效果组合令人印象深刻。",
+      "c4Name": "Mariana Costa",
+      "c4Role": "CMO",
+      "c4S1": "落地页",
+      "c4S2": "Google Ads",
+      "c5Quote": "终于有内容真正反映了我们品牌的品质。互动量增长了 3 倍。",
+      "c5Name": "Juliana Ferraz",
+      "c5Role": "创意总监",
+      "c5S1": "摄影",
+      "c5S2": "Reels",
+      "c6Quote": "不到 4 个月就在 Google 上排名第 1。咨询式服务与真实结果。",
+      "c6Name": "Carlos Oliveira",
+      "c6Role": "联合创始人",
+      "c6S1": "本地 SEO",
+      "c6S2": "网站"
+    }
+  },
+  "Process": {
+    "kicker": "流程",
+    "title": "为产生势能而设计的高速框架。",
+    "steps": {
+      "s1Title": "发现",
+      "s1Desc": "梳理你的目标、市场和主要增长瓶颈。",
+      "s2Title": "策略",
+      "s2Desc": "将创意与效果结合的定制增长计划。",
+      "s3Title": "制作",
+      "s3Desc": "设计、内容、代码和媒体以速度与品质执行。",
+      "s4Title": "交付",
+      "s4Desc": "上线、集成并验证每一个客户接触点。",
+      "s5Title": "增长",
+      "s5Desc": "由分析数据与广告战役结果驱动的持续优化。"
+    }
+  },
+  "Contact": {
+    "kicker": "一起打造",
+    "title": "准备好统治你的市场了吗?",
+    "lede": "告诉我们你的增长目标。我们会规划通往更多潜在客户、更强定位和可扩展收入的最快路径。",
+    "whatsapp": "WhatsApp",
+    "email": "邮箱",
+    "location": "位置",
+    "locationValue": "巴西圣保罗"
+  },
+  "LeadForm": {
+    "name": "姓名",
+    "namePlaceholder": "你的完整姓名",
+    "email": "邮箱",
+    "emailPlaceholder": "you@company.com",
+    "phone": "电话",
+    "phonePlaceholder": "+86 138 0000 0000",
+    "message": "消息",
+    "messagePlaceholder": "未来 90 天你最主要的目标是什么?",
+    "submit": "获取报价",
+    "submitting": "发送中…",
+    "success": "消息已发送",
+    "successDetail": "谢谢!我们已收到你的消息,很快会与你联系。",
+    "error": "发送时遇到问题。请重试或通过 WhatsApp 联系我们。"
+  },
+  "Chatbot": {
+    "fabAria": "打开与 HSB 的对话",
+    "fabLabel": "一起聊聊",
+    "dialogAria": "HSB Company 对话",
+    "title": "HSB 礼宾",
+    "status": "在线 · 秒回",
+    "clearAria": "清除对话",
+    "clearTitle": "清除对话",
+    "closeAria": "关闭对话",
+    "typingAria": "礼宾正在输入",
+    "retry": "↻ 重试",
+    "quickAria": "快速建议",
+    "inputPlaceholder": "输入你的消息…",
+    "inputAria": "消息",
+    "sendAria": "发送",
+    "greeting": "嗨 👋 我是 HSB 的礼宾。告诉我你想打造什么 — 流量、AI、品牌、漏斗 — 我会引导你找到合适的方案。",
+    "fallback": "我们已收到你的消息。专家很快就会与你联系!",
+    "errorMsg": "这里出了点问题。你可以重试或通过\"获取报价\"按钮联系我们。",
+    "tooLong": "消息过长(最多 500 个字符)。",
+    "quick": {
+      "q1": "我想用 AI 扩展",
+      "q2": "我需要一个落地页",
+      "q3": "付费媒体",
+      "q4": "和真人对话"
+    }
+  },
+  "Footer": {
+    "tagline": "数字营销与视听机构",
+    "location": "巴西圣保罗",
+    "copyright": "© {year} HSB Company。版权所有。",
+    "social": {
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "语言",
+    "ariaLabel": "选择语言"
+  }
+}

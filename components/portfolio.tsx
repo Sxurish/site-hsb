@@ -2,46 +2,27 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const projects = [
-  {
-    title: 'Campanha Fintech',
-    type: 'Landing Page + Mídia Paga',
-    result: '+420% leads em 90 dias',
-    bg: '#15130f',
-    accent: '#d4a566',
-    span: 'md:col-span-2 md:row-span-2',
-  },
-  {
-    title: 'Filme de Marca Fashion',
-    type: 'Produção de Vídeo',
-    result: '6.8× ROAS no Meta',
-    bg: '#1a1813',
-    accent: '#c8b181',
-    span: '',
-  },
-  {
-    title: 'Crescimento Franquia',
-    type: 'SEO + Dominância Local',
-    result: '#1 em SEO local',
-    bg: '#100e0a',
-    accent: '#a8783c',
-    span: '',
-  },
-  {
-    title: 'Ads Automotivo',
-    type: 'Fotografia + Reels',
-    result: '3.2× engajamento',
-    bg: '#0e0c08',
-    accent: '#e4c089',
-    span: 'md:col-span-2',
-  },
+const projectStyles = [
+  { bg: '#15130f', accent: '#d4a566', span: 'md:col-span-2 md:row-span-2' },
+  { bg: '#1a1813', accent: '#c8b181', span: '' },
+  { bg: '#100e0a', accent: '#a8783c', span: '' },
+  { bg: '#0e0c08', accent: '#e4c089', span: 'md:col-span-2' },
 ];
 
 export function Portfolio() {
   const reduce = useReducedMotion();
+  const t = useTranslations('Portfolio');
+
+  const projects = projectStyles.map((s, i) => ({
+    title:  t(`projects.p${i + 1}Title`),
+    type:   t(`projects.p${i + 1}Type`),
+    result: t(`projects.p${i + 1}Result`),
+    ...s,
+  }));
 
   return (
     <section id="portfolio" className="border-t border-border/[0.08] py-20 md:py-36">
@@ -53,9 +34,9 @@ export function Portfolio() {
           transition={{ duration: 0.7, ease }}
           className="mb-10 md:mb-14"
         >
-          <p className="section-kicker mb-4">Portfólio</p>
+          <p className="section-kicker mb-4">{t('kicker')}</p>
           <h2 className="max-w-2xl text-3xl font-black leading-tight sm:text-4xl md:text-5xl">
-            Campanhas criadas para parar o scroll e iniciar conversas.
+            {t('title')}
           </h2>
         </motion.div>
 

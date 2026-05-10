@@ -1,24 +1,19 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './chatbot-widget.module.css';
-
-const QUICK_PROMPTS = [
-  'Quero escalar com IA',
-  'Preciso de uma landing page',
-  'Tráfego pago',
-  'Falar com um humano',
-];
 
 const STORAGE_KEY = 'hsb_chat_v1';
 
 type Msg = { role: 'bot' | 'user'; text: string };
 
-const INITIAL_MSGS: Msg[] = [
-  { role: 'bot', text: 'Oi 👋 Aqui é o concierge da HSB. Conta um pouco do que você quer construir — tráfego, IA, marca, funil — e eu te direciono pra solução certa.' },
-];
-
 export function ChatbotWidget() {
+  const t = useTranslations('Chatbot');
+
+  const QUICK_PROMPTS = [t('quick.q1'), t('quick.q2'), t('quick.q3'), t('quick.q4')];
+  const INITIAL_MSGS: Msg[] = [{ role: 'bot', text: t('greeting') }];
+
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [text, setText] = useState('');
@@ -65,7 +60,7 @@ export function ChatbotWidget() {
     const q = (raw ?? text).trim();
     if (!q || busy) return;
     if (q.length > 500) {
-      setError('Mensagem muito longa (máx. 500 caracteres).');
+      setError(t('tooLong'));
       return;
     }
     setError(null);
@@ -89,18 +84,15 @@ export function ChatbotWidget() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      const reply = data.reply || 'Recebemos sua mensagem. Um especialista entrará em contato em breve!';
+      const reply = data.reply || t('fallback');
       setMsgs((m) => [...m, { role: 'bot', text: reply }]);
     } catch {
-      setMsgs((m) => [...m, {
-        role: 'bot',
-        text: 'Tive um problema aqui. Você pode tentar novamente ou nos chamar pelo botão "Solicitar Orçamento".',
-      }]);
+      setMsgs((m) => [...m, { role: 'bot', text: t('errorMsg') }]);
       setError('retry');
     } finally {
       setBusy(false);
     }
-  }, [text, busy]);
+  }, [text, busy, t]);
 
   const retry = () => { if (lastUserMsg.current) send(lastUserMsg.current); };
 
@@ -115,11 +107,11 @@ export function ChatbotWidget() {
         <button
           className={styles.fab}
           onClick={() => setOpen(true)}
-          aria-label="Abrir chat com a HSB"
+          aria-label={t('fabAria')}
           aria-expanded={false}
         >
           <span className={styles.pulse} aria-hidden="true" />
-          Vamos conversar
+          {t('fabLabel')}
         </button>
       )}
 
@@ -127,18 +119,17 @@ export function ChatbotWidget() {
         <div
           className={styles.chat}
           role="dialog"
-          aria-label="Chat HSB Company"
+          aria-label={t('dialogAria')}
           aria-modal="false"
         >
-          {/* Header */}
           <div className={styles.chatHd}>
             <div className={styles.who}>
               <div className={styles.avatar} aria-hidden="true">H</div>
               <div>
-                <div className={styles.name}>HSB Concierge</div>
+                <div className={styles.name}>{t('title')}</div>
                 <div className={styles.status}>
                   <span className={styles.live} />
-                  Online · responde em segundos
+                  {t('status')}
                 </div>
               </div>
             </div>
@@ -147,8 +138,8 @@ export function ChatbotWidget() {
                 <button
                   className={styles.closeBtn}
                   onClick={reset}
-                  aria-label="Limpar conversa"
-                  title="Limpar conversa"
+                  aria-label={t('clearAria')}
+                  title={t('clearTitle')}
                 >
                   ↻
                 </button>
@@ -156,7 +147,7 @@ export function ChatbotWidget() {
               <button
                 className={styles.closeBtn}
                 onClick={() => setOpen(false)}
-                aria-label="Fechar chat"
+                aria-label={t('closeAria')}
               >
                 ✕
               </button>
@@ -179,7 +170,7 @@ export function ChatbotWidget() {
             {busy && (
               <div
                 className={`${styles.msg} ${styles.bot} ${styles.thinking}`}
-                aria-label="Concierge digitando"
+                aria-label={t('typingAria')}
               >
                 <i /><i /><i />
               </div>
@@ -201,14 +192,13 @@ export function ChatbotWidget() {
                   textTransform: 'uppercase',
                 }}
               >
-                ↻ Tentar de novo
+                {t('retry')}
               </button>
             )}
           </div>
 
-          {/* Quick prompts */}
           {msgs.length <= 1 && !busy && (
-            <div className={styles.quick} role="group" aria-label="Sugestões rápidas">
+            <div className={styles.quick} role="group" aria-label={t('quickAria')}>
               {QUICK_PROMPTS.map((p) => (
                 <button key={p} className={styles.chip} onClick={() => send(p)}>
                   {p}
@@ -217,7 +207,6 @@ export function ChatbotWidget() {
             </div>
           )}
 
-          {/* Form */}
           <form
             className={styles.form}
             onSubmit={(e) => { e.preventDefault(); send(); }}
@@ -225,10 +214,10 @@ export function ChatbotWidget() {
             <input
               ref={inputRef}
               className={styles.input}
-              placeholder="Escreva sua mensagem…"
+              placeholder={t('inputPlaceholder')}
               value={text}
               onChange={(e) => { setText(e.target.value); if (error && error !== 'retry') setError(null); }}
-              aria-label="Mensagem"
+              aria-label={t('inputAria')}
               disabled={busy}
               maxLength={500}
               autoComplete="off"
@@ -237,7 +226,7 @@ export function ChatbotWidget() {
               className={styles.sendBtn}
               type="submit"
               disabled={busy || !text.trim()}
-              aria-label="Enviar"
+              aria-label={t('sendAria')}
             >
               <svg
                 viewBox="0 0 24 24"

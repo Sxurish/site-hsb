@@ -2,16 +2,17 @@
 
 import { FormEvent, useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function LeadForm() {
   const [status, setStatus] = useState<Status>('idle');
+  const t = useTranslations('LeadForm');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('submitting');
-    // Simula latência mínima — substitua pelo seu endpoint real
     await new Promise((r) => setTimeout(r, 600));
     setStatus('success');
     e.currentTarget.reset();
@@ -26,24 +27,24 @@ export function LeadForm() {
     <form onSubmit={handleSubmit} className="rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7">
       <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
         <label className={label}>
-          Nome
-          <input className={field} type="text" name="name" required autoComplete="name" placeholder="Seu nome completo" />
+          {t('name')}
+          <input className={field} type="text" name="name" required autoComplete="name" placeholder={t('namePlaceholder')} />
         </label>
         <label className={label}>
-          E-mail
-          <input className={field} type="email" name="email" required autoComplete="email" placeholder="voce@empresa.com" />
+          {t('email')}
+          <input className={field} type="email" name="email" required autoComplete="email" placeholder={t('emailPlaceholder')} />
         </label>
         <label className={`${label} sm:col-span-2`}>
-          Telefone
-          <input className={field} type="tel" name="phone" required autoComplete="tel" placeholder="+55 (11) 99999-9999" />
+          {t('phone')}
+          <input className={field} type="tel" name="phone" required autoComplete="tel" placeholder={t('phonePlaceholder')} />
         </label>
         <label className={`${label} sm:col-span-2`}>
-          Mensagem
+          {t('message')}
           <textarea
             className={`${field} h-28 sm:h-32 resize-none`}
             name="message"
             required
-            placeholder="Quais são seus principais objetivos para os próximos 90 dias?"
+            placeholder={t('messagePlaceholder')}
           />
         </label>
       </div>
@@ -53,11 +54,11 @@ export function LeadForm() {
         disabled={status === 'submitting' || status === 'success'}
         className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-fg px-6 py-3.5 text-sm font-bold text-bg shadow-glow-sm transition disabled:opacity-60 hover:shadow-glow active:scale-[0.99]"
       >
-        {status === 'submitting' && 'Enviando…'}
-        {status === 'success' && (<><CheckCircle2 className="h-4 w-4" /> Mensagem enviada</>)}
+        {status === 'submitting' && t('submitting')}
+        {status === 'success' && (<><CheckCircle2 className="h-4 w-4" /> {t('success')}</>)}
         {(status === 'idle' || status === 'error') && (
           <>
-            Solicitar Orçamento
+            {t('submit')}
             <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </>
         )}
@@ -65,12 +66,12 @@ export function LeadForm() {
 
       {status === 'success' && (
         <p className="mt-4 text-center text-sm text-accent">
-          Obrigado! Sua mensagem foi recebida. Entraremos em contato em breve.
+          {t('successDetail')}
         </p>
       )}
       {status === 'error' && (
         <p className="mt-4 text-center text-sm text-red-400">
-          Tive um problema ao enviar. Tente novamente ou nos chame no WhatsApp.
+          {t('error')}
         </p>
       )}
     </form>
