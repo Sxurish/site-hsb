@@ -5,6 +5,7 @@
   max-width: 1440px;
   margin: 60px auto 0;
   padding: 64px 36px 0;
+  overflow: hidden;
 }
 
 /* ── Header ─────────────────────────────────────────── */
@@ -151,8 +152,11 @@
     filter    .7s ease;
   cursor: pointer;
   user-select: none;
-  will-change: transform, opacity;
-  backdrop-filter: blur(2px);
+}
+
+.card.active,
+.card.side {
+  will-change: transform;
 }
 
 .card::before {
@@ -176,7 +180,7 @@
 }
 
 .card.side   { cursor: pointer; filter: saturate(.5); }
-.card.far    { pointer-events: none; }
+.card.far    { pointer-events: none; visibility: hidden; }
 
 /* ── Card content ───────────────────────────────────── */
 

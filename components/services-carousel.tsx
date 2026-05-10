@@ -222,7 +222,17 @@ export function Services() {
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const SPEED = 7000;
+
+  /* viewport-aware transform mode */
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   const stageRef  = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
@@ -265,14 +275,23 @@ export function Services() {
     };
   }, [go]);
 
-  /* card 3D transform */
+  /* card transform — 2D simples no mobile, 3D no desktop */
   const cardStyle = (cardIdx: number): React.CSSProperties => {
     let off = cardIdx - idx;
     if (off >  N/2) off -= N;
     if (off < -N/2) off += N;
     const abs = Math.abs(off);
-    const d = 0.9;
 
+    if (isMobile) {
+      if (abs === 0) return { transform: 'translateX(0)', opacity: 1, zIndex: 30 };
+      if (abs === 1) {
+        const dir = Math.sign(off);
+        return { transform: `translateX(${dir*96}%) scale(.92)`, opacity: 0, zIndex: 20 };
+      }
+      return { transform: `translateX(${Math.sign(off)*180}%)`, opacity: 0, zIndex: 0 };
+    }
+
+    const d = 0.9;
     if (abs === 0) return { transform: 'translateX(0) translateZ(0) scale(1)', opacity: 1, zIndex: 30 };
     if (abs === 1) {
       const dir = Math.sign(off);
