@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { clients } from '@/data/site';
 import styles from './clients.module.css';
 
@@ -103,8 +104,6 @@ export function Clients() {
     return { transform: `translateX(${Math.sign(off) * 900}px) scale(.6)`, opacity: 0, zIndex: 0 };
   };
 
-  const cur = list[idx];
-
   return (
     <section className={styles.sec} id="clientes" aria-labelledby="clients-heading">
       <header className={styles.secHead}>
@@ -180,7 +179,13 @@ export function Clients() {
               >
                 <div className={styles.photo}>
                   {c.photo ? (
-                    <img src={c.photo} alt={`Foto - ${c.brand}`} loading="lazy" />
+                    <Image
+                      src={c.photo}
+                      alt={`Foto - ${c.brand}`}
+                      fill
+                      sizes="(max-width: 900px) 86vw, 640px"
+                      style={{ objectFit: 'cover' }}
+                    />
                   ) : (
                     <div className={styles.photoFallback}>
                       <span className={styles.photoInitials}>{c.initials}</span>
