@@ -1,30 +1,53 @@
 'use client';
 
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { navLinks } from '@/data/site';
 import { BrandLogo } from './brand-logo';
 import { ThemeToggle } from './theme-toggle';
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/[0.08] bg-bg/70 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
-        <a href="#top" aria-label="HSB Company início">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+        scrolled
+          ? 'border-border/[0.10] bg-bg/85 backdrop-blur-md'
+          : 'border-transparent bg-bg/40 backdrop-blur-sm'
+      }`}
+    >
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3.5 md:px-8 md:py-4">
+        <a href="#top" aria-label="HSB Company início" className="shrink-0">
           <BrandLogo />
         </a>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Principal">
           {navLinks.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-sm text-fg/55 transition hover:text-fg"
+              className="group relative text-sm text-fg/55 transition hover:text-fg"
             >
               {item.label}
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -32,20 +55,22 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
           <motion.a
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={reduce ? undefined : { y: -1 }}
+            whileTap={reduce ? undefined : { scale: 0.97 }}
             href="#contato"
-            className="rounded-full bg-fg px-5 py-2 text-sm font-bold text-bg transition hover:opacity-85"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-fg px-5 py-2 text-sm font-bold text-bg transition-shadow hover:shadow-glow-sm"
           >
             Solicitar Orçamento
+            <ArrowUpRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </motion.a>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
-            className="rounded-lg border border-border/[0.12] p-2 text-fg/50"
+            className="rounded-lg border border-border/[0.12] p-2 text-fg/65 transition hover:text-fg"
             aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={open}
             onClick={() => setOpen((p) => !p)}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -56,29 +81,38 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <motion.nav
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="border-t border-border/[0.08] bg-bg/95 px-4 py-4 md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.32, ease }}
+            className="overflow-hidden border-t border-border/[0.08] bg-bg/95 backdrop-blur md:hidden"
+            aria-label="Mobile"
           >
-            <div className="mx-auto flex max-w-7xl flex-col gap-1">
-              {navLinks.map((item) => (
-                <a
+            <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4">
+              {navLinks.map((item, i) => (
+                <motion.a
                   key={item.href}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.04, duration: 0.3, ease }}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-fg/70 transition hover:bg-fg/[0.05] hover:text-fg"
+                  className="rounded-lg px-3 py-3 text-base text-fg/75 transition hover:bg-fg/[0.05] hover:text-fg"
                 >
                   {item.label}
-                </a>
+                </motion.a>
               ))}
-              <a
+              <motion.a
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.3, ease }}
                 href="#contato"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-lg bg-fg px-4 py-2.5 text-center text-sm font-bold text-bg"
+                className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-lg bg-fg px-4 py-3 text-sm font-bold text-bg"
               >
                 Solicitar Orçamento
-              </a>
+                <ArrowUpRight className="h-4 w-4" />
+              </motion.a>
             </div>
           </motion.nav>
         )}

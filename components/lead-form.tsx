@@ -1,40 +1,46 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
-type Status = 'idle' | 'success';
+type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function LeadForm() {
   const [status, setStatus] = useState<Status>('idle');
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setStatus('submitting');
+    // Simula latência mínima — substitua pelo seu endpoint real
+    await new Promise((r) => setTimeout(r, 600));
     setStatus('success');
     e.currentTarget.reset();
   };
 
   const field =
-    'mt-2 w-full rounded-xl border border-border/[0.1] bg-fg/[0.03] px-4 py-3 text-sm text-fg placeholder:text-fg/20 outline-none focus:border-accent/40 focus:bg-fg/[0.05] transition-colors';
+    'mt-2 w-full rounded-xl border border-border/[0.1] bg-fg/[0.03] px-4 py-3 text-sm text-fg placeholder:text-fg/25 outline-none transition-colors focus:border-accent/50 focus:bg-fg/[0.05] focus:ring-2 focus:ring-accent/15';
+
+  const label = 'flex flex-col text-[10px] sm:text-xs text-fg/35 tracking-[0.2em] uppercase';
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="grid gap-5 md:grid-cols-2">
-        <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7">
+      <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
+        <label className={label}>
           Nome
-          <input className={field} type="text" name="name" required placeholder="Seu nome completo" />
+          <input className={field} type="text" name="name" required autoComplete="name" placeholder="Seu nome completo" />
         </label>
-        <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase">
+        <label className={label}>
           E-mail
-          <input className={field} type="email" name="email" required placeholder="voce@empresa.com" />
+          <input className={field} type="email" name="email" required autoComplete="email" placeholder="voce@empresa.com" />
         </label>
-        <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase md:col-span-2">
+        <label className={`${label} sm:col-span-2`}>
           Telefone
-          <input className={field} type="tel" name="phone" required placeholder="+55 (11) 99999-9999" />
+          <input className={field} type="tel" name="phone" required autoComplete="tel" placeholder="+55 (11) 99999-9999" />
         </label>
-        <label className="flex flex-col text-xs text-fg/30 tracking-[0.2em] uppercase md:col-span-2">
+        <label className={`${label} sm:col-span-2`}>
           Mensagem
           <textarea
-            className={`${field} h-32 resize-none`}
+            className={`${field} h-28 sm:h-32 resize-none`}
             name="message"
             required
             placeholder="Quais são seus principais objetivos para os próximos 90 dias?"
@@ -44,14 +50,27 @@ export function LeadForm() {
 
       <button
         type="submit"
-        className="mt-6 w-full rounded-xl bg-fg px-6 py-3.5 text-sm font-bold text-bg transition hover:opacity-85"
+        disabled={status === 'submitting' || status === 'success'}
+        className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-fg px-6 py-3.5 text-sm font-bold text-bg shadow-glow-sm transition disabled:opacity-60 hover:shadow-glow active:scale-[0.99]"
       >
-        Solicitar Orçamento
+        {status === 'submitting' && 'Enviando…'}
+        {status === 'success' && (<><CheckCircle2 className="h-4 w-4" /> Mensagem enviada</>)}
+        {(status === 'idle' || status === 'error') && (
+          <>
+            Solicitar Orçamento
+            <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </>
+        )}
       </button>
 
       {status === 'success' && (
-        <p className="mt-4 text-sm text-accent">
+        <p className="mt-4 text-center text-sm text-accent">
           Obrigado! Sua mensagem foi recebida. Entraremos em contato em breve.
+        </p>
+      )}
+      {status === 'error' && (
+        <p className="mt-4 text-center text-sm text-red-400">
+          Tive um problema ao enviar. Tente novamente ou nos chame no WhatsApp.
         </p>
       )}
     </form>

@@ -115,7 +115,7 @@ function Glyph({ kind }: { kind: string }) {
         <svg {...props}>
           <rect x="34" y="34" width="132" height="92" rx="6" stroke={mute} strokeWidth="1" />
           <rect x="48" y="58" width="104" height="92" rx="6" stroke={bone} strokeWidth="1" />
-          <rect x="62" y="82" width="76"  height="84" rx="6" stroke={stroke} strokeWidth="1" fill="rgba(200,227,106,.05)" />
+          <rect x="62" y="82" width="76"  height="84" rx="6" stroke={stroke} strokeWidth="1" fill="rgba(212,165,102,.05)" />
           <line x1="62" y1="100" x2="138" y2="100" stroke={stroke} strokeWidth="1" />
           <circle cx="74" cy="91" r="2" fill={stroke} />
         </svg>
@@ -138,7 +138,7 @@ function Glyph({ kind }: { kind: string }) {
           {[0,1,2].flatMap(r => [0,1,2].map(c => (
             <rect key={`${r}-${c}`} x={40+c*42} y={40+r*42} width="32" height="32" rx="3"
               stroke={r===1&&c===1 ? stroke : mute}
-              fill={r===1&&c===1 ? 'rgba(200,227,106,.12)' : 'transparent'}
+              fill={r===1&&c===1 ? 'rgba(212,165,102,.12)' : 'transparent'}
               strokeWidth="1" />
           )))}
           <circle cx="56" cy="56" r="2" fill={bone} />
@@ -166,7 +166,7 @@ function Glyph({ kind }: { kind: string }) {
               y2={100 + Math.sin(a*Math.PI/180)*62}
               stroke={a===0 ? stroke : mute} strokeWidth="1" />
           ))}
-          <circle cx="100" cy="100" r="18" stroke={bone} strokeWidth="1" fill="rgba(200,227,106,.08)" />
+          <circle cx="100" cy="100" r="18" stroke={bone} strokeWidth="1" fill="rgba(212,165,102,.08)" />
           <circle cx="100" cy="100" r="3"  fill={stroke} />
         </svg>
       );

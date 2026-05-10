@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -13,36 +13,45 @@ const metrics = [
 ];
 
 export function Hero() {
+  const reduce = useReducedMotion();
+
+  const lineInitial = reduce ? { y: 0, opacity: 1 } : { y: '110%' };
+  const lineAnimate = { y: 0, opacity: 1 };
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden pt-28 pb-16">
-      {/* Glow ambiente — apenas dark mode */}
-      <div className="pointer-events-none absolute -top-40 left-1/4 -z-10 h-[600px] w-[600px] rounded-full opacity-0 dark:opacity-15 blur-[130px] bg-accent" />
+    <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-28 pb-12 md:pt-32 md:pb-16">
+      {/* Glow ambiente */}
+      <div className="pointer-events-none absolute -top-40 left-1/4 -z-10 h-[600px] w-[600px] rounded-full bg-accent opacity-[0.06] blur-[140px] dark:opacity-[0.18]" />
+      <div className="pointer-events-none absolute -bottom-40 right-0 -z-10 h-[420px] w-[420px] rounded-full bg-accent-soft opacity-[0.04] blur-[120px] dark:opacity-[0.10]" />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
-          className="section-kicker mb-10"
+          className="section-kicker mb-8 md:mb-10"
         >
+          <span className="mr-2 inline-block h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-accent shadow-glow-sm" />
           Agência de Marketing · São Paulo, Brasil
         </motion.p>
 
-        <div className="overflow-hidden">
+        <h1 className="sr-only">Construa uma marca que cresce rápido e vende mais.</h1>
+
+        <div aria-hidden="true">
           {[
-            { text: 'Construa uma marca',        style: '' },
-            { text: 'que cresce rápido',          style: 'italic text-accent' },
-            { text: 'e vende mais.',              style: '' },
+            { text: 'Construa uma marca',   style: '' },
+            { text: 'que cresce rápido',    style: 'italic gold-sheen' },
+            { text: 'e vende mais.',        style: '' },
           ].map((line, i) => (
             <div key={line.text} className="overflow-hidden">
-              <motion.h1
-                initial={{ y: '110%' }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 + i * 0.12, ease }}
-                className={`block text-[clamp(3.2rem,10.5vw,9.5rem)] font-black leading-[0.92] tracking-tight ${line.style}`}
+              <motion.span
+                initial={lineInitial}
+                animate={lineAnimate}
+                transition={{ duration: 0.85, delay: 0.1 + i * 0.12, ease }}
+                className={`block text-[clamp(2.6rem,9.8vw,9rem)] font-black leading-[0.92] tracking-tight ${line.style}`}
               >
                 {line.text}
-              </motion.h1>
+              </motion.span>
             </div>
           ))}
         </div>
@@ -51,20 +60,30 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55, ease }}
-          className="mt-10 flex flex-wrap items-center gap-5"
+          className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5"
         >
-          <a
+          <motion.a
+            whileHover={reduce ? undefined : { y: -2 }}
+            whileTap={reduce ? undefined : { scale: 0.97 }}
             href="#contato"
-            className="group inline-flex items-center gap-2 rounded-full bg-fg px-7 py-3.5 text-sm font-bold text-bg transition hover:opacity-85"
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-fg px-6 py-3.5 text-sm font-bold text-bg shadow-glow-sm transition-shadow hover:shadow-glow sm:px-7"
           >
-            Solicitar Orçamento
-            <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
+            <span className="relative z-10">Solicitar Orçamento</span>
+            <ArrowUpRight className="relative z-10 h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+            />
+          </motion.a>
+
           <a
             href="#portfolio"
-            className="text-sm text-fg/40 underline underline-offset-4 decoration-fg/20 transition hover:text-fg hover:decoration-fg/50"
+            className="group inline-flex items-center gap-1.5 text-sm text-fg/55 transition hover:text-fg"
           >
-            Ver Projetos
+            <span className="border-b border-fg/20 transition group-hover:border-accent">
+              Ver Projetos
+            </span>
+            <ArrowUpRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </motion.div>
       </div>
@@ -74,18 +93,21 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7, delay: 0.7, ease }}
-        className="mx-auto w-full max-w-7xl px-4 md:px-8"
+        className="mx-auto mt-16 w-full max-w-7xl px-4 md:px-8"
       >
-        <div className="border-t border-border/[0.1] pt-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 gap-6 border-t border-border/[0.1] pt-8 sm:gap-8 md:grid-cols-4">
           {metrics.map((m, i) => (
             <motion.div
               key={m.label}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.75 + i * 0.07, ease }}
+              className="group"
             >
-              <p className="text-4xl md:text-5xl font-black tabular-nums">{m.value}</p>
-              <p className="mt-1.5 text-sm text-fg/35">{m.label}</p>
+              <p className="text-3xl font-black tabular-nums transition-colors group-hover:text-accent sm:text-4xl md:text-5xl">
+                {m.value}
+              </p>
+              <p className="mt-1.5 text-xs text-fg/40 sm:text-sm">{m.label}</p>
             </motion.div>
           ))}
         </div>
