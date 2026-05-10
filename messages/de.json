@@ -309,5 +309,12 @@
   "LocaleSwitcher": {
     "label": "Sprache",
     "ariaLabel": "Sprache wählen"
+  },
+  "LanguageBanner": {
+    "aria": "Sprachvorschlag",
+    "message": "Wir haben {language} als Ihre Sprache erkannt. Möchten Sie darin fortfahren?",
+    "accept": "Zu {language} wechseln",
+    "keep": "Aktuelle behalten",
+    "close": "Schließen"
   }
 }

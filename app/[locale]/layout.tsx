@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { LanguageBanner } from '@/components/language-banner';
 import '../globals.css';
 
 const instrumentSerif = Instrument_Serif({
@@ -173,6 +174,7 @@ export default async function LocaleLayout({
       </head>
       <body>
         <NextIntlClientProvider messages={messages} locale={locale}>
+          <LanguageBanner />
           {children}
         </NextIntlClientProvider>
       </body>

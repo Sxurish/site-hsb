@@ -309,5 +309,12 @@
   "LocaleSwitcher": {
     "label": "语言",
     "ariaLabel": "选择语言"
+  },
+  "LanguageBanner": {
+    "aria": "语言建议",
+    "message": "我们检测到你的语言是 {language}。是否使用该语言?",
+    "accept": "切换到 {language}",
+    "keep": "保留当前",
+    "close": "关闭"
   }
 }
