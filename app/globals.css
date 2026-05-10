@@ -70,6 +70,16 @@ body {
   color: rgb(var(--bg));
 }
 
+/* Brand logo: keep text legible across light/dark themes.
+   Inverts luminance, then re-rotates hue 180° so the mascot gradient
+   stays pink/orange while the previously light-gray text becomes dark. */
+.brand-logo-mark {
+  transition: filter 0.3s ease;
+}
+html:not(.dark) .brand-logo-mark {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .section-kicker {
   @apply text-xs uppercase tracking-[0.3em] text-fg/40;
 }
