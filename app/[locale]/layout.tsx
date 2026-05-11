@@ -3,6 +3,7 @@ import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
 import '../globals.css';
@@ -106,21 +107,12 @@ export async function generateMetadata({
       siteName: 'HSB Company',
       locale: ogLocaleMap[locale] ?? 'pt_BR',
       type: 'website',
-      images: [
-        {
-          url: '/logo.png',
-          width: 1200,
-          height: 630,
-          alt: 'HSB Company — Agência de Marketing em São Paulo',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: 'HSB Company | Agência de Marketing & Audiovisual',
       description:
         'Performance digital e produção audiovisual premium para marcas que querem crescer em São Paulo.',
-      images: ['/logo.png'],
     },
     robots: {
       index: true,
@@ -157,20 +149,18 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  const theme = cookies().get('theme')?.value;
+  const htmlClass = `${instrumentSerif.variable} ${interTight.variable} ${jetbrainsMono.variable}${theme === 'light' ? '' : ' dark'}`;
+
   return (
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${instrumentSerif.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
+      className={htmlClass}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){}})()`,
-          }}
-        />
       </head>
       <body>
         <NextIntlClientProvider messages={messages} locale={locale}>

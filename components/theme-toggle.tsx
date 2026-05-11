@@ -16,7 +16,9 @@ export function ThemeToggle() {
     const next = !dark;
     setDark(next);
     document.documentElement.classList.toggle('dark', next);
-    try { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch {}
+    const value = next ? 'dark' : 'light';
+    try { localStorage.setItem('theme', value); } catch {}
+    document.cookie = `theme=${value}; path=/; max-age=31536000; SameSite=Lax`;
   };
 
   if (!mounted) return <div className="h-8 w-8" />;

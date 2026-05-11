@@ -18,9 +18,9 @@
  */
 
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 
 const DISMISS_KEY = 'hsb_lang_banner_dismissed_v1';
@@ -79,6 +79,7 @@ export function LanguageBanner() {
   const router = useRouter();
   const pathname = usePathname();
   const [suggested, setSuggested] = useState<Locale | null>(null);
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     try {
@@ -96,19 +97,12 @@ export function LanguageBanner() {
 
   function accept() {
     if (!suggested) return;
-    let path = pathname || '/';
-    for (const l of routing.locales) {
-      if (path === `/${l}` || path.startsWith(`/${l}/`)) {
-        path = path.replace(`/${l}`, '') || '/';
-        break;
-      }
-    }
-    const target =
-      suggested === routing.defaultLocale ? path : `/${suggested}${path === '/' ? '' : path}`;
     try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch { /* ignore */ }
-    router.push(target);
-    router.refresh();
+    const target = suggested;
     setSuggested(null);
+    startTransition(() => {
+      router.replace(pathname, { locale: target });
+    });
   }
 
   function dismiss() {
@@ -124,7 +118,7 @@ export function LanguageBanner() {
     <div
       role="region"
       aria-label={t('aria')}
-      className="fixed left-1/2 top-[72px] z-40 w-[calc(100%-1.5rem)] max-w-md -translate-x-1/2 rounded-2xl border border-border/[0.14] bg-bg/95 px-4 py-3 shadow-2xl backdrop-blur-md sm:px-5 sm:py-3.5"
+      className="fixed left-1/2 top-[88px] z-[60] w-[calc(100%-1.5rem)] max-w-md -translate-x-1/2 rounded-2xl border border-border/[0.14] bg-bg/95 px-4 py-3 shadow-2xl backdrop-blur-md sm:px-5 sm:py-3.5"
     >
       <div className="flex items-start gap-3">
         <div className="flex-1 text-sm text-fg/80">

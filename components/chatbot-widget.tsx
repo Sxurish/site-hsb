@@ -1,15 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from './chatbot-widget.module.css';
 
-const STORAGE_KEY = 'hsb_chat_v1';
+const STORAGE_KEY = 'hsb_chat_v2';
 
 type Msg = { role: 'bot' | 'user'; text: string };
+type Stored = { locale: string; msgs: Msg[] };
 
 export function ChatbotWidget() {
   const t = useTranslations('Chatbot');
+  const locale = useLocale();
 
   const QUICK_PROMPTS = [t('quick.q1'), t('quick.q2'), t('quick.q3'), t('quick.q4')];
   const INITIAL_MSGS: Msg[] = [{ role: 'bot', text: t('greeting') }];
@@ -24,23 +26,32 @@ export function ChatbotWidget() {
   const inputRef  = useRef<HTMLInputElement>(null);
   const lastUserMsg = useRef<string>('');
 
-  // Hidrata do sessionStorage
+  // Hidrata do sessionStorage. Se locale mudou ou nao ha conversa real, usa greeting do locale atual.
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as Msg[];
-        if (Array.isArray(parsed) && parsed.length) setMsgs(parsed);
+        const parsed = JSON.parse(raw) as Stored;
+        if (parsed?.locale === locale && Array.isArray(parsed.msgs) && parsed.msgs.length > 1) {
+          setMsgs(parsed.msgs);
+          return;
+        }
+        if (parsed?.locale !== locale) {
+          sessionStorage.removeItem(STORAGE_KEY);
+        }
       }
     } catch { /* ignore */ }
-  }, []);
+    // sem conversa real → reseta para o greeting do locale atual
+    setMsgs([{ role: 'bot', text: t('greeting') }]);
+  }, [locale, t]);
 
-  // Persiste mudanças
+  // Persiste mudanças (com locale)
   useEffect(() => {
     try {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+      const payload: Stored = { locale, msgs };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch { /* ignore */ }
-  }, [msgs]);
+  }, [msgs, locale]);
 
   // Auto-scroll
   useEffect(() => {
