@@ -2,8 +2,8 @@
 
 import { Globe } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
+import { useRouter, usePathname } from '@/i18n/navigation';
+import { useState, useRef, useEffect, useTransition } from 'react';
 import { routing, type Locale } from '@/i18n/routing';
 
 const LOCALE_LABELS: Record<string, { native: string; flag: string }> = {
@@ -21,6 +21,7 @@ export function LocaleSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [, startTransition] = useTransition();
   const wrap = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,22 +33,11 @@ export function LocaleSwitcher() {
   }, []);
 
   function change(next: Locale) {
-    if (next === current) {
-      setOpen(false);
-      return;
-    }
-    // strip current locale from pathname (if it's prefixed)
-    let path = pathname || '/';
-    for (const l of routing.locales) {
-      if (path === `/${l}` || path.startsWith(`/${l}/`)) {
-        path = path.replace(`/${l}`, '') || '/';
-        break;
-      }
-    }
-    const target = next === routing.defaultLocale ? path : `/${next}${path === '/' ? '' : path}`;
-    router.push(target);
-    router.refresh();
     setOpen(false);
+    if (next === current) return;
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
+    });
   }
 
   const currentLabel = LOCALE_LABELS[current] ?? LOCALE_LABELS[routing.defaultLocale];

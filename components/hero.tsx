@@ -19,7 +19,7 @@ export function Hero() {
 
   const lines = [
     { text: t('line1'), style: '' },
-    { text: t('line2'), style: 'italic gold-sheen' },
+    { text: t('line2'), style: 'gold-sheen' },
     { text: t('line3'), style: '' },
   ];
 

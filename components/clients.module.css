@@ -48,8 +48,8 @@
   color: var(--bone);
   margin: 0;
 }
-.h1 i  { font-style: italic; color: var(--bone-d); }
-.h1 em { font-style: italic; color: var(--acc); font-family: var(--serif); }
+.h1 i  { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--bone-d); }
+.h1 em { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--acc); }
 
 .headRight {
   display: flex;

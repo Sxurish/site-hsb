@@ -27,7 +27,7 @@ export function About() {
             <p className="section-kicker mb-5">{t('kicker')}</p>
             <h2 className="text-4xl md:text-5xl font-black leading-tight">
               {t('titlePart1')}{' '}
-              <em className="italic text-accent">{t('titleEm')}</em>
+              <em className="not-italic text-accent">{t('titleEm')}</em>
             </h2>
           </motion.div>
 
