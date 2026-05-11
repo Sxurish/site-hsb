@@ -1,11 +1,12 @@
 import dynamic from 'next/dynamic';
 import { setRequestLocale } from 'next-intl/server';
 import { About } from '@/components/about';
-import { Clients } from '@/components/clients';
+import { Testimonials } from '@/components/testimonials';
 import { ContactCta } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Hero } from '@/components/hero';
+import { MidCta } from '@/components/mid-cta';
 import { Portfolio } from '@/components/portfolio';
 import { Process } from '@/components/process';
 import { Services } from '@/components/services-carousel';
@@ -110,7 +111,8 @@ export default async function Home({
         <About />
         <Services />
         <Portfolio />
-        <Clients />
+        <MidCta />
+        <Testimonials />
         <Process />
         <ContactCta />
       </main>
