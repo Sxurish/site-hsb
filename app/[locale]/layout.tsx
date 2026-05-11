@@ -88,11 +88,6 @@ export async function generateMetadata({
       'automação com IA',
     ],
     category: 'business',
-    icons: {
-      icon: [{ url: '/logo.png', type: 'image/png' }],
-      shortcut: '/logo.png',
-      apple: '/logo.png',
-    },
     alternates: {
       canonical: path,
       languages: Object.fromEntries(
