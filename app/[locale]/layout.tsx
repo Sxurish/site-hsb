@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
@@ -7,6 +8,8 @@ import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
 import { DottedSurface } from '@/components/dotted-surface';
+import { PostHogPageview } from '@/components/posthog-provider';
+import { CookieConsent } from '@/components/cookie-consent';
 import '../globals.css';
 
 const instrumentSerif = Instrument_Serif({
@@ -160,9 +163,13 @@ export default async function LocaleLayout({
       </head>
       <body>
         <DottedSurface />
+        <Suspense fallback={null}>
+          <PostHogPageview />
+        </Suspense>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <LanguageBanner />
           {children}
+          <CookieConsent />
         </NextIntlClientProvider>
       </body>
     </html>

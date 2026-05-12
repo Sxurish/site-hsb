@@ -300,5 +300,61 @@
     "accept": "切换到 {language}",
     "keep": "保留当前",
     "close": "关闭"
+  },
+  "Consent": {
+    "ariaLabel": "Cookie and privacy notice",
+    "kicker": "Privacy",
+    "message": "We use analytics cookies to understand how you use the site and improve your experience. No personal data is sold.",
+    "readMore": "Learn more",
+    "accept": "Accept",
+    "refuse": "Refuse"
+  },
+  "Privacy": {
+    "kicker": "Privacy Policy",
+    "title": "How we handle your data",
+    "updated": "Last updated: May 11, 2026",
+    "intro": "HSB Company (\"HSB\", \"we\") respects your privacy and is committed to protecting your personal data, in compliance with Brazil's General Data Protection Law (Law nº 13.709/2018 — LGPD). This policy describes what data we collect, how we use it, with whom we share it, and your rights as a data subject.",
+    "sections": {
+      "controller": {
+        "title": "1. Data controller",
+        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsb.company"
+      },
+      "dataCollected": {
+        "title": "2. Data we collect",
+        "body": "We collect the following categories:\n\n• Navigation data: pages visited, clicks, time per section, device, browser, language. Collected via PostHog (EU-hosted) only after your consent.\n\n• Contact data voluntarily provided: name or company, email, phone, and goal description, when you fill the contact form or interact with our chatbot.\n\n• We do not collect sensitive data (race, political views, health, etc.)."
+      },
+      "purposes": {
+        "title": "3. Purposes",
+        "body": "We use your data to:\n\n• Respond to your quote requests and contact.\n• Understand aggregate visitor behavior and improve the site (heatmaps, funnels, conversion metrics).\n• Comply with legal and regulatory obligations."
+      },
+      "legalBasis": {
+        "title": "4. Legal basis",
+        "body": "• Consent (LGPD art. 7º, I) for analytics cookies and chatbot processing.\n• Performance of contract or preliminary procedures (art. 7º, V) for the quote form.\n• Legitimate interest (art. 7º, IX) for platform security and fraud prevention."
+      },
+      "cookies": {
+        "title": "5. Cookies and similar technologies",
+        "body": "We use two types of cookies:\n\n• Essential: required for the site to work (language, theme, chatbot session). No consent required.\n\n• Analytics (PostHog): record interactions in pseudonymized form to understand site usage. Only enabled after you accept in the consent banner. You can revoke anytime by clearing your browser cookies."
+      },
+      "retention": {
+        "title": "6. Retention",
+        "body": "• Contact form data: up to 24 months after last contact, unless a longer legal retention applies.\n• Pseudonymized analytics data: up to 12 months.\n• Chatbot messages: up to 90 days for service-improvement purposes."
+      },
+      "sharing": {
+        "title": "7. Sharing",
+        "body": "We share data only with strictly necessary processors:\n\n• PostHog (behavior analytics, EU hosting — Frankfurt).\n• Vercel (site hosting).\n• n8n (chatbot conversation orchestration, self-hosted).\n\nWe do not sell or share data for third-party marketing."
+      },
+      "security": {
+        "title": "8. Security",
+        "body": "We adopt reasonable technical and administrative measures: encryption in transit (HTTPS), role-based access control, rate limiting and audit logs. No system is 100% immune; in case of a relevant incident, we will notify ANPD and affected subjects as required by LGPD."
+      },
+      "rights": {
+        "title": "9. Your rights as a data subject",
+        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsb.company with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
+      },
+      "contact": {
+        "title": "10. Contact and updates",
+        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsb.company.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
+      }
+    }
   }
 }

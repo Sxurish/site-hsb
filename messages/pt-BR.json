@@ -300,5 +300,61 @@
     "accept": "Mudar para {language}",
     "keep": "Manter atual",
     "close": "Fechar"
+  },
+  "Consent": {
+    "ariaLabel": "Aviso de cookies e privacidade",
+    "kicker": "Privacidade",
+    "message": "Usamos cookies analíticos para entender como você usa o site e melhorar sua experiência. Nenhum dado pessoal é vendido.",
+    "readMore": "Saiba mais",
+    "accept": "Aceitar",
+    "refuse": "Recusar"
+  },
+  "Privacy": {
+    "kicker": "Política de Privacidade",
+    "title": "Como tratamos seus dados",
+    "updated": "Última atualização: 11 de maio de 2026",
+    "intro": "A HSB Company (\"HSB\", \"nós\") respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD). Esta política descreve quais dados coletamos, como utilizamos, com quem compartilhamos e quais são seus direitos como titular.",
+    "sections": {
+      "controller": {
+        "title": "1. Controlador dos dados",
+        "body": "Controlador: HSB Company\nLocalização: São Paulo, Brasil\nE-mail para assuntos de privacidade: contato@hsb.company"
+      },
+      "dataCollected": {
+        "title": "2. Dados que coletamos",
+        "body": "Coletamos as seguintes categorias de dados:\n\n• Dados de navegação: páginas visitadas, cliques, tempo em cada seção, dispositivo, navegador e idioma. Coletados via PostHog (hospedado na UE) somente após seu consentimento.\n\n• Dados de contato fornecidos voluntariamente: nome ou nome da empresa, e-mail, telefone e descrição do objetivo, quando você preenche o formulário de contato ou interage com o nosso chatbot.\n\n• Não coletamos dados sensíveis (origem racial, opinião política, saúde, etc.)."
+      },
+      "purposes": {
+        "title": "3. Finalidades do tratamento",
+        "body": "Utilizamos seus dados para:\n\n• Responder às suas solicitações de orçamento e contato.\n• Entender o comportamento agregado dos visitantes e melhorar o site (heatmaps, funis e métricas de conversão).\n• Cumprir obrigações legais e regulatórias."
+      },
+      "legalBasis": {
+        "title": "4. Bases legais",
+        "body": "• Consentimento (art. 7º, I da LGPD) para cookies analíticos e tratamento via chatbot.\n• Execução de contrato ou procedimentos preliminares (art. 7º, V) para o formulário de orçamento.\n• Legítimo interesse (art. 7º, IX) para segurança da plataforma e prevenção a fraude."
+      },
+      "cookies": {
+        "title": "5. Cookies e tecnologias similares",
+        "body": "Utilizamos dois tipos de cookies:\n\n• Essenciais: necessários para o funcionamento do site (idioma, tema, sessão do chatbot). Não exigem consentimento.\n\n• Analíticos (PostHog): registram interações de forma pseudonimizada para entender o uso do site. Só são ativados após você aceitar no banner de consentimento. Você pode revogar a qualquer momento limpando os cookies do seu navegador."
+      },
+      "retention": {
+        "title": "6. Retenção",
+        "body": "• Dados do formulário de contato: até 24 meses após o último contato, salvo obrigação legal de prazo maior.\n• Dados analíticos pseudonimizados: até 12 meses.\n• Mensagens do chatbot: até 90 dias para fins de melhoria do atendimento."
+      },
+      "sharing": {
+        "title": "7. Compartilhamento",
+        "body": "Compartilhamos dados apenas com operadores estritamente necessários:\n\n• PostHog (análise de comportamento, hospedagem UE — Frankfurt).\n• Vercel (hospedagem do site).\n• n8n (orquestração das conversas do chatbot, hospedado em servidor próprio).\n\nNenhum dado é vendido ou compartilhado para fins de marketing de terceiros."
+      },
+      "security": {
+        "title": "8. Segurança",
+        "body": "Adotamos medidas técnicas e administrativas razoáveis: criptografia em trânsito (HTTPS), controle de acesso baseado em função, rate limiting e logs de auditoria. Nenhum sistema é 100% imune; em caso de incidente relevante, notificaremos a ANPD e os titulares afetados conforme exigido pela LGPD."
+      },
+      "rights": {
+        "title": "9. Seus direitos como titular",
+        "body": "Você pode, a qualquer momento, solicitar:\n\n• Confirmação da existência de tratamento\n• Acesso aos seus dados\n• Correção de dados incompletos ou incorretos\n• Anonimização, bloqueio ou eliminação\n• Portabilidade\n• Eliminação dos dados tratados com seu consentimento\n• Revogação do consentimento\n\nPara exercer, envie um e-mail para contato@hsb.company com o assunto \"LGPD - Direito do Titular\". Responderemos em até 15 dias."
+      },
+      "contact": {
+        "title": "10. Contato e atualizações",
+        "body": "Esta política pode ser atualizada periodicamente. A data da última revisão está no topo. Para dúvidas, reclamações ou denúncias, fale conosco em contato@hsb.company.\n\nVocê também tem o direito de apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD)."
+      }
+    }
   }
 }

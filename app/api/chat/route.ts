@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { PostHog } from 'posthog-node';
+import crypto from 'node:crypto';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -8,6 +10,26 @@ export const dynamic = 'force-dynamic';
 const RATE_WINDOW_MS = 60_000;        // 1 min
 const RATE_MAX       = 10;            // 10 msgs/min/ip
 const buckets        = new Map<string, { count: number; resetAt: number }>();
+
+type Step = 'service_identified' | 'contact_data_collecting' | 'contact_data_complete';
+
+let _ph: PostHog | null = null;
+function ph(): PostHog | null {
+  if (_ph) return _ph;
+  const key = process.env.POSTHOG_API_KEY;
+  if (!key) return null;
+  _ph = new PostHog(key, {
+    host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
+    flushAt: 1,
+    flushInterval: 0,
+  });
+  return _ph;
+}
+
+function pseudonymousId(ip: string): string {
+  const salt = process.env.POSTHOG_ID_SALT || 'hsb-default-salt';
+  return 'anon_' + crypto.createHash('sha256').update(ip + '|' + salt).digest('hex').slice(0, 24);
+}
 
 function getIp(req: NextRequest): string {
   const xff = req.headers.get('x-forwarded-for');
@@ -90,10 +112,35 @@ export async function POST(req: NextRequest) {
 
       if (res.ok) {
         const data = await res.json().catch(() => null) as
-          | { reply?: string; message?: string; output?: string }
+          | { reply?: string; message?: string; output?: string; step?: Step }
           | null;
         const reply = data?.reply || data?.message || data?.output;
-        if (reply) return NextResponse.json({ reply });
+        const step = data?.step;
+
+        if (reply) {
+          const client = ph();
+          if (client) {
+            const distinctId = pseudonymousId(ip);
+            try {
+              if (step) {
+                client.capture({
+                  distinctId,
+                  event: 'chatbot_step_reached',
+                  properties: { step, source: 'server' },
+                });
+                if (step === 'contact_data_complete') {
+                  client.capture({
+                    distinctId,
+                    event: 'chatbot_completed',
+                    properties: { source: 'server' },
+                  });
+                }
+              }
+              await client.flush();
+            } catch { /* ignore */ }
+          }
+          return NextResponse.json({ reply, ...(step ? { step } : {}) });
+        }
       }
     } catch {
       // fallthrough → fallback

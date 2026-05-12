@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { track } from '@/lib/analytics';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -72,6 +73,7 @@ export function Hero() {
             whileHover={reduce ? undefined : { y: -2 }}
             whileTap={reduce ? undefined : { scale: 0.97 }}
             href="#contato"
+            onClick={() => track('cta_clicked', { location: 'hero', label: 'primary' })}
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-fg px-6 py-3.5 text-sm font-bold text-bg shadow-glow-sm transition-shadow hover:shadow-glow sm:px-7"
           >
             <span className="relative z-10">{t('ctaPrimary')}</span>
@@ -84,6 +86,7 @@ export function Hero() {
 
           <a
             href="#portfolio"
+            onClick={() => track('cta_clicked', { location: 'hero', label: 'secondary' })}
             className="group inline-flex items-center gap-1.5 text-sm text-fg/55 transition hover:text-fg"
           >
             <span className="border-b border-fg/20 transition group-hover:border-accent">

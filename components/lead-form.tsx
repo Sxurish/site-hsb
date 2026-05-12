@@ -1,20 +1,35 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { track } from '@/lib/analytics';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function LeadForm() {
   const [status, setStatus] = useState<Status>('idle');
+  const startedRef = useRef(false);
   const t = useTranslations('LeadForm');
+
+  const handleFirstFocus = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track('lead_form_started');
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const hasEmail = !!String(fd.get('email') ?? '').trim();
+    const hasPhone = !!String(fd.get('phone') ?? '').trim();
+
     setStatus('submitting');
     await new Promise((r) => setTimeout(r, 600));
     setStatus('success');
+
+    track('lead_form_submitted', { hasEmail, hasPhone });
+
     e.currentTarget.reset();
   };
 
@@ -24,7 +39,11 @@ export function LeadForm() {
   const label = 'flex flex-col text-[10px] sm:text-xs text-fg/35 tracking-[0.2em] uppercase';
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7">
+    <form
+      onSubmit={handleSubmit}
+      onFocus={handleFirstFocus}
+      className="rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7"
+    >
       <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
         <label className={label}>
           {t('name')}

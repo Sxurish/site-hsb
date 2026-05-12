@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { LeadForm } from './lead-form';
+import { track } from '@/lib/analytics';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -10,8 +11,8 @@ export function ContactCta() {
   const t = useTranslations('Contact');
 
   const contacts = [
-    { label: t('whatsapp'), value: '+55 (11) 99999-9999', href: 'https://wa.me/5511999999999' },
-    { label: t('email'),    value: 'contato@hsb.company', href: 'mailto:contato@hsb.company' },
+    { label: t('whatsapp'), value: '+55 (11) 99999-9999', href: 'https://wa.me/5511999999999', kind: 'whatsapp' as const },
+    { label: t('email'),    value: 'contato@hsb.company', href: 'mailto:contato@hsb.company', kind: 'contact' as const },
   ];
 
   return (
@@ -36,7 +37,11 @@ export function ContactCta() {
               {contacts.map((c) => (
                 <div key={c.label}>
                   <p className="text-fg/25 text-xs tracking-[0.25em] uppercase mb-1.5">{c.label}</p>
-                  <a href={c.href} className="font-medium transition hover:text-fg/60">
+                  <a
+                    href={c.href}
+                    onClick={() => track('cta_clicked', { location: c.kind, label: c.label })}
+                    className="font-medium transition hover:text-fg/60"
+                  >
                     {c.value}
                   </a>
                 </div>

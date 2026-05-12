@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import styles from './chatbot-widget.module.css';
+import { track } from '@/lib/analytics';
 
 const STORAGE_KEY = 'hsb_chat_v2';
 
 type Msg = { role: 'bot' | 'user'; text: string };
 type Stored = { locale: string; msgs: Msg[] };
+type Step = 'service_identified' | 'contact_data_collecting' | 'contact_data_complete';
 
 export function ChatbotWidget() {
   const t = useTranslations('Chatbot');
@@ -25,6 +27,9 @@ export function ChatbotWidget() {
   const streamRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLInputElement>(null);
   const lastUserMsg = useRef<string>('');
+  const messagesSentRef = useRef<number>(0);
+  const lastStepRef = useRef<Step | undefined>(undefined);
+  const completedRef = useRef<boolean>(false);
 
   // Hidrata do sessionStorage. Se locale mudou ou nao ha conversa real, usa greeting do locale atual.
   useEffect(() => {
@@ -62,10 +67,29 @@ export function ChatbotWidget() {
   useEffect(() => {
     if (!open) return;
     const t = setTimeout(() => inputRef.current?.focus(), 80);
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        track('chatbot_closed', { messagesSent: messagesSentRef.current });
+      }
+    };
     window.addEventListener('keydown', onKey);
     return () => { clearTimeout(t); window.removeEventListener('keydown', onKey); };
   }, [open]);
+
+  // Abandono: dispara antes do unload se houve interação sem completar
+  useEffect(() => {
+    const onUnload = () => {
+      if (messagesSentRef.current > 0 && !completedRef.current) {
+        track('chatbot_abandoned', {
+          messagesSent: messagesSentRef.current,
+          lastStep: lastStepRef.current,
+        });
+      }
+    };
+    window.addEventListener('beforeunload', onUnload);
+    return () => window.removeEventListener('beforeunload', onUnload);
+  }, []);
 
   const send = useCallback(async (raw?: string) => {
     const q = (raw ?? text).trim();
@@ -77,6 +101,12 @@ export function ChatbotWidget() {
     setError(null);
     setText('');
     lastUserMsg.current = q;
+    messagesSentRef.current += 1;
+
+    track('chatbot_message_sent', {
+      length: q.length,
+      messagesSent: messagesSentRef.current,
+    });
 
     setMsgs((m) => [...m, { role: 'user', text: q }]);
     setBusy(true);
@@ -96,6 +126,20 @@ export function ChatbotWidget() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const reply = data.reply || t('fallback');
+      const step = (data.step as Step | undefined);
+
+      track('chatbot_message_received', { step });
+
+      if (step && step !== lastStepRef.current) {
+        lastStepRef.current = step;
+        track('chatbot_step_reached', { step });
+      }
+
+      if (step === 'contact_data_complete' && !completedRef.current) {
+        completedRef.current = true;
+        track('chatbot_completed', { messagesSent: messagesSentRef.current });
+      }
+
       setMsgs((m) => [...m, { role: 'bot', text: reply }]);
     } catch {
       setMsgs((m) => [...m, { role: 'bot', text: t('errorMsg') }]);
@@ -109,7 +153,20 @@ export function ChatbotWidget() {
 
   const reset = () => {
     setMsgs(INITIAL_MSGS);
+    messagesSentRef.current = 0;
+    lastStepRef.current = undefined;
+    completedRef.current = false;
     try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+    track('chatbot_opened');
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    track('chatbot_closed', { messagesSent: messagesSentRef.current });
   };
 
   return (
@@ -117,7 +174,7 @@ export function ChatbotWidget() {
       {!open && (
         <button
           className={styles.fab}
-          onClick={() => setOpen(true)}
+          onClick={handleOpen}
           aria-label={t('fabAria')}
           aria-expanded={false}
         >
@@ -157,7 +214,7 @@ export function ChatbotWidget() {
               )}
               <button
                 className={styles.closeBtn}
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 aria-label={t('closeAria')}
               >
                 ✕
