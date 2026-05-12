@@ -341,7 +341,7 @@
       },
       "sharing": {
         "title": "7. Sharing",
-        "body": "We share data only with strictly necessary processors:\n\n• PostHog (behavior analytics, EU hosting — Frankfurt).\n• Vercel (site hosting).\n• n8n (chatbot conversation orchestration, self-hosted).\n\nWe do not sell or share data for third-party marketing."
+        "body": "We share data only with strictly necessary processors, all preferably hosted in the European Union or under appropriate international transfer clauses:\n\n• Vercel — site hosting.\n• PostHog — aggregate behavior analytics and heatmaps (EU hosting — Frankfurt). Only active after consent.\n• n8n — chatbot conversation orchestration (self-hosted server).\n• Supabase — database storing leads and conversation history.\n• Mistral AI — AI processing of chatbot conversations (EU hosting — Paris, France). Does not use your data for model training.\n• Notion — internal record of qualified leads (restricted access to HSB team).\n• Email provider (SMTP) — internal alerts when a lead is qualified.\n\nWe do not sell or share data for third-party marketing."
       },
       "security": {
         "title": "8. Security",

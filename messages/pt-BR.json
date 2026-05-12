@@ -341,7 +341,7 @@
       },
       "sharing": {
         "title": "7. Compartilhamento",
-        "body": "Compartilhamos dados apenas com operadores estritamente necessários:\n\n• PostHog (análise de comportamento, hospedagem UE — Frankfurt).\n• Vercel (hospedagem do site).\n• n8n (orquestração das conversas do chatbot, hospedado em servidor próprio).\n\nNenhum dado é vendido ou compartilhado para fins de marketing de terceiros."
+        "body": "Compartilhamos dados apenas com operadores estritamente necessários, todos com hospedagem preferencial na União Europeia ou com cláusulas de transferência internacional adequadas:\n\n• Vercel — hospedagem do site.\n• PostHog — análise de comportamento agregado e heatmaps (hospedagem UE — Frankfurt). Só ativado após consentimento.\n• n8n — orquestração das conversas do chatbot (servidor próprio).\n• Supabase — banco de dados que armazena os leads e histórico de conversas.\n• Mistral AI — processamento das conversas do chatbot por inteligência artificial (hospedagem UE — Paris, França). Não utiliza seus dados para treinamento de modelos.\n• Notion — registro interno dos leads qualificados (acesso restrito ao time HSB).\n• Provedor de e-mail (SMTP) — envio de alertas internos quando um lead é qualificado.\n\nNenhum dado é vendido ou compartilhado para fins de marketing de terceiros."
       },
       "security": {
         "title": "8. Segurança",

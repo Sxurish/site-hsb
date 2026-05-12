@@ -7,7 +7,7 @@ Workflow do chatbot do site. Atende o webhook `/webhook/hsb-chatbot-site`, persi
 1. Abre o n8n.
 2. **Settings → Import from File** → seleciona `HSB-Concierge-Chatbot-PATCHED.json`.
 3. O n8n vai pedir pra mapear as credenciais (Postgres, SMTP). Aponta pras suas existentes.
-4. Confere as env vars no workflow: `OPENAI_API_KEY`, `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `HSB_TEAM_EMAIL`, `HSB_FROM_EMAIL`.
+4. Confere as env vars no workflow: `MISTRAL_API_KEY`, `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `HSB_TEAM_EMAIL`, `HSB_FROM_EMAIL`.
 5. Ativa o workflow (toggle no topo).
 
 > ⚠️ **Antes de ativar, rode esta migração** no Supabase pra adicionar a coluna de funil:
@@ -17,6 +17,17 @@ Workflow do chatbot do site. Atende o webhook `/webhook/hsb-chatbot-site`, persi
 > ```
 >
 > A coluna serve pra rastrear em qual etapa do funil cada lead está (espelha o evento `chatbot_step_reached` que vai pro PostHog).
+
+## Provider de IA
+
+**Mistral AI** (`mistral-small-latest`) — hosting na União Europeia (Paris), alinhado com a LGPD que a política do site promete.
+
+- Endpoint: `https://api.mistral.ai/v1/chat/completions` (compatível com formato OpenAI)
+- Modelo: `mistral-small-latest` — qualidade comparável a `gpt-4o-mini` em PT-BR, suporta `response_format: { type: "json_object" }`
+- Custo aproximado: ~$0.20/M input, ~$0.60/M output (similar a `gpt-4o-mini`)
+- Como pegar a key: https://console.mistral.ai → **API Keys** → criar
+
+Para migrar pra outro provider futuramente (DeepSeek, Anthropic, Groq, etc.), edite só o nó `AI - HSB Concierge` no n8n — troque a URL, o header de auth e o nome do modelo no `jsonBody`. O resto do fluxo é provider-agnostic.
 
 ## Mudanças desta versão (vs. versão anterior)
 
