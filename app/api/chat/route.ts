@@ -94,6 +94,11 @@ export async function POST(req: NextRequest) {
     }
     const cleaned = message.trim().slice(0, 500);
 
+    const rawSession = (body as { sessionId?: unknown })?.sessionId;
+    const sessionId = typeof rawSession === 'string' && rawSession.length <= 128
+      ? rawSession.replace(/[^a-zA-Z0-9_\-]/g, '').slice(0, 64) || undefined
+      : undefined;
+
     const webhookUrl = process.env.N8N_WEBHOOK_URL;
     if (!webhookUrl) {
       return NextResponse.json({ reply: fallbackReply(cleaned) });
@@ -105,7 +110,7 @@ export async function POST(req: NextRequest) {
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: cleaned }),
+        body: JSON.stringify({ message: cleaned, ...(sessionId ? { sessionId } : {}) }),
         signal: ctrl.signal,
       });
       clearTimeout(tid);

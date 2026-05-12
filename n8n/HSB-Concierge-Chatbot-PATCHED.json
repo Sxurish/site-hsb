@@ -1,0 +1,661 @@
+{
+  "name": "HSB - Concierge Site Chatbot - PATCHED",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hsb-chatbot-site",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8947a3b9-f547-4503-85ea-5fedbda68cc9",
+      "name": "Webhook - Site Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        2784,
+        912
+      ],
+      "webhookId": "ca983033-e2ed-4c7a-af32-b4283da6424d"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || $json;\n\n// sessionId vem do front (UUID em localStorage)\nconst sessionId =\n  body.sessionId ||\n  body.conversationId ||\n  body.visitorId ||\n  `web_${$execution.id}`;\n\n// lead_key = sessionId (estavel cross-mensagem do mesmo visitante)\nconst leadKey = sessionId;\n\nconst message =\n  body.message ||\n  body.text ||\n  body.content ||\n  '';\n\nreturn [\n  {\n    json: {\n      lead_key: String(leadKey).trim(),\n      message: String(message || '').trim(),\n      session_id: String(sessionId).trim(),\n      source: 'site',\n      timestamp: body.timestamp || new Date().toISOString(),\n      name: body.name || '',\n      email: body.email || '',\n      phone: body.phone || ''\n    }\n  }\n];"
+      },
+      "id": "d7381b5b-d6a0-4f99-bc16-2c343cc81afb",
+      "name": "Normalize Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3008,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "738a52b0-f837-4847-af55-7cf8537f006a",
+      "name": "IF - Empty Message?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        3232,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ reply: 'Não consegui identificar sua mensagem. Pode tentar enviar novamente?', step: null }) }}",
+        "options": {}
+      },
+      "id": "abf1911a-3dca-4f9f-b29d-773d928cfdf5",
+      "name": "Webhook Response - Empty Message",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        3456,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE((SELECT to_jsonb(l) FROM leads l WHERE l.lead_key = $1 LIMIT 1), '{}'::jsonb) AS lead_data;",
+        "options": {
+          "queryReplacement": "={{ $('Normalize Data').item.json.lead_key }}"
+        }
+      },
+      "id": "acf5905c-6552-42e2-8bce-76e72e703e7c",
+      "name": "DB - Check Lead Exists",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        1008
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "S1JX7jXTZhEZLiaj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.lead_data.id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "5520812a-560d-4303-9fa0-4829264d8bfa",
+      "name": "IF - Lead Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        3680,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO leads (lead_key, session_id, source, nome, email, phone, status, prioridade, historico, created_at, updated_at)\nVALUES ($1, $2, 'site', NULLIF($3, ''), NULLIF($4, ''), NULLIF($5, ''), 'novo', 'baixa', '[]'::jsonb, NOW(), NOW())\nON CONFLICT (lead_key) DO UPDATE SET updated_at = NOW()\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $('Normalize Data').item.json.lead_key }},={{ $('Normalize Data').item.json.session_id }},={{ $('Normalize Data').item.json.name }},={{ $('Normalize Data').item.json.email }},={{ $('Normalize Data').item.json.phone }}"
+        }
+      },
+      "id": "93617852-6cf6-4703-94b9-e661d1ec700b",
+      "name": "DB - Create Lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        3904,
+        1104
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "S1JX7jXTZhEZLiaj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let row = $json;\nif (Array.isArray(row)) row = row[0] || {};\nif (row.lead_data) row = row.lead_data;\n\nreturn [\n  {\n    json: {\n      lead_key: $(\"Normalize Data\").item.json.lead_key,\n      message: $(\"Normalize Data\").item.json.message,\n      timestamp: $(\"Normalize Data\").item.json.timestamp,\n      lead_data: row,\n      historico: []\n    }\n  }\n];"
+      },
+      "id": "30aa846a-093d-40a8-b32f-17b314d4819b",
+      "name": "Merge - New Lead Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4128,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const leadData = $json.lead_data || {};\nlet historico = leadData.historico || [];\n\nif (typeof historico === \"string\") {\n  try {\n    historico = JSON.parse(historico);\n  } catch (e) {\n    historico = [];\n  }\n}\n\nif (!Array.isArray(historico)) {\n  historico = [];\n}\n\nreturn [\n  {\n    json: {\n      lead_key: $(\"Normalize Data\").item.json.lead_key,\n      message: $(\"Normalize Data\").item.json.message,\n      timestamp: $(\"Normalize Data\").item.json.timestamp,\n      lead_data: leadData,\n      historico\n    }\n  }\n];"
+      },
+      "id": "4caaf63c-0513-4409-a489-96e1ac050545",
+      "name": "Merge - Existing Lead Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4128,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const historico = Array.isArray($json.historico) ? $json.historico : [];\n\nconst historico_updated = historico.concat([\n  {\n    role: \"user\",\n    content: $json.message,\n    timestamp: $json.timestamp\n  }\n]);\n\nreturn [\n  {\n    json: {\n      ...$json,\n      historico_updated\n    }\n  }\n];"
+      },
+      "id": "9d4835f6-fb81-4f5e-a533-966ad0570f34",
+      "name": "Append User Message to History",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4352,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: \"gpt-4o-mini\",\n  temperature: 0.6,\n  max_tokens: 1000,\n  response_format: { type: \"json_object\" },\n  messages: [\n    {\n      role: \"system\",\n      content: `Você é o Concierge oficial da HSB Company, atendente virtual da agência (apresente-se apenas como \"concierge da HSB\", sem usar nome próprio).\n\nA HSB Company é uma agência premium de marketing, estratégia, criação digital, automações e IA.\n\nSua função:\n- Atender visitantes do site\n- Explicar serviços\n- Tirar dúvidas iniciais\n- Entender necessidades\n- Coletar briefing naturalmente\n- Qualificar leads\n- Encaminhar para equipe humana quando houver informações suficientes\n\nVocê NÃO deve:\n- Fechar contrato\n- Passar preços\n- Prometer resultados garantidos\n- Inventar prazos\n- Dizer que algo será feito com certeza sem análise humana\n\nServiços da HSB:\n1. Automação & IA\n2. Criação de Sites & Landing Pages\n3. Tráfego Pago\n4. Social Media & Conteúdo\n5. Branding & Identidade Visual\n6. Produção Audiovisual\n7. Estratégia Comercial & Funis\n8. Consultoria Estratégica\n\nDados a coletar:\nnome, email, telefone, empresa, nicho, objetivo, serviço de interesse, prazo, urgência e referência/inspiração.\n\nCritério de briefing_completo:\ntrue somente quando já houver informação suficiente para a equipe entender quem é o lead/empresa, o que precisa, serviço provável, objetivo principal e prazo/urgência aproximada.\n\nPrioridade:\nalta = urgência, empresa clara, intenção forte, projeto real.\nmedia = interessado, mas ainda avaliando.\nbaixa = curioso ou informações vagas.\n\nStatus:\nem_atendimento enquanto coleta dados.\nqualificado quando briefing_completo = true.\n\nResponda SEMPRE em JSON válido, sem markdown e sem texto fora do JSON, neste formato:\n{\n  \"resposta_cliente\": \"\",\n  \"dados_coletados\": {\n    \"nome\": \"\",\n    \"email\": \"\",\n    \"phone\": \"\",\n    \"empresa\": \"\",\n    \"nicho\": \"\",\n    \"objetivo\": \"\",\n    \"servico\": \"\",\n    \"prazo\": \"\",\n    \"urgencia\": \"\",\n    \"referencia\": \"\"\n  },\n  \"briefing_completo\": false,\n  \"resumo_interno\": \"\",\n  \"prioridade\": \"baixa\",\n  \"status\": \"em_atendimento\"\n}`\n    },\n    {\n      role: \"user\",\n      content: \"Mensagem atual do usuário: \" + $json.message +\n        \"\\n\\nDados atuais do lead:\\n\" + JSON.stringify($json.lead_data, null, 2) +\n        \"\\n\\nHistórico da conversa:\\n\" + JSON.stringify($json.historico_updated, null, 2)\n    }\n  ]\n}) }}",
+        "options": {}
+      },
+      "id": "2b2df2e8-575c-4f0c-b168-2d83c5aa6105",
+      "name": "AI - HSB Concierge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        4576,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  const input = $input.item.json;\n\n  let aiResponse =\n    input.choices?.[0]?.message?.content ??\n    input.output?.[0]?.content?.[0]?.text ??\n    input.message?.content ??\n    input.text ??\n    input.response ??\n    input.output ??\n    \"\";\n\n  let parsed;\n\n  if (typeof aiResponse === \"object\" && !Array.isArray(aiResponse)) {\n    parsed = aiResponse;\n  } else if (typeof aiResponse === \"string\") {\n    const jsonMatch = aiResponse.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\n    const jsonStr = jsonMatch ? jsonMatch[1].trim() : aiResponse.trim();\n    parsed = JSON.parse(jsonStr);\n  } else {\n    throw new Error(\"Formato inválido retornado pela IA\");\n  }\n\n  if (!parsed.resposta_cliente) {\n    throw new Error(\"Missing resposta_cliente in AI response\");\n  }\n\n  return [\n    {\n      json: {\n        resposta_cliente: parsed.resposta_cliente,\n        dados_coletados: parsed.dados_coletados || {},\n        briefing_completo: Boolean(parsed.briefing_completo),\n        resumo_interno: parsed.resumo_interno || \"\",\n        prioridade: [\"baixa\", \"media\", \"alta\"].includes(parsed.prioridade) ? parsed.prioridade : \"baixa\",\n        status: parsed.status || (parsed.briefing_completo ? \"qualificado\" : \"em_atendimento\"),\n        lead_key: $(\"Append User Message to History\").item.json.lead_key,\n        lead_data: $(\"Append User Message to History\").item.json.lead_data,\n        historico_updated: $(\"Append User Message to History\").item.json.historico_updated,\n        timestamp: $(\"Append User Message to History\").item.json.timestamp\n      }\n    }\n  ];\n} catch (error) {\n  return [\n    {\n      json: {\n        resposta_cliente: \"Desculpe, tive um problema técnico ao processar sua mensagem. Pode tentar novamente em alguns instantes?\",\n        dados_coletados: {},\n        briefing_completo: false,\n        resumo_interno: \"Erro no processamento da IA: \" + error.message,\n        prioridade: \"media\",\n        status: \"em_atendimento\",\n        lead_key: $(\"Append User Message to History\").item.json.lead_key,\n        lead_data: $(\"Append User Message to History\").item.json.lead_data,\n        historico_updated: $(\"Append User Message to History\").item.json.historico_updated || [],\n        timestamp: $(\"Append User Message to History\").item.json.timestamp,\n        error: error.message\n      }\n    }\n  ];\n}"
+      },
+      "id": "0b9fd1bc-978f-4346-a960-4eb73a2b6203",
+      "name": "Parse AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4800,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const historico = Array.isArray($json.historico_updated)\n  ? $json.historico_updated\n  : [];\n\nconst historico_final = historico.concat([\n  {\n    role: \"assistant\",\n    content: $json.resposta_cliente,\n    timestamp: new Date().toISOString()\n  }\n]);\n\nreturn [\n  {\n    json: {\n      ...$json,\n      historico_final,\n      ai_response: {\n        resposta_cliente: $json.resposta_cliente,\n        dados_coletados: $json.dados_coletados,\n        briefing_completo: $json.briefing_completo,\n        resumo_interno: $json.resumo_interno,\n        prioridade: $json.prioridade,\n        status: $json.status\n      }\n    }\n  }\n];"
+      },
+      "id": "3440f33e-40e3-4b1a-b8dc-d057081c58c8",
+      "name": "Append AI Response to History",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5024,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE leads SET\n  nome = COALESCE(NULLIF($1, ''), nome),\n  email = COALESCE(NULLIF($2, ''), email),\n  phone = COALESCE(NULLIF($3, ''), phone),\n  empresa = COALESCE(NULLIF($4, ''), empresa),\n  nicho = COALESCE(NULLIF($5, ''), nicho),\n  objetivo = COALESCE(NULLIF($6, ''), objetivo),\n  servico = COALESCE(NULLIF($7, ''), servico),\n  prazo = COALESCE(NULLIF($8, ''), prazo),\n  urgencia = COALESCE(NULLIF($9, ''), urgencia),\n  referencia = COALESCE(NULLIF($10, ''), referencia),\n  prioridade = $11,\n  status = $12,\n  briefing_completo = $13::boolean,\n  resumo_interno = COALESCE(NULLIF($14, ''), resumo_interno),\n  historico = $15::jsonb,\n  step_funil = $16,\n  updated_at = NOW()\nWHERE lead_key = $17\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.nome || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.email || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.phone || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.empresa || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.nicho || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.objetivo || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.servico || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.prazo || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.urgencia || '' }},={{ $('Append AI Response to History').item.json.ai_response.dados_coletados.referencia || '' }},={{ $('Append AI Response to History').item.json.ai_response.prioridade || 'baixa' }},={{ $('Append AI Response to History').item.json.ai_response.status || 'em_atendimento' }},={{ $('Append AI Response to History').item.json.ai_response.briefing_completo ? 'true' : 'false' }},={{ $('Append AI Response to History').item.json.ai_response.resumo_interno || '' }},={{ JSON.stringify($('Append AI Response to History').item.json.historico_final) }},={{ $json.step || null }},={{ $('Append AI Response to History').item.json.lead_key }}"
+        }
+      },
+      "id": "950f8661-f64d-4863-976b-1055af4d3bd0",
+      "name": "DB - Update Lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        5248,
+        1008
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "S1JX7jXTZhEZLiaj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $('Append AI Response to History').item.json.ai_response.briefing_completo === true && !$('DB - Update Lead').item.json.email_enviado }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "04dfa62b-af42-44a3-8897-61f15ecc06e3",
+      "name": "IF - Briefing Complete?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        5472,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.NOTION_API_KEY }}"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  parent: { database_id: $env.NOTION_DATABASE_ID },\n  properties: {\n    \"Nome\": {\n      title: [\n        {\n          text: {\n            content: $json.nome || $json.empresa || \"Lead sem nome\"\n          }\n        }\n      ]\n    },\n    \"Empresa\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.empresa || \"\"\n          }\n        }\n      ]\n    },\n    \"Email\": {\n      email: $json.email || null\n    },\n    \"Telefone\": {\n      phone_number: $json.phone || null\n    },\n    \"Nicho\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.nicho || \"\"\n          }\n        }\n      ]\n    },\n    \"Serviço\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.servico || \"\"\n          }\n        }\n      ]\n    },\n    \"Objetivo\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.objetivo || \"\"\n          }\n        }\n      ]\n    },\n    \"Prioridade\": {\n      select: {\n        name: $json.prioridade || \"baixa\"\n      }\n    },\n    \"Status\": {\n      select: {\n        name: \"Qualificado\"\n      }\n    },\n    \"Urgência\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.urgencia || \"\"\n          }\n        }\n      ]\n    },\n    \"Prazo\": {\n      rich_text: [\n        {\n          text: {\n            content: $json.prazo || \"\"\n          }\n        }\n      ]\n    },\n    \"Origem\": {\n      select: {\n        name: \"site\"\n      }\n    },\n    \"Resumo\": {\n      rich_text: [\n        {\n          text: {\n            content: ($json.resumo_interno || \"\").slice(0, 1900)\n          }\n        }\n      ]\n    }\n  },\n  children: [\n    {\n      object: \"block\",\n      type: \"heading_2\",\n      heading_2: {\n        rich_text: [\n          {\n            type: \"text\",\n            text: { content: \"Resumo comercial do lead\" }\n          }\n        ]\n      }\n    },\n    {\n      object: \"block\",\n      type: \"paragraph\",\n      paragraph: {\n        rich_text: [\n          {\n            type: \"text\",\n            text: {\n              content: $json.resumo_interno || \"Lead qualificado pelo chatbot Aria.\"\n            }\n          }\n        ]\n      }\n    }\n  ]\n}) }}",
+        "options": {}
+      },
+      "id": "6d71a6e0-66b8-48b1-ad0e-c83d27250d33",
+      "name": "Notion - Create Lead Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        5696,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $(\"DB - Update Lead\").item.json;\nconst notion = $json || {};\n\nconst resumo = `🚀 Novo lead qualificado - HSB\n\nNome: ${lead.nome || \"Não informado\"}\nEmpresa: ${lead.empresa || \"Não informada\"}\nContato: ${lead.email || \"\"} ${lead.phone || \"\"}\nServiço: ${lead.servico || \"Não definido\"}\nObjetivo: ${lead.objetivo || \"Não informado\"}\nUrgência: ${lead.urgencia || \"Não informada\"}\nPrazo: ${lead.prazo || \"Não informado\"}\nPrioridade: ${lead.prioridade || \"baixa\"}\n\nResumo:\n${lead.resumo_interno || \"Sem resumo interno gerado.\"}\n\nRecomendação:\nEntrar em contato com abordagem consultiva, confirmar necessidade, escopo, orçamento disponível e prazo desejado.\n\nAção necessária:\nPreparar orçamento e prazo personalizado.\n\nSupabase Lead ID:\n${lead.id || \"\"}\n\nNotion:\n${notion.url || \"\"}`;\n\nreturn [\n  {\n    json: {\n      ...lead,\n      notion_page_id: notion.id || \"\",\n      notion_url: notion.url || \"\",\n      email_subject: `Novo lead qualificado - HSB: ${lead.empresa || lead.nome || lead.lead_key}`,\n      email_body: resumo\n    }\n  }\n];"
+      },
+      "id": "f9e3b2d2-0134-4f19-a7c7-b882bdf5e120",
+      "name": "Generate Internal Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5920,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.HSB_FROM_EMAIL || 'kaykywilly@gmail.com' }}",
+        "toEmail": "={{ $env.HSB_TEAM_EMAIL }}",
+        "subject": "={{ $json.email_subject }}",
+        "text": "={{ $json.email_body }}",
+        "options": {}
+      },
+      "id": "8f15dae4-0f02-496c-8da1-b5e9481bb537",
+      "name": "Email - Send Lead Summary",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        6144,
+        944
+      ],
+      "webhookId": "d63105ef-f823-4f02-8b90-eb4988cacdc2",
+      "credentials": {
+        "smtp": {
+          "id": "Z25WQdPowhwRumiQ",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE leads SET\n  status = 'enviado_para_equipe',\n  email_enviado = true,\n  notion_page_id = COALESCE(NULLIF($1, ''), notion_page_id),\n  updated_at = NOW()\nWHERE lead_key = $2\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $('Generate Internal Summary').item.json.notion_page_id || '' }},={{ $('Generate Internal Summary').item.json.lead_key }}"
+        }
+      },
+      "id": "359bd440-efb2-4fb1-82cf-282005a9f14c",
+      "name": "DB - Mark Sent to Team",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        6368,
+        944
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "S1JX7jXTZhEZLiaj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ reply: $('Append AI Response to History').item.json.ai_response.resposta_cliente, step: $('Derive Step').item.json.step }) }}",
+        "options": {}
+      },
+      "id": "ecd0f4bf-bb54-405e-8a68-ab3dc5853be4",
+      "name": "Webhook Response - Final",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        6592,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "content": "WORKFLOW PATCHED — mudanças desta versão:\n\n1. IF - Empty Message agora ESTÁ ligado no fluxo (antes era órfão)\n2. Queries Postgres usam parameterized queries — sem mais SQL injection\n3. Novo nó: Derive Step (calcula step pro funil PostHog)\n4. Webhook Response - Final retorna JSON dinâmico { reply, step }\n5. Webhook Response - Empty Message padronizado pro shape { reply }\n6. IF Briefing Complete consolidado numa única condição\n7. IA persona alinhada com \"Concierge da HSB\" do site\n8. lead_key = sessionId (estável cross-mensagem)\n\nPRÉ-REQUISITOS no Supabase (rode 1x se a coluna não existir):\n  ALTER TABLE leads ADD COLUMN IF NOT EXISTS step_funil text;\n\nENVs necessárias:\n  OPENAI_API_KEY, NOTION_API_KEY, NOTION_DATABASE_ID, HSB_TEAM_EMAIL, HSB_FROM_EMAIL\n\nTest request:\n  POST /webhook/hsb-chatbot-site\n  { \"message\": \"Quero IA pra atendimento\", \"sessionId\": \"uuid-do-cliente\" }\n\nResponse shape:\n  { \"reply\": \"...\", \"step\": \"service_identified\" | \"contact_data_collecting\" | \"contact_data_complete\" | null }\n\nTTL/Cleanup (rode no Supabase como cron mensal — política diz <90 dias):\n  DELETE FROM leads WHERE status NOT IN ('qualificado', 'enviado_para_equipe') AND updated_at < NOW() - INTERVAL '90 days';",
+        "height": 560,
+        "width": 520
+      },
+      "id": "17a5d789-8bd0-4d20-9f35-c70388dd4d45",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ai = $json.ai_response || $json;\nconst dados = ai.dados_coletados || {};\n\nlet step = null;\n\nif (ai.briefing_completo === true) {\n  step = 'contact_data_complete';\n} else if (\n  (dados.email && String(dados.email).trim()) ||\n  (dados.phone && String(dados.phone).trim()) ||\n  (dados.nome && String(dados.nome).trim())\n) {\n  step = 'contact_data_collecting';\n} else if (dados.servico && String(dados.servico).trim()) {\n  step = 'service_identified';\n}\n\nreturn [\n  {\n    json: {\n      ...$json,\n      step\n    }\n  }\n];"
+      },
+      "id": "a1b2c3d4-step-derive-0001-0123456789ab",
+      "name": "Derive Step",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5136,
+        1008
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Site Chat": {
+      "main": [
+        [
+          {
+            "node": "Normalize Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Data": {
+      "main": [
+        [
+          {
+            "node": "IF - Empty Message?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Empty Message?": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response - Empty Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DB - Check Lead Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB - Check Lead Exists": {
+      "main": [
+        [
+          {
+            "node": "IF - Lead Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Lead Exists?": {
+      "main": [
+        [
+          {
+            "node": "Merge - Existing Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DB - Create Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB - Create Lead": {
+      "main": [
+        [
+          {
+            "node": "Merge - New Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge - Existing Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Append User Message to History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge - New Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Append User Message to History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append User Message to History": {
+      "main": [
+        [
+          {
+            "node": "AI - HSB Concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [
+          {
+            "node": "Append AI Response to History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append AI Response to History": {
+      "main": [
+        [
+          {
+            "node": "Derive Step",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB - Update Lead": {
+      "main": [
+        [
+          {
+            "node": "IF - Briefing Complete?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Briefing Complete?": {
+      "main": [
+        [
+          {
+            "node": "Notion - Create Lead Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Webhook Response - Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - Create Lead Page": {
+      "main": [
+        [
+          {
+            "node": "Generate Internal Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Internal Summary": {
+      "main": [
+        [
+          {
+            "node": "Email - Send Lead Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email - Send Lead Summary": {
+      "main": [
+        [
+          {
+            "node": "DB - Mark Sent to Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB - Mark Sent to Team": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response - Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Derive Step": {
+      "main": [
+        [
+          {
+            "node": "DB - Update Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - HSB Concierge": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "b044ff85-a4ec-484e-8b3e-c0cec4dcde55",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cbd3965906b5880c5cbecd77a36682d6776f3d52ed8d93f503d0ef0bf67bf614"
+  },
+  "id": "XnKgcmFeQMbUJ4ky",
+  "tags": []
+}

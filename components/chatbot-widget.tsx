@@ -6,10 +6,26 @@ import styles from './chatbot-widget.module.css';
 import { track } from '@/lib/analytics';
 
 const STORAGE_KEY = 'hsb_chat_v2';
+const SESSION_KEY = 'hsb_chat_session_v1';
 
 type Msg = { role: 'bot' | 'user'; text: string };
 type Stored = { locale: string; msgs: Msg[] };
 type Step = 'service_identified' | 'contact_data_collecting' | 'contact_data_complete';
+
+function getOrCreateSessionId(): string {
+  if (typeof window === 'undefined') return '';
+  try {
+    const existing = localStorage.getItem(SESSION_KEY);
+    if (existing) return existing;
+    const fresh = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : `web_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    localStorage.setItem(SESSION_KEY, fresh);
+    return fresh;
+  } catch {
+    return `web_${Date.now()}`;
+  }
+}
 
 export function ChatbotWidget() {
   const t = useTranslations('Chatbot');
@@ -118,7 +134,7 @@ export function ChatbotWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: q }),
+        body: JSON.stringify({ message: q, sessionId: getOrCreateSessionId() }),
         signal: ctrl.signal,
       });
       clearTimeout(timeoutId);
@@ -156,7 +172,10 @@ export function ChatbotWidget() {
     messagesSentRef.current = 0;
     lastStepRef.current = undefined;
     completedRef.current = false;
-    try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SESSION_KEY);
+    } catch { /* ignore */ }
   };
 
   const handleOpen = () => {
