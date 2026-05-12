@@ -47,6 +47,8 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
+  background-color: rgb(var(--bg));
+  transition: background-color 0.3s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -60,9 +62,10 @@ html {
 }
 
 body {
-  @apply bg-bg text-fg antialiased;
+  @apply text-fg antialiased;
+  background-color: transparent;
   font-family: var(--sans);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 ::selection {
@@ -92,6 +95,7 @@ html:not(.dark) .brand-logo-mark {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: sheen 6s ease-in-out infinite;
+  padding-bottom: 0.18em;
 }
 @keyframes sheen {
   0%, 100% { background-position: 0% 50%; }

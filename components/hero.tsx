@@ -49,7 +49,7 @@ export function Hero() {
 
         <div aria-hidden="true">
           {lines.map((line, i) => (
-            <div key={line.text} className="overflow-hidden">
+            <div key={line.text} className="overflow-hidden text-[clamp(2.6rem,9.8vw,9rem)] pb-[0.22em] -mb-[0.18em]">
               <motion.span
                 initial={lineInitial}
                 animate={lineAnimate}

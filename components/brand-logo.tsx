@@ -15,7 +15,7 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
       className="brand-logo-mark"
       style={{
         objectFit: 'contain',
-        width: compact ? '4rem' : '6rem',
+        width: compact ? '6rem' : '8.5rem',
         height: 'auto',
       }}
     />

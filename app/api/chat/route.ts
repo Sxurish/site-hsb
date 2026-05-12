@@ -72,7 +72,10 @@ export async function POST(req: NextRequest) {
     }
     const cleaned = message.trim().slice(0, 500);
 
-    const webhookUrl = process.env.N8N_WEBHOOK_URL ?? 'https://kaykywbraz.app.n8n.cloud/webhook/hsb-chatbot-site';
+    const webhookUrl = process.env.N8N_WEBHOOK_URL;
+    if (!webhookUrl) {
+      return NextResponse.json({ reply: fallbackReply(cleaned) });
+    }
 
     try {
       const ctrl = new AbortController();

@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
+import { DottedSurface } from '@/components/dotted-surface';
 import '../globals.css';
 
 const instrumentSerif = Instrument_Serif({
@@ -158,6 +159,7 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
+        <DottedSurface />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <LanguageBanner />
           {children}
