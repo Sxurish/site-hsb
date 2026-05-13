@@ -7,12 +7,27 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  // Necessario pro proxy reverso do PostHog (/ingest) funcionar com paths sem trailing slash
+  skipTrailingSlashRedirect: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 dias
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
+  // Reverse proxy pra PostHog — burla adblockers (ERR_BLOCKED_BY_CLIENT)
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://eu-assets.i.posthog.com/static/:path*',
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://eu.i.posthog.com/:path*',
+      },
+    ];
   },
   async headers() {
     const securityHeaders = [

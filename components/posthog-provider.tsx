@@ -12,14 +12,17 @@ function bootIfAllowed() {
   if (typeof window === 'undefined') return;
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com';
+  // O front sempre fala com /ingest (proxy reverso no next.config.mjs)
+  // pra burlar adblockers que bloqueiam *.posthog.com (ERR_BLOCKED_BY_CLIENT).
+  // O ui_host aponta pro domínio real só pra os links "Open in PostHog" funcionarem.
   if (!key) return;
 
   const consent = readConsent();
   if (!consent?.analytics) return;
 
   posthog.init(key, {
-    api_host: host,
+    api_host: '/ingest',
+    ui_host: 'https://eu.posthog.com',
     person_profiles: 'identified_only',
     capture_pageview: false,
     capture_pageleave: true,
