@@ -6,7 +6,7 @@ type BrandLogoProps = {
 };
 
 export function BrandLogo({ compact = false, large = false }: BrandLogoProps) {
-  const width = compact ? '8rem' : large ? '14rem' : '11rem';
+  const width = compact ? '8rem' : large ? '18rem' : '11rem';
   return (
     <Image
       src="/logo.png"
