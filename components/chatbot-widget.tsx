@@ -107,6 +107,13 @@ export function ChatbotWidget() {
     return () => window.removeEventListener('beforeunload', onUnload);
   }, []);
 
+  // Calcula um delay natural baseado no tamanho da mensagem anterior
+  // (simula tempo de leitura/digitação humana).
+  const computeDelay = (prevLen: number) =>
+    Math.min(2000, 700 + prevLen * 25);
+
+  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
   const send = useCallback(async (raw?: string) => {
     const q = (raw ?? text).trim();
     if (!q || busy) return;
@@ -141,8 +148,14 @@ export function ChatbotWidget() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      const reply = data.reply || t('fallback');
       const step = (data.step as Step | undefined);
+
+      // Aceita o novo contrato (array) ou cai pro antigo (string única).
+      const repliesArr: string[] = Array.isArray(data.replies) && data.replies.length
+        ? data.replies.map((s: unknown) => String(s ?? '').trim()).filter(Boolean)
+        : (typeof data.reply === 'string' && data.reply.trim())
+          ? [data.reply.trim()]
+          : [t('fallback')];
 
       track('chatbot_message_received', { step });
 
@@ -156,7 +169,15 @@ export function ChatbotWidget() {
         track('chatbot_completed', { messagesSent: messagesSentRef.current });
       }
 
-      setMsgs((m) => [...m, { role: 'bot', text: reply }]);
+      // Primeira bolha entra com delay curto (simula a IA "começando" a responder).
+      await sleep(400);
+      setMsgs((m) => [...m, { role: 'bot', text: repliesArr[0]! }]);
+
+      // Bolhas seguintes: pausa proporcional ao tamanho da anterior + typing indicator.
+      for (let i = 1; i < repliesArr.length; i++) {
+        await sleep(computeDelay(repliesArr[i - 1]!.length));
+        setMsgs((m) => [...m, { role: 'bot', text: repliesArr[i]! }]);
+      }
     } catch {
       setMsgs((m) => [...m, { role: 'bot', text: t('errorMsg') }]);
       setError('retry');

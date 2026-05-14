@@ -117,12 +117,18 @@ export async function POST(req: NextRequest) {
 
       if (res.ok) {
         const data = await res.json().catch(() => null) as
-          | { reply?: string; message?: string; output?: string; step?: Step }
+          | { replies?: unknown; reply?: string; message?: string; output?: string; step?: Step }
           | null;
-        const reply = data?.reply || data?.message || data?.output;
+
+        // Novo contrato: array de bolhas. Fallback: string única vinda dos campos legados.
+        const repliesArr = Array.isArray(data?.replies)
+          ? (data!.replies as unknown[]).map((s) => String(s ?? '').trim()).filter(Boolean).slice(0, 5)
+          : [];
+        const singleReply = (data?.reply || data?.message || data?.output || '').trim();
+        const replies = repliesArr.length ? repliesArr : (singleReply ? [singleReply] : []);
         const step = data?.step;
 
-        if (reply) {
+        if (replies.length) {
           const client = ph();
           if (client) {
             const distinctId = pseudonymousId(ip);
@@ -144,14 +150,19 @@ export async function POST(req: NextRequest) {
               await client.flush();
             } catch { /* ignore */ }
           }
-          return NextResponse.json({ reply, ...(step ? { step } : {}) });
+          return NextResponse.json({
+            replies,
+            reply: replies.join('\n\n'),
+            ...(step ? { step } : {}),
+          });
         }
       }
     } catch {
       // fallthrough → fallback
     }
 
-    return NextResponse.json({ reply: fallbackReply(cleaned) });
+    const fb = fallbackReply(cleaned);
+    return NextResponse.json({ replies: [fb], reply: fb });
   } catch {
     return NextResponse.json(
       { reply: 'Ops, tivemos uma instabilidade. Tente novamente ou fale conosco pelo WhatsApp.' },
