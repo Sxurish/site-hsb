@@ -243,7 +243,7 @@
   font-family: var(--sans);
   font-size: 13.5px;
   line-height: 1.45;
-  padding: 10px 14px;
+  padding: 10px 10px 10px 14px;
   border-radius: 18px;
   outline: none;
   resize: none;
@@ -253,9 +253,15 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236,228,208,.18) transparent;
 }
 .input::placeholder { color: var(--mute); }
 .input:focus { border-color: var(--acc); }
+.input::-webkit-scrollbar { width: 6px; }
+.input::-webkit-scrollbar-track { background: transparent; margin: 8px 0; }
+.input::-webkit-scrollbar-thumb { background: rgba(236,228,208,.18); border-radius: 3px; }
+.input::-webkit-scrollbar-thumb:hover { background: rgba(236,228,208,.32); }
 
 .sendBtn {
   appearance: none;
