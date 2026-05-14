@@ -72,6 +72,20 @@ function fallbackReply(message: string): string {
     : 'Obrigado pela mensagem! Um especialista da HSB vai entrar em contato em breve. Enquanto isso, explore nossos serviços na página.';
 }
 
+// Remove markdown que a IA às vezes manda apesar do prompt proibir.
+function stripMarkdown(s: string): string {
+  return s
+    .replace(/\*\*\*(.+?)\*\*\*/g, '$1')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/(^|\s)\*(\S(?:.*?\S)?)\*(?=\s|[.,!?:;]|$)/g, '$1$2')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/(^|\s)_(\S(?:.*?\S)?)_(?=\s|[.,!?:;]|$)/g, '$1$2')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .trim();
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = getIp(req);
@@ -122,9 +136,9 @@ export async function POST(req: NextRequest) {
 
         // Novo contrato: array de bolhas. Fallback: string única vinda dos campos legados.
         const repliesArr = Array.isArray(data?.replies)
-          ? (data!.replies as unknown[]).map((s) => String(s ?? '').trim()).filter(Boolean).slice(0, 5)
+          ? (data!.replies as unknown[]).map((s) => stripMarkdown(String(s ?? ''))).filter(Boolean).slice(0, 5)
           : [];
-        const singleReply = (data?.reply || data?.message || data?.output || '').trim();
+        const singleReply = stripMarkdown(data?.reply || data?.message || data?.output || '');
         const replies = repliesArr.length ? repliesArr : (singleReply ? [singleReply] : []);
         const step = data?.step;
 
