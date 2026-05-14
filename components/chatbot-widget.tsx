@@ -41,7 +41,7 @@ export function ChatbotWidget() {
   const [error, setError] = useState<string | null>(null);
 
   const streamRef = useRef<HTMLDivElement>(null);
-  const inputRef  = useRef<HTMLInputElement>(null);
+  const inputRef  = useRef<HTMLTextAreaElement>(null);
   const lastUserMsg = useRef<string>('');
   const messagesSentRef = useRef<number>(0);
   const lastStepRef = useRef<Step | undefined>(undefined);
@@ -123,6 +123,8 @@ export function ChatbotWidget() {
     }
     setError(null);
     setText('');
+    // Reseta altura do textarea (auto-grow não dispara em mudança programática)
+    if (inputRef.current) inputRef.current.style.height = '';
     lastUserMsg.current = q;
     messagesSentRef.current += 1;
 
@@ -319,16 +321,30 @@ export function ChatbotWidget() {
             className={styles.form}
             onSubmit={(e) => { e.preventDefault(); send(); }}
           >
-            <input
+            <textarea
               ref={inputRef}
               className={styles.input}
               placeholder={t('inputPlaceholder')}
               value={text}
-              onChange={(e) => { setText(e.target.value); if (error && error !== 'retry') setError(null); }}
+              onChange={(e) => {
+                setText(e.target.value);
+                // Auto-grow até o max-height definido no CSS
+                e.currentTarget.style.height = 'auto';
+                e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+                if (error && error !== 'retry') setError(null);
+              }}
+              onKeyDown={(e) => {
+                // Enter envia; Shift+Enter quebra linha
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
               aria-label={t('inputAria')}
               disabled={busy}
               maxLength={500}
               autoComplete="off"
+              rows={1}
             />
             <button
               className={styles.sendBtn}

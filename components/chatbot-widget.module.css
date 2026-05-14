@@ -227,7 +227,7 @@
 
 .form {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
   padding: 12px 12px 14px;
   border-top: 1px solid var(--line);
@@ -236,15 +236,23 @@
 
 .input {
   flex: 1;
+  min-width: 0;
   background: rgba(236,228,208,.05);
   border: 1px solid var(--line);
   color: var(--bone);
   font-family: var(--sans);
   font-size: 13.5px;
-  padding: 11px 14px;
-  border-radius: 999px;
+  line-height: 1.45;
+  padding: 10px 14px;
+  border-radius: 18px;
   outline: none;
+  resize: none;
+  overflow-y: auto;
+  max-height: 120px;
   transition: border-color .2s ease;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .input::placeholder { color: var(--mute); }
 .input:focus { border-color: var(--acc); }
