@@ -2,9 +2,11 @@ import Image from 'next/image';
 
 type BrandLogoProps = {
   compact?: boolean;
+  large?: boolean;
 };
 
-export function BrandLogo({ compact = false }: BrandLogoProps) {
+export function BrandLogo({ compact = false, large = false }: BrandLogoProps) {
+  const width = compact ? '8rem' : large ? '14rem' : '11rem';
   return (
     <Image
       src="/logo.png"
@@ -15,7 +17,7 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
       className="brand-logo-mark"
       style={{
         objectFit: 'contain',
-        width: compact ? '8rem' : '11rem',
+        width,
         height: 'auto',
       }}
     />

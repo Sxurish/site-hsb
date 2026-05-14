@@ -15,7 +15,7 @@ export function Footer() {
     <footer className="border-t border-border/[0.08]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-12 md:flex-row md:items-end md:justify-between md:px-8">
         <div>
-          <BrandLogo />
+          <BrandLogo large />
           <p className="mt-4 text-sm text-fg/30">{t('tagline')}</p>
           <p className="text-sm text-fg/30">{t('location')}</p>
         </div>

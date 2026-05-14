@@ -30,7 +30,7 @@ export function Hero() {
   const lineAnimate = { y: 0, opacity: 1 };
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-28 pb-12 md:pt-32 md:pb-16">
+    <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-40 pb-12 md:pt-44 md:pb-16">
       {/* Glow ambiente */}
       <div className="pointer-events-none absolute -top-40 left-1/4 -z-10 h-[600px] w-[600px] rounded-full bg-accent opacity-[0.06] blur-[140px] dark:opacity-[0.18]" />
       <div className="pointer-events-none absolute -bottom-40 right-0 -z-10 h-[420px] w-[420px] rounded-full bg-accent-soft opacity-[0.04] blur-[120px] dark:opacity-[0.10]" />
