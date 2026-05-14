@@ -26,15 +26,21 @@ function ph(): PostHog | null {
   return _ph;
 }
 
-function pseudonymousId(ip: string): string {
-  const salt = process.env.POSTHOG_ID_SALT || 'hsb-default-salt';
+function pseudonymousId(ip: string): string | null {
+  const salt = process.env.POSTHOG_ID_SALT;
+  // Sem salt configurado não gera ID derivado de IP — evita pseudonimização previsível.
+  if (!salt) return null;
   return 'anon_' + crypto.createHash('sha256').update(ip + '|' + salt).digest('hex').slice(0, 24);
 }
 
 function getIp(req: NextRequest): string {
+  // x-real-ip é definido pelo proxy/CDN (Vercel/nginx) e não pode ser forjado pelo cliente.
+  const realIp = req.headers.get('x-real-ip');
+  if (realIp) return realIp.trim();
+  // Fallback: último valor do XFF — adicionado pelo proxy mais próximo, não pelo cliente.
   const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0]!.trim();
-  return req.headers.get('x-real-ip') || 'unknown';
+  if (xff) return xff.split(',').at(-1)!.trim();
+  return 'unknown';
 }
 
 function rateLimit(ip: string): { ok: boolean; retryAfter?: number } {
@@ -144,8 +150,8 @@ export async function POST(req: NextRequest) {
 
         if (replies.length) {
           const client = ph();
-          if (client) {
-            const distinctId = pseudonymousId(ip);
+          const distinctId = pseudonymousId(ip);
+          if (client && distinctId) {
             try {
               if (step) {
                 client.capture({
