@@ -158,11 +158,13 @@
 
 .msg {
   max-width: 84%;
+  min-width: 0;
   font-size: 13.5px;
   line-height: 1.5;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
+  hyphens: auto;
 }
 
 .bot {
