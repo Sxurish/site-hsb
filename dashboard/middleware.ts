@@ -1,25 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifySessionToken, COOKIE_NAME } from './lib/session';
 
-// Rotas que exigem autenticação
-const PROTECTED = ['/overview', '/leads', '/funnel', '/insights', '/goals', '/reports'];
+const PROTECTED = ['/overview', '/leads', '/funnel', '/insights', '/goals', '/reports', '/settings'];
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const isProtected = PROTECTED.some((p) => pathname.startsWith(p));
+  const isProtected = PROTECTED.some((p) => pathname === p || pathname.startsWith(p + '/'));
   if (!isProtected) return NextResponse.next();
 
-  // TODO: substituir por verificação real de sessão (NextAuth / Supabase Auth)
-  // Exemplo com NextAuth:
-  //   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  //   if (!session) return NextResponse.redirect(new URL('/login', req.url));
-  //
-  // Exemplo com Supabase Auth:
-  //   const { data: { session } } = await supabase.auth.getSession();
-  //   if (!session) return NextResponse.redirect(new URL('/login', req.url));
+  const token = req.cookies.get(COOKIE_NAME)?.value;
+  if (!token) {
+    return redirectToLogin(req, pathname);
+  }
 
-  // Por enquanto, passa direto (auth stub)
-  return NextResponse.next();
+  const userId = await verifySessionToken(token);
+  if (!userId) {
+    // Token inválido ou expirado — redireciona e limpa o cookie
+    const res = redirectToLogin(req, pathname);
+    res.cookies.set(COOKIE_NAME, '', { maxAge: 0, path: '/' });
+    return res;
+  }
+
+  // Passa a identidade para os headers (útil para server components)
+  const reqHeaders = new Headers(req.headers);
+  reqHeaders.set('x-dashboard-user', userId);
+  return NextResponse.next({ request: { headers: reqHeaders } });
+}
+
+function redirectToLogin(req: NextRequest, from: string) {
+  const url = new URL('/login', req.url);
+  if (from && from !== '/') url.searchParams.set('from', from);
+  return NextResponse.redirect(url);
 }
 
 export const config = {
