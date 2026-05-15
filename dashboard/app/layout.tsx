@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard.hsbcompany.com';
+
 export const viewport: Viewport = {
   themeColor: '#0c0b0a',
   width: 'device-width',
@@ -8,9 +10,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: { default: 'HSB Dashboard', template: '%s | HSB Dashboard' },
   description: 'Área interna HSB Company — métricas, leads e insights.',
-  robots: { index: false, follow: false },
+  // Nunca indexar — área interna protegida
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+  // Sem OG/Twitter cards (não deve aparecer em redes sociais)
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
