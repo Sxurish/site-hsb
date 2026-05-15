@@ -1,6 +1,7 @@
 'use client';
 
 import { Bell, RefreshCw } from 'lucide-react';
+import { useUser } from '@/components/auth/user-context';
 
 interface HeaderProps {
   title: string;
@@ -8,7 +9,16 @@ interface HeaderProps {
   action?: React.ReactNode;
 }
 
+function initials(name: string | null, email: string): string {
+  if (name) {
+    const parts = name.trim().split(/\s+/);
+    return ((parts[0]?.[0] ?? '') + (parts[parts.length - 1]?.[0] ?? '')).toUpperCase() || '?';
+  }
+  return (email[0] ?? '?').toUpperCase();
+}
+
 export function Header({ title, subtitle, action }: HeaderProps) {
+  const user = useUser();
   const now = new Date();
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
@@ -41,9 +51,11 @@ export function Header({ title, subtitle, action }: HeaderProps) {
           <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-gold ring-1 ring-surface" />
         </button>
 
-        {/* Avatar */}
-        <div className="ml-1 flex h-8 w-8 items-center justify-center rounded-full bg-gold-dim ring-1 ring-gold/20">
-          <span className="text-xs font-bold text-gold">AL</span>
+        <div
+          className="ml-1 flex h-8 w-8 items-center justify-center rounded-full bg-gold-dim ring-1 ring-gold/20"
+          title={`${user.full_name ?? user.email} (${user.role})`}
+        >
+          <span className="text-xs font-bold text-gold">{initials(user.full_name, user.email)}</span>
         </div>
       </div>
     </div>

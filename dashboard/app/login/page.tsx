@@ -1,51 +1,44 @@
 'use client';
 
-import { useState, useRef, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const from = params.get('from') ?? '/overview';
 
-  const [error, setError]     = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const userRef = useRef<HTMLInputElement>(null);
-  const passRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]       = useState<string | null>(null);
+  const [loading, setLoading]   = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: userRef.current?.value.trim(),
-          password: passRef.current?.value,
-        }),
-      });
+    const { error: authError } = await createClient().auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
 
-      if (res.ok) {
-        router.replace(from);
-        return;
-      }
-
-      const data = await res.json().catch(() => ({})) as { error?: string };
+    if (authError) {
       setError(
-        res.status === 429
-          ? 'Muitas tentativas. Aguarde 1 minuto e tente novamente.'
-          : (data.error ?? 'Usuário ou senha incorretos.')
+        authError.message === 'Invalid login credentials'
+          ? 'E-mail ou senha incorretos.'
+          : authError.message,
       );
-    } catch {
-      setError('Falha de conexão. Tente novamente.');
-    } finally {
+      setPassword('');
       setLoading(false);
-      if (passRef.current) passRef.current.value = '';
+      return;
     }
+
+    router.replace(from);
+    router.refresh();
   };
 
   const fieldClass =
@@ -54,12 +47,30 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.15em] text-muted">Usuário</label>
-        <input ref={userRef} type="text" name="username" required autoComplete="username" placeholder="seu.usuario" disabled={loading} className={fieldClass} />
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.15em] text-muted">E-mail</label>
+        <input
+          type="email"
+          required
+          autoComplete="email"
+          placeholder="voce@hsbcompany.com.br"
+          disabled={loading}
+          className={fieldClass}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <div>
         <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.15em] text-muted">Senha</label>
-        <input ref={passRef} type="password" name="password" required autoComplete="current-password" placeholder="••••••••" disabled={loading} className={fieldClass} />
+        <input
+          type="password"
+          required
+          autoComplete="current-password"
+          placeholder="••••••••"
+          disabled={loading}
+          className={fieldClass}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
 
       {error && (
@@ -76,6 +87,12 @@ function LoginForm() {
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {loading ? 'Entrando...' : 'Acessar Dashboard'}
       </button>
+
+      <p className="pt-1 text-center text-xs">
+        <Link href="/reset-password" className="text-muted transition hover:text-ink">
+          Esqueci minha senha
+        </Link>
+      </p>
     </form>
   );
 }
@@ -102,9 +119,6 @@ export default function LoginPage() {
           <Suspense>
             <LoginForm />
           </Suspense>
-          <p className="mt-4 text-center text-xs text-muted">
-            Problemas de acesso? Fale com o admin.
-          </p>
         </div>
 
         <p className="mt-6 text-center text-xs text-muted/40">
