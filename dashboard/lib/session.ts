@@ -7,7 +7,7 @@ export const MAX_AGE_SEC = 60 * 60 * 8; // 8 horas
 async function importKey(secret: string): Promise<CryptoKey> {
   return crypto.subtle.importKey(
     'raw',
-    new TextEncoder().encode(secret),
+    new TextEncoder().encode(secret) as BufferSource,
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign', 'verify'],
@@ -31,7 +31,7 @@ export async function createSessionToken(userId: string): Promise<string> {
   const exp = Math.floor(Date.now() / 1000) + MAX_AGE_SEC;
   const payload = `${encodeURIComponent(userId)}.${exp}`;
   const key = await importKey(secret);
-  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload) as BufferSource);
   return `${payload}.${b64uEncode(sig)}`;
 }
 
@@ -46,7 +46,7 @@ export async function verifySessionToken(token: string): Promise<string | null> 
 
     const key = await importKey(secret);
     const valid = await crypto.subtle.verify(
-      'HMAC', key, b64uDecode(sig), new TextEncoder().encode(payload),
+      'HMAC', key, b64uDecode(sig) as BufferSource, new TextEncoder().encode(payload) as BufferSource,
     );
     if (!valid) return null;
 
