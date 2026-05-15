@@ -15,17 +15,24 @@ export async function requireUser(): Promise<DashboardUser> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: row } = await supabase
+  let { data: row } = await supabase
     .from('dashboard_users')
     .select('id,email,role,full_name')
     .eq('id', user.id)
     .single();
 
+  // Self-heal: se auth.users existe mas dashboard_users não tem a linha,
+  // cria como viewer (trigger pode ter perdido o evento se foi criada depois).
   if (!row) {
-    // Auth user existe mas dashboard_users não foi populado (raro — trigger falhou?)
-    redirect('/login?error=no_dashboard_user');
+    const { data: inserted } = await supabase
+      .from('dashboard_users')
+      .insert({ id: user.id, email: user.email ?? '', role: 'viewer' })
+      .select('id,email,role,full_name')
+      .single();
+    row = inserted;
   }
 
+  if (!row) redirect('/login?error=no_dashboard_user');
   return row as DashboardUser;
 }
 
