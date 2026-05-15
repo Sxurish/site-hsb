@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard.hsbcompany.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard.hsbcompany.com.br';
 
 export const viewport: Viewport = {
   themeColor: '#0c0b0a',
