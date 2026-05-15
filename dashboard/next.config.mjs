@@ -1,5 +1,3 @@
-import type { NextConfig } from 'next';
-
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
@@ -12,7 +10,8 @@ const CSP = [
   "form-action 'self'",
 ].join('; ');
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
 
