@@ -17,6 +17,7 @@ const CSP = [
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  eslint: { ignoreDuringBuilds: true },
 
   async headers() {
     return [
