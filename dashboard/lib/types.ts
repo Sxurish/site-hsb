@@ -1,54 +1,61 @@
-export type LeadStatus =
-  | 'new'
-  | 'contacted'
-  | 'qualified'
-  | 'briefing'
-  | 'proposal'
-  | 'negotiation'
-  | 'won'
-  | 'lost';
-
-export type LeadPriority = 'high' | 'medium' | 'low';
-
-export type ServiceType =
-  | 'Landing Page'
-  | 'SEO'
-  | 'Tráfego Pago'
-  | 'Branding'
-  | 'Vídeo'
-  | 'Automação & IA'
-  | 'Social Media'
-  | 'Full Service';
-
-export type LeadSource =
-  | 'Chatbot'
-  | 'Formulário'
-  | 'WhatsApp'
-  | 'Instagram'
-  | 'LinkedIn'
-  | 'Indicação'
-  | 'Google'
-  | 'Direto';
+// ─── Lead (schema real da tabela `leads` no Supabase) ─────────────────────
+export type LeadStatus = 'novo' | 'em_atendimento' | 'qualificado' | 'enviado_para_equipe';
+export type LeadPriority = 'baixa' | 'media' | 'alta';
 
 export interface Lead {
   id: string;
-  name: string;
-  company: string;
-  service: ServiceType;
-  priority: LeadPriority;
-  status: LeadStatus;
-  source: LeadSource;
-  createdAt: string;
-  assignee: string;
+  leadKey: string;
+  nome: string;
   email: string;
   phone: string;
+  empresa: string;
+  servico: string;            // texto livre coletado pela IA
+  objetivo: string;
+  status: LeadStatus;
+  prioridade: LeadPriority;
+  source: string;
+  stepFunil: string | null;
+  briefingCompleto: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LeadFilters {
+  search: string;
+  status: LeadStatus | 'all';
+  priority: LeadPriority | 'all';
+}
+
+// ─── Métricas ─────────────────────────────────────────────────────────────
+export interface TimePoint {
+  date: string;
+  visitors: number;
+  sessions: number;
+  leads: number;
+}
+
+export interface KpiCard {
+  key: string;
+  label: string;
+  value: number | string;
+  unit?: string;
+  trend: number;              // % vs período anterior
+  sparkline: number[];
+  icon: string;
+  accentColor: string;
 }
 
 export interface FunnelStage {
   label: string;
   count: number;
-  convRate: number | null; // conversão da etapa anterior (null para a primeira)
-  totalRate: number;       // em relação ao topo do funil
+  convRate: number | null;    // conversão da etapa anterior (null na primeira)
+  totalRate: number;          // em relação ao topo do funil
+}
+
+export interface TopService {
+  service: string;
+  leads: number;
+  pct: number;
 }
 
 export interface Goal {
@@ -57,9 +64,18 @@ export interface Goal {
   current: number;
   target: number;
   unit: string;
-  trend: number; // % vs mês anterior
+  trend: number;
 }
 
+export interface MetricsPayload {
+  kpis: KpiCard[];
+  timeSeries: TimePoint[];
+  topServices: TopService[];
+  funnelSummary: { label: string; pct: number; warn?: boolean }[];
+  leadStats: { total: number; avgPerDay: number; best: number };
+}
+
+// ─── Insights / Reports (mock por enquanto — sem fonte de dados crua) ──────
 export type InsightCategory = 'Funil' | 'Produto' | 'Canal' | 'Site' | 'Aria';
 export type InsightSeverity = 'high' | 'medium' | 'info';
 
@@ -72,13 +88,6 @@ export interface Insight {
   action: string;
 }
 
-export interface TimePoint {
-  date: string;
-  visitors: number;
-  sessions: number;
-  leads: number;
-}
-
 export interface Report {
   id: string;
   title: string;
@@ -86,15 +95,4 @@ export interface Report {
   generatedAt: string;
   type: 'weekly' | 'monthly' | 'funnel' | 'leads';
   status: 'ready' | 'generating' | 'scheduled';
-}
-
-export interface KpiCard {
-  key: string;
-  label: string;
-  value: number | string;
-  unit?: string;
-  trend: number; // % positivo = alta, negativo = queda
-  sparkline: number[];
-  icon: string;
-  accentColor: string;
 }

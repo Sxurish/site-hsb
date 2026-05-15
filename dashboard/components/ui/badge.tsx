@@ -1,20 +1,17 @@
 import type { LeadStatus, LeadPriority, InsightSeverity } from '@/lib/types';
+import { STATUS_LABELS, PRIORITY_LABELS } from '@/lib/labels';
 
-const STATUS_CONFIG: Record<LeadStatus, { label: string; dot: string; bg: string; text: string }> = {
-  new:         { label: 'Novo',         dot: 'bg-blue-400',   bg: 'bg-blue-400/10',   text: 'text-blue-300'  },
-  contacted:   { label: 'Contatado',    dot: 'bg-purple-400', bg: 'bg-purple-400/10', text: 'text-purple-300' },
-  qualified:   { label: 'Qualificado',  dot: 'bg-gold',       bg: 'bg-gold-dim',      text: 'text-gold'      },
-  briefing:    { label: 'Briefing',     dot: 'bg-yellow-400', bg: 'bg-yellow-400/10', text: 'text-yellow-300' },
-  proposal:    { label: 'Proposta',     dot: 'bg-orange-400', bg: 'bg-orange-400/10', text: 'text-orange-300' },
-  negotiation: { label: 'Negociação',   dot: 'bg-pink-400',   bg: 'bg-pink-400/10',   text: 'text-pink-300'  },
-  won:         { label: 'Fechado',      dot: 'bg-success',    bg: 'bg-success/10',    text: 'text-success'   },
-  lost:        { label: 'Perdido',      dot: 'bg-danger',     bg: 'bg-danger/10',     text: 'text-danger'    },
+const STATUS_CONFIG: Record<LeadStatus, { dot: string; bg: string; text: string }> = {
+  novo:                { dot: 'bg-blue-400',   bg: 'bg-blue-400/10',   text: 'text-blue-300'   },
+  em_atendimento:      { dot: 'bg-yellow-400', bg: 'bg-yellow-400/10', text: 'text-yellow-300' },
+  qualificado:         { dot: 'bg-gold',       bg: 'bg-gold-dim',      text: 'text-gold'       },
+  enviado_para_equipe: { dot: 'bg-success',    bg: 'bg-success/10',    text: 'text-success'    },
 };
 
-const PRIORITY_CONFIG: Record<LeadPriority, { label: string; color: string }> = {
-  high:   { label: 'Alta',   color: 'text-danger'  },
-  medium: { label: 'Média',  color: 'text-warning' },
-  low:    { label: 'Baixa',  color: 'text-muted'   },
+const PRIORITY_CONFIG: Record<LeadPriority, { color: string; arrow: string }> = {
+  alta:  { color: 'text-danger',  arrow: '↑' },
+  media: { color: 'text-warning', arrow: '→' },
+  baixa: { color: 'text-muted',   arrow: '↓' },
 };
 
 const SEVERITY_CONFIG: Record<InsightSeverity, { label: string; bg: string; text: string; border: string }> = {
@@ -28,7 +25,7 @@ export function StatusBadge({ status }: { status: LeadStatus }) {
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${c.bg} ${c.text}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
-      {c.label}
+      {STATUS_LABELS[status]}
     </span>
   );
 }
@@ -37,7 +34,7 @@ export function PriorityBadge({ priority }: { priority: LeadPriority }) {
   const c = PRIORITY_CONFIG[priority];
   return (
     <span className={`text-xs font-semibold tracking-wide ${c.color}`}>
-      {priority === 'high' ? '↑' : priority === 'low' ? '↓' : '→'} {c.label}
+      {c.arrow} {PRIORITY_LABELS[priority]}
     </span>
   );
 }
