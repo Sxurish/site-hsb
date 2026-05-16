@@ -12,11 +12,16 @@ export async function middleware(req: NextRequest) {
   if (!user && !isPublic) {
     const url = new URL('/login', req.url);
     if (pathname && pathname !== '/') url.searchParams.set('from', pathname);
-    return NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(url);
+    // CRITICAL: preserva cookies de refresh setados pelo Supabase
+    supabaseResponse.cookies.getAll().forEach((c) => redirect.cookies.set(c.name, c.value));
+    return redirect;
   }
 
   if (user && pathname === '/login') {
-    return NextResponse.redirect(new URL('/overview', req.url));
+    const redirect = NextResponse.redirect(new URL('/overview', req.url));
+    supabaseResponse.cookies.getAll().forEach((c) => redirect.cookies.set(c.name, c.value));
+    return redirect;
   }
 
   if (user) {
