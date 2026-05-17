@@ -1,4 +1,5 @@
-'use client';
+// SVG puro, sem hooks/eventos — pode ser RSC. Não marcar como 'use client'
+// pra não forçar StatCard inteiro pro bundle do cliente.
 
 interface SparklineProps {
   data: number[];

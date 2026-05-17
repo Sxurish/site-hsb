@@ -1,6 +1,9 @@
 // Service server-only — NUNCA importar em client component (usa service role key).
 import { createClient } from '@supabase/supabase-js';
+import { unstable_cache } from 'next/cache';
 import type { Lead, LeadStatus, TopService } from '../types';
+
+export const LEADS_CACHE_TAG = 'leads';
 
 function getClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -57,15 +60,21 @@ function mapLead(row: LeadRow): Lead {
   };
 }
 
-export async function fetchLeads(): Promise<Lead[]> {
-  const { data, error } = await getClient()
-    .from('leads')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(500);
-  if (error) throw new Error(`Supabase fetchLeads: ${error.message}`);
-  return (data as LeadRow[]).map(mapLead);
-}
+// Network call wrapped em unstable_cache: 60s TTL + tag pra revalidação manual
+// no PATCH /api/leads. Dedup automático dentro do mesmo request também.
+export const fetchLeads = unstable_cache(
+  async (): Promise<Lead[]> => {
+    const { data, error } = await getClient()
+      .from('leads')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(500);
+    if (error) throw new Error(`Supabase fetchLeads: ${error.message}`);
+    return (data as LeadRow[]).map(mapLead);
+  },
+  ['leads-all'],
+  { revalidate: 60, tags: [LEADS_CACHE_TAG] },
+);
 
 export async function updateLeadStatus(id: string, status: LeadStatus): Promise<void> {
   const { error } = await getClient().from('leads').update({ status }).eq('lead_key', id);
@@ -79,9 +88,10 @@ export interface LeadCounts {
   briefingsCompletos: number;
 }
 
-// Contagens dos últimos `days` dias (e período anterior, para tendência).
-export async function fetchLeadCounts(days = 30): Promise<{ current: LeadCounts; previous: LeadCounts }> {
-  const leads = await fetchLeads();
+// ─── Compute functions puras (sem I/O) ─────────────────────────────────────
+// Recebem leads já carregados pra evitar N+1 do fetchLeads no buildMetricsPayload.
+
+export function computeLeadCounts(leads: Lead[], days = 30): { current: LeadCounts; previous: LeadCounts } {
   const now = Date.now();
   const dayMs = 86_400_000;
   const curFrom = now - days * dayMs;
@@ -103,31 +113,43 @@ export async function fetchLeadCounts(days = 30): Promise<{ current: LeadCounts;
   return { current: count(curFrom, now), previous: count(prevFrom, curFrom) };
 }
 
-export async function fetchTopServices(days = 30, limit = 5): Promise<TopService[]> {
-  const leads = await fetchLeads();
+export function computeTopServices(leads: Lead[], days = 30, limit = 5): TopService[] {
   const from = Date.now() - days * 86_400_000;
   const recent = leads.filter((l) => new Date(l.createdAt).getTime() >= from);
+  if (recent.length === 0) return [];
   const byService = new Map<string, number>();
   for (const l of recent) {
     byService.set(l.servico, (byService.get(l.servico) ?? 0) + 1);
   }
-  const total = recent.length || 1;
   return Array.from(byService.entries())
-    .map(([service, leads]) => ({ service, leads, pct: Math.round((leads / total) * 100) }))
+    .map(([service, n]) => ({ service, leads: n, pct: Math.round((n / recent.length) * 100) }))
     .sort((a, b) => b.leads - a.leads)
     .slice(0, limit);
 }
 
-// Leads por dia nos últimos `days` dias — Map<'dd/mm', n>
-export async function fetchLeadsPerDay(days = 30): Promise<Map<string, number>> {
-  const leads = await fetchLeads();
+// Map<'dd/mm', n> — fuso fixo America/Sao_Paulo pra bater com o bucket do PostHog.
+export function computeLeadsPerDay(leads: Lead[], days = 30): Map<string, number> {
   const from = Date.now() - days * 86_400_000;
+  const fmt = new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo',
+  });
   const map = new Map<string, number>();
   for (const l of leads) {
     const t = new Date(l.createdAt).getTime();
     if (t < from) continue;
-    const key = new Date(l.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+    const key = fmt.format(new Date(l.createdAt));
     map.set(key, (map.get(key) ?? 0) + 1);
   }
   return map;
+}
+
+// Wrappers retrocompat — usam fetchLeads cached. Preferir os compute* em código novo.
+export async function fetchLeadCounts(days = 30) {
+  return computeLeadCounts(await fetchLeads(), days);
+}
+export async function fetchTopServices(days = 30, limit = 5) {
+  return computeTopServices(await fetchLeads(), days, limit);
+}
+export async function fetchLeadsPerDay(days = 30) {
+  return computeLeadsPerDay(await fetchLeads(), days);
 }

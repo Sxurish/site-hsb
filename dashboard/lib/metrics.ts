@@ -1,6 +1,8 @@
 // Composição server-only: junta PostHog + Supabase nas formas que o dashboard consome.
 import { fetchDailySeries, fetchPeriodTotals, fetchFunnelCounts } from './services/posthog';
-import { fetchLeadCounts, fetchTopServices, fetchLeadsPerDay } from './services/supabase';
+import {
+  fetchLeads, computeLeadCounts, computeTopServices, computeLeadsPerDay,
+} from './services/supabase';
 import { GOALS_CONFIG } from './goals-config';
 import type { KpiCard, FunnelStage, Goal, TimePoint, MetricsPayload } from './types';
 
@@ -24,14 +26,17 @@ function buildTimeSeries(
 }
 
 export async function buildMetricsPayload(): Promise<MetricsPayload> {
-  const [daily, totals, leadCounts, topServices, leadsPerDay, funnel] = await Promise.all([
+  // 1 round-trip de leads (era 3) + 3 round-trips PostHog em paralelo.
+  const [daily, totals, leads, funnel] = await Promise.all([
     fetchDailySeries(DAYS),
     fetchPeriodTotals(DAYS),
-    fetchLeadCounts(DAYS),
-    fetchTopServices(DAYS),
-    fetchLeadsPerDay(DAYS),
+    fetchLeads(),
     fetchFunnelCounts(DAYS),
   ]);
+
+  const leadCounts = computeLeadCounts(leads, DAYS);
+  const topServices = computeTopServices(leads, DAYS);
+  const leadsPerDay = computeLeadsPerDay(leads, DAYS);
 
   const timeSeries = buildTimeSeries(daily, leadsPerDay);
   const visitorSpark = timeSeries.slice(-12).map((p) => p.visitors);
@@ -109,10 +114,11 @@ export async function buildMetricsPayload(): Promise<MetricsPayload> {
 }
 
 export async function buildFunnelStages(): Promise<FunnelStage[]> {
-  const [funnel, leadCounts] = await Promise.all([
+  const [funnel, leads] = await Promise.all([
     fetchFunnelCounts(DAYS),
-    fetchLeadCounts(DAYS),
+    fetchLeads(),
   ]);
+  const leadCounts = computeLeadCounts(leads, DAYS);
 
   const raw: { label: string; count: number }[] = [
     { label: 'Visitante', count: funnel.visitors },
@@ -137,10 +143,11 @@ export async function buildFunnelStages(): Promise<FunnelStage[]> {
 }
 
 export async function buildGoals(): Promise<Goal[]> {
-  const [totals, leadCounts] = await Promise.all([
+  const [totals, leads] = await Promise.all([
     fetchPeriodTotals(DAYS),
-    fetchLeadCounts(DAYS),
+    fetchLeads(),
   ]);
+  const leadCounts = computeLeadCounts(leads, DAYS);
 
   const currentByKey: Record<string, { current: number; previous: number }> = {
     visitors: totals.visitors,
