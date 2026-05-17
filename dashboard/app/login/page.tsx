@@ -6,10 +6,17 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
+// Bloqueia open redirect via `?from=//evil.com` no router.replace.
+function safeFrom(raw: string | null): string {
+  if (!raw) return '/overview';
+  if (!raw.startsWith('/') || raw.startsWith('//') || raw.startsWith('/\\')) return '/overview';
+  return raw;
+}
+
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const from = params.get('from') ?? '/overview';
+  const from = safeFrom(params.get('from'));
 
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
