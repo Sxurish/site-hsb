@@ -29,7 +29,7 @@ export default function ReportsPage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Relatórios" subtitle="Gere e exporte relatórios de performance" />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {/* Gerar novo relatório */}
         <section>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-muted">Gerar novo</h2>
@@ -64,7 +64,8 @@ export default function ReportsPage() {
         <section>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-muted">Histórico</h2>
           <div className="overflow-hidden rounded-2xl border border-border bg-surface">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[560px]">
               <thead>
                 <tr className="border-b border-border">
                   {['Relatório', 'Tipo', 'Período', 'Gerado em', 'Status', 'Download'].map((h) => (
@@ -123,6 +124,7 @@ export default function ReportsPage() {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
         </section>
 

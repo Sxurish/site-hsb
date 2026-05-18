@@ -19,17 +19,17 @@ export default function InsightsPage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Insights" subtitle="Recomendações baseadas em dados — Maio 2025" />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {/* Summary */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: 'Urgentes',   value: highCount,              color: '#f87171', bg: 'bg-danger/5   border-danger/15'  },
             { label: 'Atenção',    value: mediumCount,            color: '#fbbf24', bg: 'bg-warning/5  border-warning/15' },
             { label: 'Total',      value: insights.length,        color: '#f5f2ee', bg: 'bg-surface    border-border'     },
           ].map((s) => (
-            <div key={s.label} className={`rounded-2xl border p-4 ${s.bg}`}>
+            <div key={s.label} className={`rounded-2xl border p-3 sm:p-4 ${s.bg}`}>
               <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-muted">{s.label}</p>
-              <p className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</p>
+              <p className="text-2xl sm:text-3xl font-bold" style={{ color: s.color }}>{s.value}</p>
             </div>
           ))}
         </div>

@@ -1,7 +1,8 @@
 'use client';
 
-import { Bell, RefreshCw } from 'lucide-react';
+import { Bell, RefreshCw, Menu } from 'lucide-react';
 import { useUser } from '@/components/auth/user-context';
+import { useSidebar } from './sidebar-context';
 
 interface HeaderProps {
   title: string;
@@ -19,14 +20,24 @@ function initials(name: string | null, email: string): string {
 
 export function Header({ title, subtitle, action }: HeaderProps) {
   const user = useUser();
+  const { toggle } = useSidebar();
   const now = new Date();
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   });
 
   return (
-    <div className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-surface/80 px-6 backdrop-blur-sm">
-      <div className="min-w-0">
+    <div className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-surface/80 px-4 sm:px-6 backdrop-blur-sm">
+      {/* Hamburger — apenas mobile */}
+      <button
+        onClick={toggle}
+        aria-label="Abrir menu"
+        className="mr-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-ink transition-colors md:hidden"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      <div className="min-w-0 flex-1">
         <h1 className="truncate text-base font-bold text-ink">{title}</h1>
         {subtitle && (
           <p className="text-xs text-muted">{subtitle}</p>

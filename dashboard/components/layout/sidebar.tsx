@@ -12,7 +12,9 @@ import {
   LogOut,
   Settings,
   ChevronRight,
+  X,
 } from 'lucide-react';
+import { useSidebar } from './sidebar-context';
 
 const NAV_ITEMS = [
   { href: '/overview',  label: 'Dashboard',  icon: LayoutDashboard },
@@ -26,6 +28,7 @@ const NAV_ITEMS = [
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { open, close } = useSidebar();
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -33,9 +36,16 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-border bg-surface">
+    <aside
+      className={[
+        'fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-border bg-surface',
+        'transition-transform duration-300 ease-in-out',
+        'md:translate-x-0',
+        open ? 'translate-x-0' : '-translate-x-full',
+      ].join(' ')}
+    >
       {/* Logo */}
-      <div className="flex h-16 shrink-0 items-center border-b border-border px-5">
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-dim ring-1 ring-gold/20">
             <span className="text-sm font-black tracking-tighter text-gold">H</span>
@@ -45,6 +55,13 @@ export function Sidebar() {
             <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">Dashboard</p>
           </div>
         </div>
+        <button
+          onClick={close}
+          aria-label="Fechar menu"
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-ink transition-colors md:hidden"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
       {/* Nav */}
@@ -56,6 +73,7 @@ export function Sidebar() {
             <Link
               key={href}
               href={href}
+              onClick={close}
               className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 active
                   ? 'bg-gold-dim text-gold shadow-glow-sm'
@@ -77,7 +95,11 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="border-t border-border px-2 py-3 space-y-0.5">
-        <Link href="/settings" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-ink transition-all">
+        <Link
+          href="/settings"
+          onClick={close}
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-ink transition-all"
+        >
           <Settings className="h-4 w-4" strokeWidth={1.8} />
           Configurações
         </Link>
