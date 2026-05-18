@@ -25,23 +25,23 @@ function LeadRow({ lead }: { lead: Lead }) {
           <p className="text-xs text-muted">{lead.empresa}</p>
         </div>
       </td>
-      <td className="px-2 py-3.5">
+      <td className="hidden md:table-cell px-2 py-3.5">
         <span className="text-xs text-muted">{lead.servico}</span>
       </td>
-      <td className="px-2 py-3.5">
+      <td className="hidden sm:table-cell px-2 py-3.5">
         <PriorityBadge priority={lead.prioridade} />
       </td>
       <td className="px-2 py-3.5">
         <StatusBadge status={lead.status} />
       </td>
-      <td className="px-2 py-3.5">
+      <td className="hidden md:table-cell px-2 py-3.5">
         <span className="rounded-md bg-surface-2 px-2 py-0.5 text-xs text-muted">{lead.source}</span>
       </td>
-      <td className="px-2 py-3.5">
+      <td className="hidden sm:table-cell px-2 py-3.5">
         <span className="font-mono text-xs text-muted">{formatDate(lead.createdAt)}</span>
       </td>
       <td className="py-3.5 pl-2 pr-4">
-        <div className="flex items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="flex items-center gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
           {waNumber && (
             <a
               href={`https://wa.me/${waNumber}`}
@@ -81,13 +81,23 @@ export default function LeadsPage() {
     setFilters((f) => ({ ...f, [key]: val }));
 
   const selectClass = 'rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs text-ink outline-none focus:border-gold/40 transition';
-  const COLS = ['Nome / Empresa', 'Serviço', 'Prioridade', 'Status', 'Origem', 'Criado em', 'Ação'];
+
+  // colSpan & visibility mirrors LeadRow hidden classes
+  const COLS = [
+    { label: 'Nome / Empresa', cls: ''                        },
+    { label: 'Serviço',        cls: 'hidden md:table-cell'    },
+    { label: 'Prioridade',     cls: 'hidden sm:table-cell'    },
+    { label: 'Status',         cls: ''                        },
+    { label: 'Origem',         cls: 'hidden md:table-cell'    },
+    { label: 'Criado em',      cls: 'hidden sm:table-cell'    },
+    { label: 'Ação',           cls: ''                        },
+  ];
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Leads" subtitle={`${total} leads cadastrados`} />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
         {/* Filtros */}
         <div className="mb-5 flex flex-wrap items-center gap-3">
           <div className="relative flex-1 min-w-[200px]">
@@ -124,9 +134,12 @@ export default function LeadsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border">
-                  {COLS.map((h) => (
-                    <th key={h} className={`px-2 py-3 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-muted ${h === 'Nome / Empresa' ? 'pl-4' : ''} ${h === 'Ação' ? 'pr-4' : ''}`}>
-                      {h}
+                  {COLS.map(({ label, cls }) => (
+                    <th
+                      key={label}
+                      className={`px-2 py-3 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-muted ${label === 'Nome / Empresa' ? 'pl-4' : ''} ${label === 'Ação' ? 'pr-4' : ''} ${cls}`}
+                    >
+                      {label}
                     </th>
                   ))}
                 </tr>
@@ -135,8 +148,8 @@ export default function LeadsPage() {
                 {loading
                   ? Array.from({ length: 8 }).map((_, i) => (
                       <tr key={i} className="border-b border-border/50">
-                        {COLS.map((__, j) => (
-                          <td key={j} className="px-2 py-3.5">
+                        {COLS.map(({ label, cls }) => (
+                          <td key={label} className={`px-2 py-3.5 ${cls}`}>
                             <div className="h-4 animate-pulse rounded-lg bg-surface-2" />
                           </td>
                         ))}

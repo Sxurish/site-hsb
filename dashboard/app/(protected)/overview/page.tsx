@@ -17,7 +17,7 @@ export default function OverviewPage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Dashboard" subtitle="Visão geral de performance — últimos 30 dias" />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (
           <div className="rounded-xl border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger">
             Erro ao carregar métricas: {error}
@@ -27,7 +27,7 @@ export default function OverviewPage() {
         {/* KPI Grid */}
         <section>
           <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-muted">Métricas do período</h2>
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-36" />)
               : kpis.map((card, i) => <StatCard key={card.key} card={card} delay={i * 50} />)

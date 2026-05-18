@@ -30,7 +30,7 @@ export default async function GoalsPage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Metas" subtitle={`Acompanhamento — últimos 30 dias`} />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (
           <div className="rounded-xl border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger">
             Erro ao carregar metas: {error}
@@ -40,7 +40,7 @@ export default async function GoalsPage() {
         {!error && (
           <>
             {/* Status do mês */}
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {[
                 { label: 'Dia do mês',      value: `${today}/${daysInMonth}`,        sub: `${elapsed.toFixed(0)}% do período`,  color: '#60a5fa' },
                 { label: 'Progresso médio', value: `${avgProgress.toFixed(0)}%`,     sub: 'média das metas',                    color: avgProgress >= elapsed ? '#4ade80' : '#fbbf24' },

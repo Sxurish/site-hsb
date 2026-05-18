@@ -28,7 +28,7 @@ export default async function FunnelPage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <Header title="Funil de conversão" subtitle="Jornada completa do visitante ao cliente — últimos 30 dias" />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (
           <div className="rounded-xl border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger">
             Erro ao carregar o funil: {error}
@@ -38,7 +38,7 @@ export default async function FunnelPage() {
         {!error && (
           <>
             {/* Summary cards */}
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {[
                 { label: 'Total de visitantes', value: top.toLocaleString('pt-BR'),    color: '#d4a566' },
                 { label: 'Enviados p/ equipe',  value: bottom.toLocaleString('pt-BR'), color: '#4ade80' },
