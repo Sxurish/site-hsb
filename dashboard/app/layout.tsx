@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
+// CSP usa nonce por request (middleware.ts). Nonce em HTML pré-renderizado
+// fica defasado em runtime → scripts inline do Next quebram com 'strict-dynamic'.
+// Forçar dynamic no root layout garante nonce fresh em toda página.
+export const dynamic = 'force-dynamic';
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard.hsbcompany.com.br';
 
 export const viewport: Viewport = {
