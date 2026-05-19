@@ -5,17 +5,20 @@ import { StatCard } from '@/components/ui/stat-card';
 import { AreaChart } from '@/components/charts/area-chart';
 import { BarChart } from '@/components/charts/bar-chart';
 import { useMetrics } from '@/hooks/use-metrics';
+import { useDateRange } from '@/hooks/use-date-range';
+import { rangeLabel } from '@/lib/date-range';
 
 function Skeleton({ className = '' }: { className?: string }) {
   return <div className={`animate-pulse rounded-xl bg-surface-2 ${className}`} />;
 }
 
 export default function OverviewPage() {
-  const { kpis, timeSeries, topServices, funnelSummary, leadStats, loading, error } = useMetrics();
+  const { range } = useDateRange();
+  const { kpis, timeSeries, topServices, funnelSummary, leadStats, loading, error } = useMetrics(range);
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <Header title="Dashboard" subtitle="Visão geral de performance — últimos 30 dias" />
+      <Header title="Dashboard" subtitle={`Visão geral — ${rangeLabel(range).toLowerCase()}`} />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (
@@ -40,8 +43,8 @@ export default function OverviewPage() {
           <section className="lg:col-span-3 rounded-2xl border border-border bg-surface p-5">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-bold text-ink">Tráfego — 30 dias</h2>
-                <p className="text-xs text-muted">Visitantes únicos e sessões</p>
+                <h2 className="text-sm font-bold text-ink">Tráfego</h2>
+                <p className="text-xs text-muted">Visitantes únicos e sessões — {rangeLabel(range).toLowerCase()}</p>
               </div>
               <div className="flex items-center gap-4 text-xs text-muted">
                 <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-gold inline-block" /> Visitantes</span>
@@ -53,7 +56,7 @@ export default function OverviewPage() {
 
           <section className="lg:col-span-2 rounded-2xl border border-border bg-surface p-5">
             <div className="mb-4">
-              <h2 className="text-sm font-bold text-ink">Leads — 14 dias</h2>
+              <h2 className="text-sm font-bold text-ink">Leads</h2>
               <p className="text-xs text-muted">Novos leads por dia</p>
             </div>
             {loading ? <Skeleton className="h-[160px]" /> : <BarChart data={timeSeries} />}

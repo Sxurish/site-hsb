@@ -1,8 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
 import { Bell, RefreshCw, Menu } from 'lucide-react';
 import { useUser } from '@/components/auth/user-context';
 import { useSidebar } from './sidebar-context';
+import { DateRangePicker } from './date-range-picker';
 
 interface HeaderProps {
   title: string;
@@ -47,7 +49,12 @@ export function Header({ title, subtitle, action }: HeaderProps) {
       <div className="flex items-center gap-2">
         {action}
 
-        <span className="hidden text-xs text-muted lg:block capitalize">{dateStr}</span>
+        {/* Suspense pra useSearchParams não bloquear build estático. */}
+        <Suspense fallback={<div className="h-8 w-28 rounded-lg bg-surface-2" />}>
+          <DateRangePicker />
+        </Suspense>
+
+        <span className="hidden text-xs text-muted xl:block capitalize">{dateStr}</span>
 
         <button
           className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-ink"

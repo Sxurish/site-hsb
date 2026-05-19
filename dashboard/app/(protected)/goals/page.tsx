@@ -1,15 +1,21 @@
 import { Header } from '@/components/layout/header';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { buildGoals } from '@/lib/metrics';
+import { paramsToRange, rangeLabel } from '@/lib/date-range';
 import type { Goal } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-export default async function GoalsPage() {
+interface PageProps {
+  searchParams: { from?: string; to?: string; preset?: string };
+}
+
+export default async function GoalsPage({ searchParams }: PageProps) {
+  const range = paramsToRange(searchParams);
   let goals: Goal[] = [];
   let error: string | null = null;
   try {
-    goals = await buildGoals();
+    goals = await buildGoals(range);
   } catch (err) {
     error = err instanceof Error ? err.message : 'Erro ao carregar metas';
   }
@@ -28,7 +34,7 @@ export default async function GoalsPage() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <Header title="Metas" subtitle={`Acompanhamento — últimos 30 dias`} />
+      <Header title="Metas" subtitle={`Acompanhamento — ${rangeLabel(range).toLowerCase()}`} />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (

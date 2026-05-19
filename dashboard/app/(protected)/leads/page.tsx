@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Header } from '@/components/layout/header';
 import { StatusBadge, PriorityBadge } from '@/components/ui/badge';
 import { useLeads } from '@/hooks/use-leads';
+import { useDateRange } from '@/hooks/use-date-range';
+import { rangeLabel } from '@/lib/date-range';
 import type { Lead, LeadStatus, LeadPriority, LeadFilters } from '@/lib/types';
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from '@/lib/labels';
 import { Search, SlidersHorizontal, MessageCircle, Mail } from 'lucide-react';
@@ -75,7 +77,8 @@ export default function LeadsPage() {
     priority: 'all',
   });
 
-  const { leads, loading, error, total } = useLeads(filters);
+  const { range } = useDateRange();
+  const { leads, loading, error, total, inRange } = useLeads(filters, range);
 
   const set = <K extends keyof LeadFilters>(key: K, val: LeadFilters[K]) =>
     setFilters((f) => ({ ...f, [key]: val }));
@@ -95,7 +98,7 @@ export default function LeadsPage() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <Header title="Leads" subtitle={`${total} leads cadastrados`} />
+      <Header title="Leads" subtitle={`${inRange} no período · ${total} totais`} />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
         {/* Filtros */}
@@ -119,7 +122,9 @@ export default function LeadsPage() {
               {PRIORITY_OPTIONS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
             </select>
           </div>
-          <span className="ml-auto text-xs text-muted">{leads.length} resultado{leads.length !== 1 ? 's' : ''}</span>
+          <span className="ml-auto text-xs text-muted">
+            {leads.length} resultado{leads.length !== 1 ? 's' : ''} · {rangeLabel(range).toLowerCase()}
+          </span>
         </div>
 
         {error && (

@@ -2,6 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { unstable_cache } from 'next/cache';
 import type { Lead, LeadStatus, TopService } from '../types';
+import { previousRange, type DateRange } from '../date-range';
 
 export const LEADS_CACHE_TAG = 'leads';
 
@@ -91,17 +92,15 @@ export interface LeadCounts {
 // ─── Compute functions puras (sem I/O) ─────────────────────────────────────
 // Recebem leads já carregados pra evitar N+1 do fetchLeads no buildMetricsPayload.
 
-export function computeLeadCounts(leads: Lead[], days = 30): { current: LeadCounts; previous: LeadCounts } {
-  const now = Date.now();
-  const dayMs = 86_400_000;
-  const curFrom = now - days * dayMs;
-  const prevFrom = now - 2 * days * dayMs;
+function inRange(iso: string, from: number, to: number): boolean {
+  const t = new Date(iso).getTime();
+  return t >= from && t <= to;
+}
 
-  const count = (from: number, to: number): LeadCounts => {
-    const slice = leads.filter((l) => {
-      const t = new Date(l.createdAt).getTime();
-      return t >= from && t < to;
-    });
+export function computeLeadCounts(leads: Lead[], range: DateRange): { current: LeadCounts; previous: LeadCounts } {
+  const prev = previousRange(range);
+  const count = (fromMs: number, toMs: number): LeadCounts => {
+    const slice = leads.filter((l) => inRange(l.createdAt, fromMs, toMs));
     return {
       total: slice.length,
       qualificados: slice.filter((l) => l.status === 'qualificado' || l.status === 'enviado_para_equipe').length,
@@ -109,13 +108,16 @@ export function computeLeadCounts(leads: Lead[], days = 30): { current: LeadCoun
       briefingsCompletos: slice.filter((l) => l.briefingCompleto).length,
     };
   };
-
-  return { current: count(curFrom, now), previous: count(prevFrom, curFrom) };
+  return {
+    current: count(range.from.getTime(), range.to.getTime()),
+    previous: count(prev.from.getTime(), prev.to.getTime()),
+  };
 }
 
-export function computeTopServices(leads: Lead[], days = 30, limit = 5): TopService[] {
-  const from = Date.now() - days * 86_400_000;
-  const recent = leads.filter((l) => new Date(l.createdAt).getTime() >= from);
+export function computeTopServices(leads: Lead[], range: DateRange, limit = 5): TopService[] {
+  const fromMs = range.from.getTime();
+  const toMs = range.to.getTime();
+  const recent = leads.filter((l) => inRange(l.createdAt, fromMs, toMs));
   if (recent.length === 0) return [];
   const byService = new Map<string, number>();
   for (const l of recent) {
@@ -128,28 +130,17 @@ export function computeTopServices(leads: Lead[], days = 30, limit = 5): TopServ
 }
 
 // Map<'dd/mm', n> — fuso fixo America/Sao_Paulo pra bater com o bucket do PostHog.
-export function computeLeadsPerDay(leads: Lead[], days = 30): Map<string, number> {
-  const from = Date.now() - days * 86_400_000;
+export function computeLeadsPerDay(leads: Lead[], range: DateRange): Map<string, number> {
+  const fromMs = range.from.getTime();
+  const toMs = range.to.getTime();
   const fmt = new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo',
   });
   const map = new Map<string, number>();
   for (const l of leads) {
-    const t = new Date(l.createdAt).getTime();
-    if (t < from) continue;
+    if (!inRange(l.createdAt, fromMs, toMs)) continue;
     const key = fmt.format(new Date(l.createdAt));
     map.set(key, (map.get(key) ?? 0) + 1);
   }
   return map;
-}
-
-// Wrappers retrocompat — usam fetchLeads cached. Preferir os compute* em código novo.
-export async function fetchLeadCounts(days = 30) {
-  return computeLeadCounts(await fetchLeads(), days);
-}
-export async function fetchTopServices(days = 30, limit = 5) {
-  return computeTopServices(await fetchLeads(), days, limit);
-}
-export async function fetchLeadsPerDay(days = 30) {
-  return computeLeadsPerDay(await fetchLeads(), days);
 }

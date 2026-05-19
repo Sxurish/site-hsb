@@ -4,9 +4,8 @@ import {
   fetchLeads, computeLeadCounts, computeTopServices, computeLeadsPerDay,
 } from './services/supabase';
 import { GOALS_CONFIG } from './goals-config';
+import { DEFAULT_RANGE, rangeDays, type DateRange } from './date-range';
 import type { KpiCard, FunnelStage, Goal, TimePoint, MetricsPayload } from './types';
-
-const DAYS = 30;
 
 function trend(current: number, previous: number): number {
   if (previous <= 0) return current > 0 ? 100 : 0;
@@ -25,18 +24,18 @@ function buildTimeSeries(
   }));
 }
 
-export async function buildMetricsPayload(): Promise<MetricsPayload> {
+export async function buildMetricsPayload(range: DateRange = DEFAULT_RANGE): Promise<MetricsPayload> {
   // 1 round-trip de leads (era 3) + 3 round-trips PostHog em paralelo.
   const [daily, totals, leads, funnel] = await Promise.all([
-    fetchDailySeries(DAYS),
-    fetchPeriodTotals(DAYS),
+    fetchDailySeries(range),
+    fetchPeriodTotals(range),
     fetchLeads(),
-    fetchFunnelCounts(DAYS),
+    fetchFunnelCounts(range),
   ]);
 
-  const leadCounts = computeLeadCounts(leads, DAYS);
-  const topServices = computeTopServices(leads, DAYS);
-  const leadsPerDay = computeLeadsPerDay(leads, DAYS);
+  const leadCounts = computeLeadCounts(leads, range);
+  const topServices = computeTopServices(leads, range);
+  const leadsPerDay = computeLeadsPerDay(leads, range);
 
   const timeSeries = buildTimeSeries(daily, leadsPerDay);
   const visitorSpark = timeSeries.slice(-12).map((p) => p.visitors);
@@ -103,22 +102,23 @@ export async function buildMetricsPayload(): Promise<MetricsPayload> {
     },
   ];
 
+  const days = rangeDays(range);
   const leadValues = Array.from(leadsPerDay.values());
   const leadStats = {
     total: cur.total,
-    avgPerDay: Math.round((cur.total / DAYS) * 10) / 10,
+    avgPerDay: Math.round((cur.total / days) * 10) / 10,
     best: leadValues.length ? Math.max(...leadValues) : 0,
   };
 
   return { kpis, timeSeries, topServices, funnelSummary, leadStats };
 }
 
-export async function buildFunnelStages(): Promise<FunnelStage[]> {
+export async function buildFunnelStages(range: DateRange = DEFAULT_RANGE): Promise<FunnelStage[]> {
   const [funnel, leads] = await Promise.all([
-    fetchFunnelCounts(DAYS),
+    fetchFunnelCounts(range),
     fetchLeads(),
   ]);
-  const leadCounts = computeLeadCounts(leads, DAYS);
+  const leadCounts = computeLeadCounts(leads, range);
 
   const raw: { label: string; count: number }[] = [
     { label: 'Visitante', count: funnel.visitors },
@@ -142,12 +142,12 @@ export async function buildFunnelStages(): Promise<FunnelStage[]> {
   });
 }
 
-export async function buildGoals(): Promise<Goal[]> {
+export async function buildGoals(range: DateRange = DEFAULT_RANGE): Promise<Goal[]> {
   const [totals, leads] = await Promise.all([
-    fetchPeriodTotals(DAYS),
+    fetchPeriodTotals(range),
     fetchLeads(),
   ]);
-  const leadCounts = computeLeadCounts(leads, DAYS);
+  const leadCounts = computeLeadCounts(leads, range);
 
   const currentByKey: Record<string, { current: number; previous: number }> = {
     visitors: totals.visitors,

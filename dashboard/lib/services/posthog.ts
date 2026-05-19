@@ -1,4 +1,6 @@
 // Service server-only — usa POSTHOG_API_KEY (chave pessoal). Não importar em client.
+import { previousRange, type DateRange } from '@/lib/date-range';
+
 const API_HOST = process.env.POSTHOG_API_HOST || 'https://eu.posthog.com';
 
 export const POSTHOG_CACHE_TAG = 'posthog-metrics';
@@ -27,7 +29,6 @@ async function hogql(query: string): Promise<{ columns: string[]; results: unkno
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
-    // Loga server-side; expõe só status pra não vazar project id/hints.
     console.error(`[posthog] HogQL ${res.status}: ${detail.slice(0, 500)}`);
     throw new Error(`PostHog Query API ${res.status}`);
   }
@@ -35,12 +36,13 @@ async function hogql(query: string): Promise<{ columns: string[]; results: unkno
   return { columns: data.columns ?? [], results: data.results ?? [] };
 }
 
-// Clamp + floor de `days` antes de interpolar no HogQL — defesa contra
-// NaN/string injection se algum caller passar input não-validado no futuro.
-function safeDays(days: number, fallback = 30): number {
-  const n = Math.floor(Number(days));
-  if (!Number.isFinite(n) || n < 1) return fallback;
-  return Math.min(n, 365);
+// Format Date como 'YYYY-MM-DD HH:MM:SS' UTC — formato fechado e seguro pra interpolar.
+// HogQL aceita literal date em UTC. Range já vem com offset SP aplicado em date-range.ts.
+function toHogTs(d: Date): string {
+  // Defensivo: nunca interpolar Date inválida no SQL.
+  const t = d.getTime();
+  if (!Number.isFinite(t)) throw new Error('Invalid Date passed to HogQL');
+  return d.toISOString().slice(0, 19).replace('T', ' ');
 }
 
 export interface DailyPoint {
@@ -49,19 +51,19 @@ export interface DailyPoint {
   sessions: number;
 }
 
-// Série diária dos últimos `days` dias.
-export async function fetchDailySeries(days = 30): Promise<DailyPoint[]> {
-  const d = safeDays(days);
+export async function fetchDailySeries(range: DateRange): Promise<DailyPoint[]> {
+  const from = toHogTs(range.from);
+  const to = toHogTs(range.to);
   const { results } = await hogql(`
     SELECT toDate(timestamp) AS day,
            uniq(person_id) AS visitors,
            uniq($session_id) AS sessions
     FROM events
-    WHERE event = '$pageview' AND timestamp >= now() - INTERVAL ${d} DAY
+    WHERE event = '$pageview'
+      AND timestamp >= toDateTime('${from}')
+      AND timestamp <= toDateTime('${to}')
     GROUP BY day ORDER BY day
   `);
-  // Fuso fixo America/Sao_Paulo pra bucket bater com computeLeadsPerDay
-  // (UTC vs local divergia em eventos próximos à meia-noite).
   const fmt = new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo',
   });
@@ -81,20 +83,24 @@ export interface PeriodTotals {
   chatsStarted: { current: number; previous: number };
 }
 
-// Totais do período atual vs período anterior (para tendência %).
-export async function fetchPeriodTotals(days = 30): Promise<PeriodTotals> {
-  const d = safeDays(days);
-  const d2 = d * 2;
+// Totais do período atual vs período anterior (mesmo nº de dias) — usado pra trend %.
+export async function fetchPeriodTotals(range: DateRange): Promise<PeriodTotals> {
+  const prev = previousRange(range);
+  const curFrom = toHogTs(range.from);
+  const curTo = toHogTs(range.to);
+  const prevFrom = toHogTs(prev.from);
+  const prevTo = toHogTs(prev.to);
   const { results } = await hogql(`
     SELECT
-      uniq(if(timestamp >= now() - INTERVAL ${d} DAY, person_id, NULL)) AS visitors_cur,
-      uniq(if(timestamp >= now() - INTERVAL ${d2} DAY AND timestamp < now() - INTERVAL ${d} DAY, person_id, NULL)) AS visitors_prev,
-      uniq(if(timestamp >= now() - INTERVAL ${d} DAY, $session_id, NULL)) AS sessions_cur,
-      uniq(if(timestamp >= now() - INTERVAL ${d2} DAY AND timestamp < now() - INTERVAL ${d} DAY, $session_id, NULL)) AS sessions_prev,
-      countIf(event = 'chatbot_opened' AND timestamp >= now() - INTERVAL ${d} DAY) AS chats_cur,
-      countIf(event = 'chatbot_opened' AND timestamp >= now() - INTERVAL ${d2} DAY AND timestamp < now() - INTERVAL ${d} DAY) AS chats_prev
+      uniq(if(timestamp >= toDateTime('${curFrom}') AND timestamp <= toDateTime('${curTo}'), person_id, NULL)) AS visitors_cur,
+      uniq(if(timestamp >= toDateTime('${prevFrom}') AND timestamp <= toDateTime('${prevTo}'), person_id, NULL)) AS visitors_prev,
+      uniq(if(timestamp >= toDateTime('${curFrom}') AND timestamp <= toDateTime('${curTo}'), $session_id, NULL)) AS sessions_cur,
+      uniq(if(timestamp >= toDateTime('${prevFrom}') AND timestamp <= toDateTime('${prevTo}'), $session_id, NULL)) AS sessions_prev,
+      countIf(event = 'chatbot_opened' AND timestamp >= toDateTime('${curFrom}') AND timestamp <= toDateTime('${curTo}')) AS chats_cur,
+      countIf(event = 'chatbot_opened' AND timestamp >= toDateTime('${prevFrom}') AND timestamp <= toDateTime('${prevTo}')) AS chats_prev
     FROM events
-    WHERE event IN ('$pageview', 'chatbot_opened') AND timestamp >= now() - INTERVAL ${d2} DAY
+    WHERE event IN ('$pageview', 'chatbot_opened')
+      AND timestamp >= toDateTime('${prevFrom}') AND timestamp <= toDateTime('${curTo}')
   `);
   const r = results[0] ?? [];
   const n = (i: number) => Number(r[i]) || 0;
@@ -114,9 +120,9 @@ export interface FunnelCounts {
   completed: number;
 }
 
-// Contagem de pessoas distintas em cada etapa do funil (últimos `days` dias).
-export async function fetchFunnelCounts(days = 30): Promise<FunnelCounts> {
-  const d = safeDays(days);
+export async function fetchFunnelCounts(range: DateRange): Promise<FunnelCounts> {
+  const from = toHogTs(range.from);
+  const to = toHogTs(range.to);
   const { results } = await hogql(`
     SELECT
       uniqIf(person_id, event = '$pageview') AS visitors,
@@ -126,7 +132,7 @@ export async function fetchFunnelCounts(days = 30): Promise<FunnelCounts> {
       uniqIf(person_id, event = 'chatbot_step_reached' AND properties.step = 'contact_data_complete') AS contact_done,
       uniqIf(person_id, event = 'chatbot_completed') AS completed
     FROM events
-    WHERE timestamp >= now() - INTERVAL ${d} DAY
+    WHERE timestamp >= toDateTime('${from}') AND timestamp <= toDateTime('${to}')
   `);
   const r = results[0] ?? [];
   const n = (i: number) => Number(r[i]) || 0;

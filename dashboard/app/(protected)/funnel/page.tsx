@@ -1,15 +1,21 @@
 import { Header } from '@/components/layout/header';
 import { FunnelChart } from '@/components/charts/funnel-chart';
 import { buildFunnelStages } from '@/lib/metrics';
+import { paramsToRange, rangeLabel } from '@/lib/date-range';
 import type { FunnelStage } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-export default async function FunnelPage() {
+interface PageProps {
+  searchParams: { from?: string; to?: string; preset?: string };
+}
+
+export default async function FunnelPage({ searchParams }: PageProps) {
+  const range = paramsToRange(searchParams);
   let stages: FunnelStage[] = [];
   let error: string | null = null;
   try {
-    stages = await buildFunnelStages();
+    stages = await buildFunnelStages(range);
   } catch (err) {
     error = err instanceof Error ? err.message : 'Erro ao carregar o funil';
   }
@@ -26,7 +32,7 @@ export default async function FunnelPage() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <Header title="Funil de conversão" subtitle="Jornada completa do visitante ao cliente — últimos 30 dias" />
+      <Header title="Funil de conversão" subtitle={`Jornada do visitante ao cliente — ${rangeLabel(range).toLowerCase()}`} />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 space-y-6">
         {error && (

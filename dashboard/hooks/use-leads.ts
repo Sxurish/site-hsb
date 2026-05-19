@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import type { Lead, LeadFilters } from '@/lib/types';
+import type { DateRange } from '@/lib/date-range';
 
 export type { LeadFilters };
 
@@ -10,9 +11,10 @@ interface LeadsState {
   loading: boolean;
   error: string | null;
   total: number;
+  inRange: number;
 }
 
-export function useLeads(filters: LeadFilters): LeadsState {
+export function useLeads(filters: LeadFilters, range: DateRange): LeadsState {
   const [raw, setRaw] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,8 +40,18 @@ export function useLeads(filters: LeadFilters): LeadsState {
     return () => { active = false; };
   }, []);
 
-  const leads = useMemo(() => {
+  const fromMs = range.from.getTime();
+  const toMs = range.to.getTime();
+
+  const inRangeLeads = useMemo(() => {
     return raw.filter((l) => {
+      const t = new Date(l.createdAt).getTime();
+      return t >= fromMs && t <= toMs;
+    });
+  }, [raw, fromMs, toMs]);
+
+  const leads = useMemo(() => {
+    return inRangeLeads.filter((l) => {
       if (filters.status !== 'all' && l.status !== filters.status) return false;
       if (filters.priority !== 'all' && l.prioridade !== filters.priority) return false;
       if (filters.search) {
@@ -52,7 +64,7 @@ export function useLeads(filters: LeadFilters): LeadsState {
       }
       return true;
     });
-  }, [raw, filters]);
+  }, [inRangeLeads, filters]);
 
-  return { leads, loading, error, total: raw.length };
+  return { leads, loading, error, total: raw.length, inRange: inRangeLeads.length };
 }
