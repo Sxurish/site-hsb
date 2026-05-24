@@ -1,0 +1,153 @@
+{
+  "name": "HSB - Lead Form",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hsb-lead-form",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b1f30001-0000-4000-8000-000000000001",
+      "name": "Webhook - Lead Form",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "webhookId": "hsb-lead-form-2026"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || $json;\n\nconst name    = String(body.name    || '').trim().slice(0, 120);\nconst email   = String(body.email   || '').trim().slice(0, 160).toLowerCase();\nconst phone   = String(body.phone   || '').trim().slice(0, 40);\nconst message = String(body.message || '').trim().slice(0, 2000);\nconst locale  = String(body.locale  || '').trim().slice(0, 16) || 'pt-BR';\n\nconst emailOk = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\nconst valid   = !!name && emailOk && !!phone && !!message;\n\n// lead_key estável: hash do email (mesmo email = mesmo lead_key)\nconst crypto  = require('crypto');\nconst leadKey = 'form_' + crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);\n\nreturn [{\n  json: {\n    valid,\n    lead_key: leadKey,\n    session_id: leadKey,\n    source: 'form',\n    nome: name,\n    email,\n    phone,\n    briefing_completo: message,\n    locale,\n    status: 'novo',\n    prioridade: 'media',\n    step_funil: 'form_submitted',\n    created_at: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "b1f30001-0000-4000-8000-000000000002",
+      "name": "Normalize & Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [620, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valid }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "b1f30001-0000-4000-8000-000000000003",
+      "name": "IF - Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [840, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'invalid_payload' }) }}",
+        "options": { "responseCode": 400 }
+      },
+      "id": "b1f30001-0000-4000-8000-000000000004",
+      "name": "Respond 400",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1060, 200]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO leads (lead_key, session_id, source, nome, email, phone, briefing_completo, status, prioridade, step_funil, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW()) ON CONFLICT (lead_key) DO UPDATE SET nome = EXCLUDED.nome, email = EXCLUDED.email, phone = EXCLUDED.phone, briefing_completo = leads.briefing_completo || E'\\n\\n---\\n\\n' || EXCLUDED.briefing_completo, status = EXCLUDED.status, prioridade = EXCLUDED.prioridade, step_funil = EXCLUDED.step_funil, updated_at = NOW() RETURNING id, lead_key;",
+        "options": {
+          "queryReplacement": "={{ $json.lead_key }},={{ $json.session_id }},={{ $json.source }},={{ $json.nome }},={{ $json.email }},={{ $json.phone }},={{ $json.briefing_completo }},={{ $json.status }},={{ $json.prioridade }},={{ $json.step_funil }}"
+        }
+      },
+      "id": "b1f30001-0000-4000-8000-000000000005",
+      "name": "DB - Upsert Lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [1060, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  parent: { database_id: $env.NOTION_DATABASE_ID || 'REPLACE_WITH_NOTION_DATABASE_ID' },\n  properties: {\n    Nome:    { title:    [{ text: { content: $('Normalize & Validate').item.json.nome } }] },\n    Email:   { email:    $('Normalize & Validate').item.json.email },\n    Phone:   { phone_number: $('Normalize & Validate').item.json.phone },\n    Source:  { select:   { name: 'form' } },\n    Status:  { select:   { name: 'novo' } },\n    Briefing:{ rich_text:[{ text: { content: $('Normalize & Validate').item.json.briefing_completo.slice(0, 1900) } }] }\n  }\n}) }}",
+        "options": {}
+      },
+      "id": "b1f30001-0000-4000-8000-000000000006",
+      "name": "Notion - Create Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1280, 400],
+      "notes": "Use a credencial httpHeaderAuth com Name=Authorization, Value=Bearer <NOTION_API_KEY>"
+    },
+    {
+      "parameters": {
+        "fromEmail": "contato@hsbcompany.com.br",
+        "toEmail": "contato@hsbcompany.com.br",
+        "subject": "=Novo lead do site — {{ $('Normalize & Validate').item.json.nome }}",
+        "emailFormat": "text",
+        "text": "=Novo lead recebido pelo formulário do site:\n\nNome:     {{ $('Normalize & Validate').item.json.nome }}\nEmail:    {{ $('Normalize & Validate').item.json.email }}\nTelefone: {{ $('Normalize & Validate').item.json.phone }}\nIdioma:   {{ $('Normalize & Validate').item.json.locale }}\n\n— Mensagem —\n{{ $('Normalize & Validate').item.json.briefing_completo }}\n\n--\nlead_key: {{ $('Normalize & Validate').item.json.lead_key }}\nDashboard: https://dashboard.hsbcompany.com.br/leads",
+        "options": {}
+      },
+      "id": "b1f30001-0000-4000-8000-000000000007",
+      "name": "Email - Notify Team",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1500, 400],
+      "notes": "Hardcode from/to com contato@hsbcompany.com.br (n8n Cloud não suporta $env)."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, lead_key: $('Normalize & Validate').item.json.lead_key }) }}",
+        "options": {}
+      },
+      "id": "b1f30001-0000-4000-8000-000000000008",
+      "name": "Respond 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1720, 400]
+    }
+  ],
+  "connections": {
+    "Webhook - Lead Form": {
+      "main": [[{ "node": "Normalize & Validate", "type": "main", "index": 0 }]]
+    },
+    "Normalize & Validate": {
+      "main": [[{ "node": "IF - Valid?", "type": "main", "index": 0 }]]
+    },
+    "IF - Valid?": {
+      "main": [
+        [{ "node": "DB - Upsert Lead",   "type": "main", "index": 0 }],
+        [{ "node": "Respond 400",        "type": "main", "index": 0 }]
+      ]
+    },
+    "DB - Upsert Lead": {
+      "main": [[{ "node": "Notion - Create Page", "type": "main", "index": 0 }]]
+    },
+    "Notion - Create Page": {
+      "main": [[{ "node": "Email - Notify Team", "type": "main", "index": 0 }]]
+    },
+    "Email - Notify Team": {
+      "main": [[{ "node": "Respond 200", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {}
+}
