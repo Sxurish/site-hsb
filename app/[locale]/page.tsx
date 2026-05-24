@@ -1,16 +1,13 @@
 import dynamic from 'next/dynamic';
 import { setRequestLocale } from 'next-intl/server';
 import { About } from '@/components/about';
-import { Testimonials } from '@/components/testimonials';
 import { ContactCta } from '@/components/contact-cta';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Hero } from '@/components/hero';
 import { MidCta } from '@/components/mid-cta';
-import { Portfolio } from '@/components/portfolio';
 import { Process } from '@/components/process';
 import { Services } from '@/components/services-carousel';
-import { faqs } from '@/data/site';
 
 const ChatbotWidget = dynamic(
   () => import('@/components/chatbot-widget').then((m) => m.ChatbotWidget),
@@ -45,8 +42,7 @@ const localBusiness = {
     {
       '@type': 'ContactPoint',
       contactType: 'sales',
-      email: 'contato@hsb.company',
-      telephone: '+55-11-99999-9999',
+      email: 'contato@hsbcompany.com.br',
       availableLanguage: ['Portuguese', 'English'],
       areaServed: 'BR',
     },
@@ -73,16 +69,6 @@ const website = {
   inLanguage: 'pt-BR',
 };
 
-const faqPage = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-};
-
 export default async function Home({
   params,
 }: {
@@ -102,17 +88,11 @@ export default async function Home({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
-      />
       <main id="top">
         <Hero />
         <About />
         <Services />
-        <Portfolio />
         <MidCta />
-        <Testimonials />
         <Process />
         <ContactCta />
       </main>

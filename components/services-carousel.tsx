@@ -153,7 +153,6 @@ export function Services() {
         t(`items.${id}.include4`),
       ],
       audience: t(`items.${id}.audience`),
-      outcome: t(`items.${id}.outcome`),
     },
   }));
 
@@ -394,10 +393,6 @@ export function Services() {
           <div className={styles.detCol}>
             <h4>{t('details.audience')}</h4>
             <p>{cur.detail.audience}</p>
-          </div>
-          <div className={styles.detCol}>
-            <h4>{t('details.outcome')}</h4>
-            <p>{cur.detail.outcome}</p>
           </div>
           <div className={styles.detCta}>
             <button className={styles.btnPrimary}>

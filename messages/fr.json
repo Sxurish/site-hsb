@@ -9,9 +9,7 @@
     "nav": {
       "about": "À propos",
       "services": "Services",
-      "portfolio": "Portfolio",
       "process": "Processus",
-      "clients": "Clients",
       "contact": "Contact"
     }
   },
@@ -21,14 +19,7 @@
     "line1": "Construisez une marque",
     "line2": "qui grandit vite",
     "line3": "et vend plus.",
-    "ctaPrimary": "Demander un Devis",
-    "ctaSecondary": "Voir les Projets",
-    "metrics": {
-      "sitesLabel": "sites livrés",
-      "leadsLabel": "leads en 90 jours",
-      "roasLabel": "ROAS moyen",
-      "clientsLabel": "clients à SP"
-    }
+    "ctaPrimary": "Demander un Devis"
   },
   "About": {
     "kicker": "À propos",
@@ -68,7 +59,6 @@
     "details": {
       "includes": "Ce qui est inclus",
       "audience": "Pour qui",
-      "outcome": "Résultat attendu",
       "requestProposal": "Demander une proposition"
     },
     "items": {
@@ -80,8 +70,7 @@
         "include2": "Implémentation n8n + APIs",
         "include3": "Assistants GPT personnalisés",
         "include4": "Intégrations CRM et WhatsApp",
-        "audience": "Opérations gérant un fort volume de leads, de support ou de tâches répétitives.",
-        "outcome": "Jusqu'à 70 % de réduction des tâches manuelles et SLA de réponse sous la minute."
+        "audience": "Opérations gérant un fort volume de leads, de support ou de tâches répétitives."
       },
       "site": {
         "tag": "Design",
@@ -91,8 +80,7 @@
         "include2": "Design haute conversion",
         "include3": "Développement responsive",
         "include4": "Intégration analytics et A/B",
-        "audience": "Marques qui ont besoin d'une présence digitale éditoriale et de pages qui vendent.",
-        "outcome": "Hausse moyenne de 2 à 3× de la conversion visiteur → lead qualifié."
+        "audience": "Marques qui ont besoin d'une présence digitale éditoriale et de pages qui vendent."
       },
       "ads": {
         "tag": "Performance",
@@ -102,8 +90,7 @@
         "include2": "Structure de campagnes",
         "include3": "Créations et copy",
         "include4": "Optimisation et rapports hebdomadaires",
-        "audience": "Entreprises cherchant la prévisibilité d'acquisition et une scale maîtrisée.",
-        "outcome": "CAC réduit et ROAS optimisé sur des cycles courts de 30 jours."
+        "audience": "Entreprises cherchant la prévisibilité d'acquisition et une scale maîtrisée."
       },
       "social": {
         "tag": "Contenu",
@@ -113,8 +100,7 @@
         "include2": "Scénario et copy",
         "include3": "Design et montage",
         "include4": "Publication et community",
-        "audience": "Marques qui veulent devenir une référence dans leur niche avec constance.",
-        "outcome": "Audience qualifiée, autorité et génération continue de demande inbound."
+        "audience": "Marques qui veulent devenir une référence dans leur niche avec constance."
       },
       "brand": {
         "tag": "Branding",
@@ -124,8 +110,7 @@
         "include2": "Naming et narrative",
         "include3": "Système visuel complet",
         "include4": "Brand book et directives",
-        "audience": "Entreprises en construction, repositionnement ou prêtes à monter d'un cran.",
-        "outcome": "Marque cohérente, perçue comme premium et prête à scaler."
+        "audience": "Entreprises en construction, repositionnement ou prêtes à monter d'un cran."
       },
       "video": {
         "tag": "Audiovisuel",
@@ -135,8 +120,7 @@
         "include2": "Tournage et direction",
         "include3": "Montage et motion",
         "include4": "Packs créatifs pour la média",
-        "audience": "Marques qui doivent alimenter média payante et organique avec une qualité cinéma.",
-        "outcome": "Du contenu qui arrête le scroll, génère de l'engagement et convertit en performance."
+        "audience": "Marques qui doivent alimenter média payante et organique avec une qualité cinéma."
       },
       "funnel": {
         "tag": "Stratégie",
@@ -146,8 +130,7 @@
         "include2": "Funnel top → bottom",
         "include3": "Pages et automatisations",
         "include4": "Métriques et dashboards",
-        "audience": "Équipes commerciales qui veulent une machine de vente prévisible.",
-        "outcome": "Pipeline organisé, leads qualifiés et taux de closing plus élevé."
+        "audience": "Équipes commerciales qui veulent une machine de vente prévisible."
       },
       "consult": {
         "tag": "Conseil",
@@ -157,27 +140,8 @@
         "include2": "Plan à 90 jours",
         "include3": "Mentorat exécutif",
         "include4": "Suivi mensuel",
-        "audience": "Fondateurs et directeurs qui ont besoin de clarté stratégique avant d'exécuter.",
-        "outcome": "Direction claire, priorités validées et roadmap prête à l'exécution."
+        "audience": "Fondateurs et directeurs qui ont besoin de clarté stratégique avant d'exécuter."
       }
-    }
-  },
-  "Portfolio": {
-    "kicker": "Portfolio",
-    "title": "Des campagnes pensées pour stopper le scroll et lancer des conversations.",
-    "projects": {
-      "p1Title": "Campagne Fintech",
-      "p1Type": "Landing Page + Publicité Payante",
-      "p1Result": "+420 % leads en 90 jours",
-      "p2Title": "Film de Marque Mode",
-      "p2Type": "Production Vidéo",
-      "p2Result": "6,8× ROAS sur Meta",
-      "p3Title": "Croissance Franchise",
-      "p3Type": "SEO + Dominance Locale",
-      "p3Result": "#1 en SEO local",
-      "p4Title": "Ads Automobile",
-      "p4Type": "Photographie + Reels",
-      "p4Result": "3,2× engagement"
     }
   },
   "MidCta": {
@@ -185,34 +149,7 @@
     "kicker": "Prêt à démarrer",
     "title": "Vous avez vu ce que nous livrons. Construisons le vôtre.",
     "lede": "Partagez votre objectif à 90 jours en un appel de 15 minutes. Vous repartez avec un plan direct au résultat — sans détour, sans pitch générique.",
-    "cta": "Parler à HSB",
-    "subnote": "Réponse sous 1 jour ouvré"
-  },
-  "Testimonials": {
-    "kicker": "CLIENTS • RÉSULTATS RÉELS",
-    "title": "Des marques qui ont fait confiance à",
-    "titleEm": "HSB",
-    "lede": "Des histoires vraies d'opérations qui ont transformé le marketing en machine à revenus prévisible.",
-    "items": {
-      "c1Quote": "Nous sommes partis de zéro et en 3 mois nous recevions des leads qualifiés tous les jours. HSB a compris exactement ce qu'il nous fallait.",
-      "c1Name": "Dre. Ana Beatriz",
-      "c1Designation": "Directrice Clinique",
-      "c2Quote": "HSB a refait notre présence digitale de zéro. Résultat direct : nous avons doublé le nombre de devis en 60 jours.",
-      "c2Name": "Ricardo Mendes",
-      "c2Designation": "CEO & Fondateur",
-      "c3Quote": "Nos réseaux ont explosé avec leurs productions. Meilleur investissement de l'année — ROI au-delà de toutes nos attentes.",
-      "c3Name": "Felipe Andrade",
-      "c3Designation": "Directeur Marketing",
-      "c4Quote": "+420 % de leads qualifiés en 90 jours. La combinaison créatif + performance que HSB livre est impressionnante.",
-      "c4Name": "Mariana Costa",
-      "c4Designation": "CMO",
-      "c5Quote": "Un contenu haut de gamme qui a enfin reflété la vraie qualité de notre marque. Notre engagement a triplé.",
-      "c5Name": "Juliana Ferraz",
-      "c5Designation": "Directrice Créative",
-      "c6Quote": "Numéro 1 sur Google pour nos mots-clés en moins de 4 mois. Service consultatif et résultats réels.",
-      "c6Name": "Carlos Oliveira",
-      "c6Designation": "Associé Fondateur"
-    }
+    "cta": "Parler à HSB"
   },
   "Process": {
     "kicker": "Processus",
@@ -234,7 +171,6 @@
     "kicker": "Construisons",
     "title": "Prêt à dominer votre marché ?",
     "lede": "Parlez-nous de votre objectif de croissance. Nous tracerons le chemin le plus rapide vers plus de leads, un positionnement plus fort et un revenu scalable.",
-    "whatsapp": "WhatsApp",
     "email": "E-mail",
     "location": "Localisation",
     "locationValue": "São Paulo, Brésil"
@@ -245,7 +181,7 @@
     "email": "E-mail",
     "emailPlaceholder": "vous@entreprise.com",
     "phone": "Téléphone",
-    "phonePlaceholder": "+33 6 00 00 00 00",
+    "phonePlaceholder": "(11) 91234-5678",
     "message": "Message",
     "messagePlaceholder": "Quels sont vos principaux objectifs pour les 90 prochains jours ?",
     "submit": "Demander un Devis",
@@ -317,7 +253,7 @@
     "sections": {
       "controller": {
         "title": "1. Data controller",
-        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsb.company"
+        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsbcompany.com.br"
       },
       "dataCollected": {
         "title": "2. Data we collect",
@@ -349,11 +285,11 @@
       },
       "rights": {
         "title": "9. Your rights as a data subject",
-        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsb.company with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
+        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsbcompany.com.br with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
       },
       "contact": {
         "title": "10. Contact and updates",
-        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsb.company.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
+        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
   }

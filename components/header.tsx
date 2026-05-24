@@ -11,9 +11,7 @@ import { LocaleSwitcher } from './locale-switcher';
 const navKeys = [
   { href: '#sobre',     key: 'about' },
   { href: '#servicos',  key: 'services' },
-  { href: '#portfolio', key: 'portfolio' },
   { href: '#processo',  key: 'process' },
-  { href: '#clientes',  key: 'clients' },
   { href: '#contato',   key: 'contact' },
 ] as const;
 

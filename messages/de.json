@@ -9,9 +9,7 @@
     "nav": {
       "about": "Über uns",
       "services": "Leistungen",
-      "portfolio": "Portfolio",
       "process": "Prozess",
-      "clients": "Kunden",
       "contact": "Kontakt"
     }
   },
@@ -21,14 +19,7 @@
     "line1": "Bauen Sie eine Marke,",
     "line2": "die schnell wächst",
     "line3": "und mehr verkauft.",
-    "ctaPrimary": "Angebot anfordern",
-    "ctaSecondary": "Projekte ansehen",
-    "metrics": {
-      "sitesLabel": "Websites geliefert",
-      "leadsLabel": "Leads in 90 Tagen",
-      "roasLabel": "Ø ROAS",
-      "clientsLabel": "Kunden in SP"
-    }
+    "ctaPrimary": "Angebot anfordern"
   },
   "About": {
     "kicker": "Über uns",
@@ -68,7 +59,6 @@
     "details": {
       "includes": "Was enthalten ist",
       "audience": "Für wen es ist",
-      "outcome": "Erwartetes Ergebnis",
       "requestProposal": "Angebot anfordern"
     },
     "items": {
@@ -80,8 +70,7 @@
         "include2": "n8n + API Implementierung",
         "include3": "Custom GPT-Assistenten",
         "include4": "CRM- und WhatsApp-Integrationen",
-        "audience": "Operations mit hohem Volumen an Leads, Support oder Routineaufgaben.",
-        "outcome": "Bis zu 70 % weniger manuelle Aufgaben und Antwort-SLA unter 1 Minute."
+        "audience": "Operations mit hohem Volumen an Leads, Support oder Routineaufgaben."
       },
       "site": {
         "tag": "Design",
@@ -91,8 +80,7 @@
         "include2": "Conversion-starkes Design",
         "include3": "Responsive Entwicklung",
         "include4": "Analytics- und A/B-Integration",
-        "audience": "Marken mit Bedarf an redaktioneller Online-Präsenz und Pages, die verkaufen.",
-        "outcome": "Durchschnittlich 2-3× höhere Conversion vom Besucher zum qualifizierten Lead."
+        "audience": "Marken mit Bedarf an redaktioneller Online-Präsenz und Pages, die verkaufen."
       },
       "ads": {
         "tag": "Performance",
@@ -102,8 +90,7 @@
         "include2": "Kampagnenstruktur",
         "include3": "Creatives und Copy",
         "include4": "Optimierung und Wochenreports",
-        "audience": "Unternehmen, die planbare Akquise und kontrollierte Skalierung wollen.",
-        "outcome": "Niedrigere CAC und optimierter ROAS in kurzen 30-Tage-Zyklen."
+        "audience": "Unternehmen, die planbare Akquise und kontrollierte Skalierung wollen."
       },
       "social": {
         "tag": "Content",
@@ -113,8 +100,7 @@
         "include2": "Skript und Copy",
         "include3": "Design und Schnitt",
         "include4": "Veröffentlichung und Community",
-        "audience": "Marken, die durch Konsistenz zur Referenz in ihrer Nische werden wollen.",
-        "outcome": "Qualifizierte Audience, Autorität und kontinuierliche Inbound-Nachfrage."
+        "audience": "Marken, die durch Konsistenz zur Referenz in ihrer Nische werden wollen."
       },
       "brand": {
         "tag": "Branding",
@@ -124,8 +110,7 @@
         "include2": "Naming und Narrative",
         "include3": "Komplettes visuelles System",
         "include4": "Brand Book und Richtlinien",
-        "audience": "Unternehmen in Aufbau, Repositionierung oder bereit für den nächsten Tier.",
-        "outcome": "Kohärente Marke, als Premium wahrgenommen und bereit zum Skalieren."
+        "audience": "Unternehmen in Aufbau, Repositionierung oder bereit für den nächsten Tier."
       },
       "video": {
         "tag": "Audiovisuell",
@@ -135,8 +120,7 @@
         "include2": "Aufnahme und Regie",
         "include3": "Schnitt und Motion",
         "include4": "Creative-Pakete für Paid Media",
-        "audience": "Marken, die Paid und Organic Media mit Kino-Qualität bespielen müssen.",
-        "outcome": "Material, das im Feed stoppt, Engagement erzeugt und in Performance konvertiert."
+        "audience": "Marken, die Paid und Organic Media mit Kino-Qualität bespielen müssen."
       },
       "funnel": {
         "tag": "Strategie",
@@ -146,8 +130,7 @@
         "include2": "Top → Bottom Funnel",
         "include3": "Pages und Automatisierungen",
         "include4": "Metriken und Dashboards",
-        "audience": "Vertriebsteams, die eine planbare Verkaufsmaschine wollen.",
-        "outcome": "Strukturierte Pipeline, qualifizierte Leads und höhere Abschlussraten."
+        "audience": "Vertriebsteams, die eine planbare Verkaufsmaschine wollen."
       },
       "consult": {
         "tag": "Beratung",
@@ -157,27 +140,8 @@
         "include2": "90-Tage-Plan",
         "include3": "Executive Mentoring",
         "include4": "Monatliche Begleitung",
-        "audience": "Gründer und Direktoren, die strategische Klarheit vor der Umsetzung brauchen.",
-        "outcome": "Klare Richtung, validierte Prioritäten und umsetzungsbereite Roadmap."
+        "audience": "Gründer und Direktoren, die strategische Klarheit vor der Umsetzung brauchen."
       }
-    }
-  },
-  "Portfolio": {
-    "kicker": "Portfolio",
-    "title": "Kampagnen, die das Scrollen stoppen und Gespräche starten.",
-    "projects": {
-      "p1Title": "Fintech-Kampagne",
-      "p1Type": "Landing Page + Paid Media",
-      "p1Result": "+420 % Leads in 90 Tagen",
-      "p2Title": "Fashion-Brandfilm",
-      "p2Type": "Videoproduktion",
-      "p2Result": "6,8× ROAS auf Meta",
-      "p3Title": "Franchise-Wachstum",
-      "p3Type": "SEO + Lokale Dominanz",
-      "p3Result": "#1 in lokalem SEO",
-      "p4Title": "Automotive Ads",
-      "p4Type": "Fotografie + Reels",
-      "p4Result": "3,2× Engagement"
     }
   },
   "MidCta": {
@@ -185,34 +149,7 @@
     "kicker": "Bereit zu starten",
     "title": "Sie haben gesehen, was wir liefern. Jetzt bauen wir Ihres.",
     "lede": "Erzählen Sie uns Ihr 90-Tage-Ziel in einem 15-Minuten-Call. Sie gehen mit einem klaren Plan zum Ergebnis — ohne Umwege, ohne Standard-Pitch.",
-    "cta": "Mit HSB sprechen",
-    "subnote": "Antwort innerhalb 1 Werktag"
-  },
-  "Testimonials": {
-    "kicker": "KUNDEN • ECHTE ERGEBNISSE",
-    "title": "Marken, die",
-    "titleEm": "HSB",
-    "lede": "Echte Geschichten von Operations, die Marketing in eine planbare Umsatzmaschine verwandelt haben.",
-    "items": {
-      "c1Quote": "Wir starteten bei null und nach 3 Monaten kamen täglich qualifizierte Leads. HSB hat genau verstanden, was wir brauchten.",
-      "c1Name": "Dr. Ana Beatriz",
-      "c1Designation": "Klinikleitung",
-      "c2Quote": "HSB hat unsere Online-Präsenz von Grund auf neu gemacht. Direktes Ergebnis: doppelt so viele Angebotsanfragen in 60 Tagen.",
-      "c2Name": "Ricardo Mendes",
-      "c2Designation": "CEO & Gründer",
-      "c3Quote": "Unsere Kanäle sind mit ihren Produktionen explodiert. Beste Investition des Jahres — ROI weit über unseren Erwartungen.",
-      "c3Name": "Felipe Andrade",
-      "c3Designation": "Marketingleiter",
-      "c4Quote": "+420 % qualifizierte Leads in 90 Tagen. Die Kombi aus Kreation und Performance, die HSB liefert, ist beeindruckend.",
-      "c4Name": "Mariana Costa",
-      "c4Designation": "CMO",
-      "c5Quote": "Hochwertiger Content, der endlich die echte Qualität unserer Marke widerspiegelte. Unser Engagement hat sich verdreifacht.",
-      "c5Name": "Juliana Ferraz",
-      "c5Designation": "Creative Director",
-      "c6Quote": "Nummer 1 bei Google für unsere Keywords in unter 4 Monaten. Beratender Service und echte Ergebnisse.",
-      "c6Name": "Carlos Oliveira",
-      "c6Designation": "Mitgründer"
-    }
+    "cta": "Mit HSB sprechen"
   },
   "Process": {
     "kicker": "Prozess",
@@ -234,7 +171,6 @@
     "kicker": "Lass uns bauen",
     "title": "Bereit, Ihren Markt zu dominieren?",
     "lede": "Erzählen Sie uns Ihr Wachstumsziel. Wir zeichnen den schnellsten Weg zu mehr Leads, stärkerer Positionierung und skalierbarem Umsatz.",
-    "whatsapp": "WhatsApp",
     "email": "E-Mail",
     "location": "Standort",
     "locationValue": "São Paulo, Brasilien"
@@ -245,7 +181,7 @@
     "email": "E-Mail",
     "emailPlaceholder": "sie@unternehmen.com",
     "phone": "Telefon",
-    "phonePlaceholder": "+49 30 12345678",
+    "phonePlaceholder": "(11) 91234-5678",
     "message": "Nachricht",
     "messagePlaceholder": "Was sind Ihre wichtigsten Ziele für die nächsten 90 Tage?",
     "submit": "Angebot anfordern",
@@ -317,7 +253,7 @@
     "sections": {
       "controller": {
         "title": "1. Data controller",
-        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsb.company"
+        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsbcompany.com.br"
       },
       "dataCollected": {
         "title": "2. Data we collect",
@@ -349,11 +285,11 @@
       },
       "rights": {
         "title": "9. Your rights as a data subject",
-        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsb.company with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
+        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsbcompany.com.br with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
       },
       "contact": {
         "title": "10. Contact and updates",
-        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsb.company.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
+        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
   }

@@ -9,9 +9,7 @@
     "nav": {
       "about": "关于",
       "services": "服务",
-      "portfolio": "案例",
       "process": "流程",
-      "clients": "客户",
       "contact": "联系"
     }
   },
@@ -21,14 +19,7 @@
     "line1": "打造一个品牌",
     "line2": "快速增长",
     "line3": "卖得更多。",
-    "ctaPrimary": "获取报价",
-    "ctaSecondary": "查看项目",
-    "metrics": {
-      "sitesLabel": "已交付网站",
-      "leadsLabel": "90天潜在客户",
-      "roasLabel": "平均ROAS",
-      "clientsLabel": "圣保罗客户"
-    }
+    "ctaPrimary": "获取报价"
   },
   "About": {
     "kicker": "关于",
@@ -68,7 +59,6 @@
     "details": {
       "includes": "包含内容",
       "audience": "适合人群",
-      "outcome": "预期结果",
       "requestProposal": "申请方案"
     },
     "items": {
@@ -80,8 +70,7 @@
         "include2": "n8n + API 实施",
         "include3": "定制 GPT 助手",
         "include4": "CRM 与 WhatsApp 集成",
-        "audience": "处理大量潜在客户、客服或重复任务的运营团队。",
-        "outcome": "人工任务减少高达 70%,响应 SLA 低于 1 分钟。"
+        "audience": "处理大量潜在客户、客服或重复任务的运营团队。"
       },
       "site": {
         "tag": "设计",
@@ -91,8 +80,7 @@
         "include2": "高转化设计",
         "include3": "响应式开发",
         "include4": "分析与 A/B 集成",
-        "audience": "需要编辑级数字形象与能销售的页面的品牌。",
-        "outcome": "访客到合格线索的转化平均提升 2-3 倍。"
+        "audience": "需要编辑级数字形象与能销售的页面的品牌。"
       },
       "ads": {
         "tag": "效果",
@@ -102,8 +90,7 @@
         "include2": "广告系列结构",
         "include3": "创意与文案",
         "include4": "优化与周报",
-        "audience": "希望获得可预测获客与可控规模的企业。",
-        "outcome": "在 30 天短周期内降低 CAC 并优化 ROAS。"
+        "audience": "希望获得可预测获客与可控规模的企业。"
       },
       "social": {
         "tag": "内容",
@@ -113,8 +100,7 @@
         "include2": "脚本与文案",
         "include3": "设计与剪辑",
         "include4": "发布与社群管理",
-        "audience": "希望以持续输出成为细分领域权威的品牌。",
-        "outcome": "高质量受众、权威感与持续的入站需求。"
+        "audience": "希望以持续输出成为细分领域权威的品牌。"
       },
       "brand": {
         "tag": "品牌",
@@ -124,8 +110,7 @@
         "include2": "命名与叙事",
         "include3": "完整视觉体系",
         "include4": "品牌手册与规范",
-        "audience": "处于建设、重塑或准备升级阶段的品牌。",
-        "outcome": "一致的品牌,被视为高端,准备好扩展。"
+        "audience": "处于建设、重塑或准备升级阶段的品牌。"
       },
       "video": {
         "tag": "视听",
@@ -135,8 +120,7 @@
         "include2": "拍摄与导演",
         "include3": "剪辑与动效",
         "include4": "广告创意包",
-        "audience": "需要以电影级品质供给付费与自然媒体的品牌。",
-        "outcome": "停下信息流的素材,带来互动并转化为效果。"
+        "audience": "需要以电影级品质供给付费与自然媒体的品牌。"
       },
       "funnel": {
         "tag": "策略",
@@ -146,8 +130,7 @@
         "include2": "上至下漏斗",
         "include3": "页面与自动化",
         "include4": "指标与仪表盘",
-        "audience": "希望打造可预测销售引擎的商业团队。",
-        "outcome": "有序的销售管道、合格的潜在客户与更高的成交率。"
+        "audience": "希望打造可预测销售引擎的商业团队。"
       },
       "consult": {
         "tag": "咨询",
@@ -157,27 +140,8 @@
         "include2": "90 天计划",
         "include3": "高管辅导",
         "include4": "月度跟进",
-        "audience": "执行前需要战略清晰的创始人与高管。",
-        "outcome": "清晰的方向、经验证的优先级与可执行的路线图。"
+        "audience": "执行前需要战略清晰的创始人与高管。"
       }
-    }
-  },
-  "Portfolio": {
-    "kicker": "案例",
-    "title": "为停下滑动、开启对话而设计的广告战役。",
-    "projects": {
-      "p1Title": "金融科技战役",
-      "p1Type": "落地页 + 付费媒体",
-      "p1Result": "90 天内潜在客户 +420%",
-      "p2Title": "时尚品牌影片",
-      "p2Type": "视频制作",
-      "p2Result": "Meta 平台 6.8× ROAS",
-      "p3Title": "连锁品牌增长",
-      "p3Type": "SEO + 本地主导",
-      "p3Result": "本地 SEO 第 1 名",
-      "p4Title": "汽车广告",
-      "p4Type": "摄影 + Reels",
-      "p4Result": "3.2× 互动"
     }
   },
   "MidCta": {
@@ -185,34 +149,7 @@
     "kicker": "准备开始",
     "title": "您已看到我们的交付。现在让我们打造您的项目。",
     "lede": "用15分钟的快速通话分享您的90天目标。您将获得一份直击成果的方案——没有废话，没有通用推销。",
-    "cta": "联系 HSB",
-    "subnote": "1个工作日内回复"
-  },
-  "Testimonials": {
-    "kicker": "客户 • 真实结果",
-    "title": "信任",
-    "titleEm": "HSB",
-    "lede": "把营销变成可预测收入引擎的真实故事。",
-    "items": {
-      "c1Quote": "我们从零开始,3 个月后每天都有合格的潜在客户。HSB 完全理解我们需要什么。",
-      "c1Name": "Ana Beatriz 博士",
-      "c1Designation": "诊所主任",
-      "c2Quote": "HSB 从零重塑了我们的数字形象。直接结果:60 天内报价数量翻倍。",
-      "c2Name": "Ricardo Mendes",
-      "c2Designation": "CEO 兼创始人",
-      "c3Quote": "他们的制作让我们的社交媒体爆发。今年最好的投资 — ROI 超出所有预期。",
-      "c3Name": "Felipe Andrade",
-      "c3Designation": "营销总监",
-      "c4Quote": "90 天内合格潜在客户 +420%。HSB 交付的创意与效果组合令人印象深刻。",
-      "c4Name": "Mariana Costa",
-      "c4Designation": "CMO",
-      "c5Quote": "终于有内容真正反映了我们品牌的品质。互动量增长了 3 倍。",
-      "c5Name": "Juliana Ferraz",
-      "c5Designation": "创意总监",
-      "c6Quote": "不到 4 个月就在 Google 上排名第 1。咨询式服务与真实结果。",
-      "c6Name": "Carlos Oliveira",
-      "c6Designation": "联合创始人"
-    }
+    "cta": "联系 HSB"
   },
   "Process": {
     "kicker": "流程",
@@ -234,7 +171,6 @@
     "kicker": "一起打造",
     "title": "准备好统治你的市场了吗?",
     "lede": "告诉我们你的增长目标。我们会规划通往更多潜在客户、更强定位和可扩展收入的最快路径。",
-    "whatsapp": "WhatsApp",
     "email": "邮箱",
     "location": "位置",
     "locationValue": "巴西圣保罗"
@@ -245,7 +181,7 @@
     "email": "邮箱",
     "emailPlaceholder": "you@company.com",
     "phone": "电话",
-    "phonePlaceholder": "+86 138 0000 0000",
+    "phonePlaceholder": "(11) 91234-5678",
     "message": "消息",
     "messagePlaceholder": "未来 90 天你最主要的目标是什么?",
     "submit": "获取报价",
@@ -317,7 +253,7 @@
     "sections": {
       "controller": {
         "title": "1. Data controller",
-        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsb.company"
+        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsbcompany.com.br"
       },
       "dataCollected": {
         "title": "2. Data we collect",
@@ -349,11 +285,11 @@
       },
       "rights": {
         "title": "9. Your rights as a data subject",
-        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsb.company with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
+        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsbcompany.com.br with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
       },
       "contact": {
         "title": "10. Contact and updates",
-        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsb.company.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
+        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
   }
