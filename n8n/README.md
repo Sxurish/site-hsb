@@ -1,6 +1,6 @@
-# n8n — Workflows do site HSB
+# n8n — Workflows do site da HSB Company
 
-Dois workflows separados servem o site:
+Dois workflows separados servem o site institucional da **HSB Company**:
 
 | Workflow | Webhook | Função |
 |---|---|---|
@@ -8,6 +8,31 @@ Dois workflows separados servem o site:
 | `HSB-Lead-Form.json` | `/webhook/hsb-lead-form` | Formulário do `#contato` (single-shot, salva + email) |
 
 Ambos persistem em `leads` (Supabase), criam página no Notion e mandam email pro time.
+
+## Pré-requisitos
+
+- Instância n8n (Cloud ou self-hosted)
+- Projeto Supabase com a tabela `leads` (compartilhada com o dashboard)
+- Database Notion `HSB - Leads`
+- Conta SMTP para envio de email
+- Conta Mistral AI (somente para o chatbot)
+
+## Variáveis / credenciais usadas
+
+| Nome | Onde | Descrição |
+|---|---|---|
+| `MISTRAL_API_KEY` | env n8n | Key da Mistral (`console.mistral.ai`) |
+| `NOTION_API_KEY` | env n8n / cred HTTP | Token de integração do Notion |
+| `NOTION_DATABASE_ID` | env n8n / hardcode | ID do database `HSB - Leads` |
+| `HSB_TEAM_EMAIL` | env n8n | Destinatário do email de novo lead |
+| `HSB_FROM_EMAIL` | env n8n | Remetente (precisa estar autorizado no SMTP) |
+| Postgres cred | n8n credentials | Conexão com o Supabase (mesma do dashboard) |
+| SMTP cred | n8n credentials | Provedor de email |
+
+No site (Vercel), configure:
+
+- `N8N_WEBHOOK_URL` → Production URL do nó `Webhook` do chatbot
+- `N8N_LEAD_WEBHOOK_URL` → Production URL do nó `Webhook - Lead Form`
 
 ---
 
@@ -31,7 +56,7 @@ Atende o webhook `/webhook/hsb-chatbot-site`, persiste leads no Supabase, qualif
 >
 > A coluna serve pra rastrear em qual etapa do funil cada lead está (espelha o evento `chatbot_step_reached` que vai pro PostHog).
 
-## Provider de IA
+### Provider de IA
 
 **Mistral AI** (`mistral-small-latest`) — hosting na União Europeia (Paris), alinhado com a LGPD que a política do site promete.
 
@@ -42,7 +67,7 @@ Atende o webhook `/webhook/hsb-chatbot-site`, persiste leads no Supabase, qualif
 
 Para migrar pra outro provider futuramente (DeepSeek, Anthropic, Groq, etc.), edite só o nó `AI - HSB Concierge` no n8n — troque a URL, o header de auth e o nome do modelo no `jsonBody`. O resto do fluxo é provider-agnostic.
 
-## Mudanças desta versão (vs. versão anterior)
+### Mudanças desta versão (vs. versão anterior)
 
 | # | Mudança | Por quê |
 |---|---|---|
@@ -55,7 +80,7 @@ Para migrar pra outro provider futuramente (DeepSeek, Anthropic, Groq, etc.), ed
 | 7 | Persona da IA renomeada de "Aria" pra **"Concierge da HSB"** | Alinha com o título `HSB Concierge` no site |
 | 8 | `lead_key` = `sessionId` (UUID persistente do front) | Antes caía em `web_<exec_id>` toda mensagem → cada msg criava lead novo no Supabase. Agora o histórico acumula corretamente. |
 
-## Contrato com o site
+### Contrato com o site
 
 **Request** (do site pro n8n):
 ```http
@@ -83,12 +108,12 @@ Content-Type: application/json
 - `replies` (array de 1–5 strings): cada item vira uma bolha separada no chat (delay 700–2000ms entre elas no front).
 - `reply` (string): retro-compat com clientes legados (concatenação de `replies` com `\n\n`).
 - `step` pode ser:
-- `service_identified` — IA já entendeu qual serviço o cliente quer
-- `contact_data_collecting` — coletando nome/email/telefone
-- `contact_data_complete` — finalizou (briefing pronto, vai pro Notion + email)
-- `null` — ainda na fase exploratória
+  - `service_identified` — IA já entendeu qual serviço o cliente quer
+  - `contact_data_collecting` — coletando nome/email/telefone
+  - `contact_data_complete` — finalizou (briefing pronto, vai pro Notion + email)
+  - `null` — ainda na fase exploratória
 
-## Limpeza / LGPD (rodar como cron mensal no Supabase)
+### Limpeza / LGPD (rodar como cron mensal no Supabase)
 
 A política de privacidade do site promete `chatbot_messages` retidos por até 90 dias. Pra cumprir, crie um cron no Supabase (Database → Cron Jobs):
 
@@ -100,7 +125,7 @@ WHERE status NOT IN ('qualificado', 'enviado_para_equipe')
 
 Leads que viraram qualificados/enviados pro time ficam — esses são dados comerciais legítimos. Conversas que morreram no caminho expiram.
 
-## Debug
+### Debug
 
 - **Resposta vem `null` ou genérica:** confere se o webhook tá ativo e se a env `N8N_WEBHOOK_URL` no Vercel aponta pra URL produção do n8n.
 - **Lead duplicado em cada mensagem:** front não está mandando `sessionId` — confere `components/chatbot-widget.tsx`.
