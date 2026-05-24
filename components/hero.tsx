@@ -11,13 +11,6 @@ export function Hero() {
   const reduce = useReducedMotion();
   const t = useTranslations('Hero');
 
-  const metrics = [
-    { value: '150+',  label: t('metrics.sitesLabel') },
-    { value: '+312%', label: t('metrics.leadsLabel') },
-    { value: '6.4×',  label: t('metrics.roasLabel') },
-    { value: '70+',   label: t('metrics.clientsLabel') },
-  ];
-
   const lines = [
     { text: t('line1'), style: '' },
     { text: t('line2'), style: 'gold-sheen' },
@@ -83,44 +76,8 @@ export function Hero() {
               className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"
             />
           </motion.a>
-
-          <a
-            href="#portfolio"
-            onClick={() => track('cta_clicked', { location: 'hero', label: 'secondary' })}
-            className="group inline-flex items-center gap-1.5 text-sm text-fg/55 transition hover:text-fg"
-          >
-            <span className="border-b border-fg/20 transition group-hover:border-accent">
-              {t('ctaSecondary')}
-            </span>
-            <ArrowUpRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
         </motion.div>
       </div>
-
-      {/* Faixa de métricas */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.7, ease }}
-        className="mx-auto mt-16 w-full max-w-7xl px-4 md:px-8"
-      >
-        <div className="grid grid-cols-2 gap-6 border-t border-border/[0.1] pt-8 sm:gap-8 md:grid-cols-4">
-          {metrics.map((m, i) => (
-            <motion.div
-              key={m.label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.75 + i * 0.07, ease }}
-              className="group"
-            >
-              <p className="text-3xl font-black tabular-nums transition-colors group-hover:text-accent sm:text-4xl md:text-5xl">
-                {m.value}
-              </p>
-              <p className="mt-1.5 text-xs text-fg/40 sm:text-sm">{m.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
     </section>
   );
 }

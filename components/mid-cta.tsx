@@ -43,10 +43,6 @@ export function MidCta() {
           {t('cta')}
           <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </motion.a>
-
-        <p className="mt-5 text-xs uppercase tracking-[0.25em] text-fg/30">
-          {t('subnote')}
-        </p>
       </motion.div>
     </section>
   );

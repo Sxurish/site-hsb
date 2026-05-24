@@ -9,9 +9,7 @@
     "nav": {
       "about": "About",
       "services": "Services",
-      "portfolio": "Portfolio",
       "process": "Process",
-      "clients": "Clients",
       "contact": "Contact"
     }
   },
@@ -21,14 +19,7 @@
     "line1": "Build a brand",
     "line2": "that grows fast",
     "line3": "and sells more.",
-    "ctaPrimary": "Request a Quote",
-    "ctaSecondary": "View Projects",
-    "metrics": {
-      "sitesLabel": "websites delivered",
-      "leadsLabel": "leads in 90 days",
-      "roasLabel": "average ROAS",
-      "clientsLabel": "clients in SP"
-    }
+    "ctaPrimary": "Request a Quote"
   },
   "About": {
     "kicker": "About",
@@ -68,7 +59,6 @@
     "details": {
       "includes": "What's included",
       "audience": "Who it's for",
-      "outcome": "Expected outcome",
       "requestProposal": "Request proposal"
     },
     "items": {
@@ -80,8 +70,7 @@
         "include2": "n8n + API implementation",
         "include3": "Custom GPT assistants",
         "include4": "CRM and WhatsApp integrations",
-        "audience": "Operations handling high volumes of leads, support or repetitive tasks.",
-        "outcome": "Up to 70% reduction in manual tasks and response SLA under 1 minute."
+        "audience": "Operations handling high volumes of leads, support or repetitive tasks."
       },
       "site": {
         "tag": "Design",
@@ -91,8 +80,7 @@
         "include2": "High-conversion design",
         "include3": "Responsive development",
         "include4": "Analytics and A/B integration",
-        "audience": "Brands that need an editorial digital presence and pages that sell.",
-        "outcome": "Average 2-3x increase in visitor-to-qualified-lead conversion."
+        "audience": "Brands that need an editorial digital presence and pages that sell."
       },
       "ads": {
         "tag": "Performance",
@@ -102,8 +90,7 @@
         "include2": "Campaign structure",
         "include3": "Creative and copy",
         "include4": "Optimization and weekly reports",
-        "audience": "Companies that want acquisition predictability and controlled scale.",
-        "outcome": "Reduced CAC and optimized ROAS in short 30-day cycles."
+        "audience": "Companies that want acquisition predictability and controlled scale."
       },
       "social": {
         "tag": "Content",
@@ -113,8 +100,7 @@
         "include2": "Script and copy",
         "include3": "Design and editing",
         "include4": "Publishing and community",
-        "audience": "Brands that want to become a reference in their niche with consistency.",
-        "outcome": "Qualified audience, authority and continuous inbound demand generation."
+        "audience": "Brands that want to become a reference in their niche with consistency."
       },
       "brand": {
         "tag": "Branding",
@@ -124,8 +110,7 @@
         "include2": "Naming and narrative",
         "include3": "Complete visual system",
         "include4": "Brand book and guidelines",
-        "audience": "Businesses in construction, repositioning or ready to step up a tier.",
-        "outcome": "Coherent brand, perceived as premium and ready to scale."
+        "audience": "Businesses in construction, repositioning or ready to step up a tier."
       },
       "video": {
         "tag": "Audiovisual",
@@ -135,8 +120,7 @@
         "include2": "Capture and direction",
         "include3": "Editing and motion",
         "include4": "Creative packages for paid media",
-        "audience": "Brands that need to feed paid and organic media with cinematic quality.",
-        "outcome": "Material that stops the feed, drives engagement and converts into performance."
+        "audience": "Brands that need to feed paid and organic media with cinematic quality."
       },
       "funnel": {
         "tag": "Strategy",
@@ -146,8 +130,7 @@
         "include2": "Top → bottom funnel",
         "include3": "Pages and automations",
         "include4": "Metrics and dashboards",
-        "audience": "Sales teams that want a predictable revenue engine.",
-        "outcome": "Organized pipeline, qualified leads and higher close rates."
+        "audience": "Sales teams that want a predictable revenue engine."
       },
       "consult": {
         "tag": "Consulting",
@@ -157,27 +140,8 @@
         "include2": "90-day plan",
         "include3": "Executive mentoring",
         "include4": "Monthly follow-up",
-        "audience": "Founders and directors who need strategic clarity before executing.",
-        "outcome": "Clear direction, validated priorities and a roadmap ready for execution."
+        "audience": "Founders and directors who need strategic clarity before executing."
       }
-    }
-  },
-  "Portfolio": {
-    "kicker": "Portfolio",
-    "title": "Campaigns built to stop the scroll and start conversations.",
-    "projects": {
-      "p1Title": "Fintech Campaign",
-      "p1Type": "Landing Page + Paid Media",
-      "p1Result": "+420% leads in 90 days",
-      "p2Title": "Fashion Brand Film",
-      "p2Type": "Video Production",
-      "p2Result": "6.8× ROAS on Meta",
-      "p3Title": "Franchise Growth",
-      "p3Type": "SEO + Local Dominance",
-      "p3Result": "#1 in local SEO",
-      "p4Title": "Automotive Ads",
-      "p4Type": "Photography + Reels",
-      "p4Result": "3.2× engagement"
     }
   },
   "MidCta": {
@@ -185,34 +149,7 @@
     "kicker": "Ready to start",
     "title": "You saw what we deliver. Now let's build yours.",
     "lede": "Share your 90-day goal in a 15-minute call. You leave with a sharp plan to the result — no fluff, no generic pitch.",
-    "cta": "Talk to HSB",
-    "subnote": "Reply within 1 business day"
-  },
-  "Testimonials": {
-    "kicker": "CLIENTS • REAL RESULTS",
-    "title": "Brands that trusted",
-    "titleEm": "HSB",
-    "lede": "Real stories of operations that turned marketing into a predictable revenue engine.",
-    "items": {
-      "c1Quote": "We started from zero and within 3 months we were getting qualified leads every day. HSB understood exactly what we needed.",
-      "c1Name": "Dr. Ana Beatriz",
-      "c1Designation": "Clinical Director",
-      "c2Quote": "HSB redesigned our digital presence from scratch. Direct result: we doubled the number of quotes in 60 days.",
-      "c2Name": "Ricardo Mendes",
-      "c2Designation": "CEO & Founder",
-      "c3Quote": "Our social media exploded with their productions. Best investment we made this year — ROI beyond all our expectations.",
-      "c3Name": "Felipe Andrade",
-      "c3Designation": "Marketing Director",
-      "c4Quote": "+420% in qualified leads in 90 days. The combination of creative and performance that HSB delivers is impressive.",
-      "c4Name": "Mariana Costa",
-      "c4Designation": "CMO",
-      "c5Quote": "High-end content that finally reflected the real quality of our brand. Our engagement tripled.",
-      "c5Name": "Juliana Ferraz",
-      "c5Designation": "Creative Director",
-      "c6Quote": "Number 1 on Google for our keywords in less than 4 months. Consultative service and real results.",
-      "c6Name": "Carlos Oliveira",
-      "c6Designation": "Co-founder"
-    }
+    "cta": "Talk to HSB"
   },
   "Process": {
     "kicker": "Process",
@@ -234,7 +171,6 @@
     "kicker": "Let's Build",
     "title": "Ready to dominate your market?",
     "lede": "Tell us your growth goal. We'll map the fastest path to more leads, stronger positioning and scalable revenue.",
-    "whatsapp": "WhatsApp",
     "email": "Email",
     "location": "Location",
     "locationValue": "São Paulo, Brazil"
@@ -245,7 +181,7 @@
     "email": "Email",
     "emailPlaceholder": "you@company.com",
     "phone": "Phone",
-    "phonePlaceholder": "+1 (555) 123-4567",
+    "phonePlaceholder": "(11) 91234-5678",
     "message": "Message",
     "messagePlaceholder": "What are your main goals for the next 90 days?",
     "submit": "Request a Quote",
@@ -317,7 +253,7 @@
     "sections": {
       "controller": {
         "title": "1. Data controller",
-        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsb.company"
+        "body": "Controller: HSB Company\nLocation: São Paulo, Brazil\nPrivacy contact: contato@hsbcompany.com.br"
       },
       "dataCollected": {
         "title": "2. Data we collect",
@@ -349,11 +285,11 @@
       },
       "rights": {
         "title": "9. Your rights as a data subject",
-        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsb.company with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
+        "body": "You may, at any time, request:\n\n• Confirmation of processing\n• Access to your data\n• Correction of incomplete or incorrect data\n• Anonymization, blocking or deletion\n• Portability\n• Deletion of data processed under your consent\n• Withdrawal of consent\n\nTo exercise, email contato@hsbcompany.com.br with subject \"LGPD - Data Subject Right\". We will respond within 15 days."
       },
       "contact": {
         "title": "10. Contact and updates",
-        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsb.company.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
+        "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
   }

@@ -11,8 +11,7 @@ export function ContactCta() {
   const t = useTranslations('Contact');
 
   const contacts = [
-    { label: t('whatsapp'), value: '+55 (11) 99999-9999', href: 'https://wa.me/5511999999999', kind: 'whatsapp' as const },
-    { label: t('email'),    value: 'contato@hsb.company', href: 'mailto:contato@hsb.company', kind: 'contact' as const },
+    { label: t('email'), value: 'contato@hsbcompany.com.br', href: 'mailto:contato@hsbcompany.com.br', kind: 'contact' as const },
   ];
 
   return (
