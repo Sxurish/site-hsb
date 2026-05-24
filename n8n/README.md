@@ -1,8 +1,21 @@
-# n8n — HSB Concierge Site Chatbot
+# n8n — Workflows do site HSB
 
-Workflow do chatbot do site. Atende o webhook `/webhook/hsb-chatbot-site`, persiste leads no Supabase, qualifica via OpenAI, cria registro no Notion e envia email pro time quando o briefing fica completo.
+Dois workflows separados servem o site:
 
-## Importar / atualizar
+| Workflow | Webhook | Função |
+|---|---|---|
+| `HSB-Concierge-Chatbot-PATCHED.json` | `/webhook/hsb-chatbot-site` | Chatbot conversacional (multi-turno, IA, qualificação) |
+| `HSB-Lead-Form.json` | `/webhook/hsb-lead-form` | Formulário do `#contato` (single-shot, salva + email) |
+
+Ambos persistem em `leads` (Supabase), criam página no Notion e mandam email pro time.
+
+---
+
+## 1. Chatbot — `HSB-Concierge-Chatbot-PATCHED.json`
+
+Atende o webhook `/webhook/hsb-chatbot-site`, persiste leads no Supabase, qualifica via Mistral, cria registro no Notion e envia email pro time quando o briefing fica completo.
+
+### Importar / atualizar
 
 1. Abre o n8n.
 2. **Settings → Import from File** → seleciona `HSB-Concierge-Chatbot-PATCHED.json`.
@@ -58,12 +71,18 @@ Content-Type: application/json
 **Response** (do n8n pro site):
 ```json
 {
-  "reply": "Legal! Pra te direcionar melhor, qual o objetivo principal — escalar atendimento, qualificar leads ou automatizar tarefas internas?",
+  "replies": [
+    "Legal! Automação com IA é justamente o que mais entregamos hoje.",
+    "Pra te direcionar melhor, qual o cenário atual — você já tem fluxos rodando ou está começando do zero?"
+  ],
+  "reply": "Legal! Automação com IA é justamente o que mais entregamos hoje.\n\nPra te direcionar melhor, qual o cenário atual — você já tem fluxos rodando ou está começando do zero?",
   "step": "service_identified"
 }
 ```
 
-`step` pode ser:
+- `replies` (array de 1–5 strings): cada item vira uma bolha separada no chat (delay 700–2000ms entre elas no front).
+- `reply` (string): retro-compat com clientes legados (concatenação de `replies` com `\n\n`).
+- `step` pode ser:
 - `service_identified` — IA já entendeu qual serviço o cliente quer
 - `contact_data_collecting` — coletando nome/email/telefone
 - `contact_data_complete` — finalizou (briefing pronto, vai pro Notion + email)
@@ -87,3 +106,55 @@ Leads que viraram qualificados/enviados pro time ficam — esses são dados come
 - **Lead duplicado em cada mensagem:** front não está mandando `sessionId` — confere `components/chatbot-widget.tsx`.
 - **`step` sempre null:** confere o nó `Derive Step` — ele depende de `dados_coletados.servico` (ou nome/email/phone) vir preenchido pela IA. Se a IA não tá preenchendo, o problema é no system prompt do nó `AI - HSB Concierge`.
 - **Erro SQL injection-like:** se algum field tem caractere especial e dá erro, o `queryReplacement` pode estar mal-formatado. Cada `$N` precisa ter um valor correspondente, na mesma ordem.
+
+---
+
+## 2. Formulário do site — `HSB-Lead-Form.json`
+
+Atende o webhook `/webhook/hsb-lead-form`, valida o payload do formulário do `#contato`, faz upsert no Supabase (mesma tabela `leads`), cria página no Notion e envia email pro time. Single-shot — sem IA, sem múltiplas mensagens.
+
+### Importar
+
+1. Abre o n8n.
+2. **Settings → Import from File** → seleciona `HSB-Lead-Form.json`.
+3. Mapeia credenciais (todas iguais às do chatbot):
+   - **Postgres** no nó `DB - Upsert Lead` → mesma credencial Supabase
+   - **HTTP Header Auth** no nó `Notion - Create Page` → mesma credencial com header `Authorization: Bearer <NOTION_API_KEY>`
+   - **SMTP** no nó `Email - Notify Team` → mesma credencial SMTP
+4. No nó `Notion - Create Page`, substitua `REPLACE_WITH_NOTION_DATABASE_ID` pelo ID do database `HSB - Leads` (já está em `NOTION_DATABASE_ID` do chatbot — em n8n Cloud sem `$env`, hardcode aqui também).
+5. Ativa o workflow (toggle no topo).
+6. **Copia a Production URL do webhook** (botão `Production URL` no nó `Webhook - Lead Form`) e cola em `N8N_LEAD_WEBHOOK_URL` no Vercel (Preview + Production).
+
+### Contrato
+
+**Request** (do `/api/lead` do site pro n8n):
+```http
+POST /webhook/hsb-lead-form
+Content-Type: application/json
+
+{
+  "source": "form",
+  "name": "Maria Silva",
+  "email": "maria@empresa.com",
+  "phone": "+55 11 91234-5678",
+  "message": "Quero refazer o site institucional, prazo 30 dias.",
+  "locale": "pt-BR",
+  "timestamp": "2026-05-23T15:30:00.000Z"
+}
+```
+
+**Response** (sucesso):
+```json
+{ "ok": true, "lead_key": "form_abc123..." }
+```
+
+**Response** (payload inválido):
+```json
+{ "ok": false, "error": "invalid_payload" }
+```
+
+### Notas
+
+- **`lead_key` estável por email:** `form_` + `sha256(email).slice(0, 24)`. Mesmo email reenviando = mesmo lead, com `briefing_completo` concatenado (separador `\n\n---\n\n`) e `updated_at` atualizado.
+- **Sem retry interno:** se o Notion ou SMTP falharem, o lead já está no Supabase (upsert acontece antes) — não perde dado. Adicione um nó de error trigger se quiser alertas.
+- **`source='form'` no Supabase** diferencia dos leads vindos do chatbot (`source='site'`).

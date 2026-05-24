@@ -2,7 +2,7 @@
 
 import { FormEvent, useRef, useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { track } from '@/lib/analytics';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -11,6 +11,7 @@ export function LeadForm() {
   const [status, setStatus] = useState<Status>('idle');
   const startedRef = useRef(false);
   const t = useTranslations('LeadForm');
+  const locale = useLocale();
 
   const handleFirstFocus = () => {
     if (startedRef.current) return;
@@ -20,17 +21,38 @@ export function LeadForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const hasEmail = !!String(fd.get('email') ?? '').trim();
-    const hasPhone = !!String(fd.get('phone') ?? '').trim();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const payload = {
+      name:    String(fd.get('name')    ?? '').trim(),
+      email:   String(fd.get('email')   ?? '').trim(),
+      phone:   String(fd.get('phone')   ?? '').trim(),
+      message: String(fd.get('message') ?? '').trim(),
+      locale,
+    };
 
     setStatus('submitting');
-    await new Promise((r) => setTimeout(r, 600));
-    setStatus('success');
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null) as { ok?: boolean } | null;
 
-    track('lead_form_submitted', { hasEmail, hasPhone });
-
-    e.currentTarget.reset();
+      if (res.ok && data?.ok) {
+        setStatus('success');
+        track('lead_form_submitted', {
+          hasEmail: !!payload.email,
+          hasPhone: !!payload.phone,
+        });
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
   };
 
   const field =
