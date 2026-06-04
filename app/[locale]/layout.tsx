@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
-import { DottedSurface } from '@/components/dotted-surface';
+import { DottedSurface } from '@/components/dotted-surface-lazy';
 import { PostHogPageview } from '@/components/posthog-provider';
 import { CookieConsent } from '@/components/cookie-consent';
 import '../globals.css';
