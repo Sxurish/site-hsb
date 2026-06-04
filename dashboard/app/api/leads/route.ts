@@ -9,6 +9,9 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const user = await getUser();
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  // Lista de leads expõe PII (email/telefone) — restrita a admin (LGPD: minimização).
+  // Viewers acessam só métricas agregadas via /api/metrics.
+  if (user.role !== 'admin') return NextResponse.json({ error: 'forbidden' }, { status: 403 });
 
   try {
     const leads = await fetchLeads();

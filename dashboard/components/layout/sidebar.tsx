@@ -15,20 +15,25 @@ import {
   X,
 } from 'lucide-react';
 import { useSidebar } from './sidebar-context';
+import { useUser } from '@/components/auth/user-context';
 
 const NAV_ITEMS = [
-  { href: '/overview',  label: 'Dashboard',  icon: LayoutDashboard },
-  { href: '/leads',     label: 'Leads',       icon: Users           },
-  { href: '/funnel',    label: 'Funil',       icon: Filter          },
-  { href: '/insights',  label: 'Insights',    icon: Lightbulb       },
-  { href: '/goals',     label: 'Metas',       icon: Target          },
-  { href: '/reports',   label: 'Relatórios',  icon: BarChart2       },
+  { href: '/overview',  label: 'Dashboard',  icon: LayoutDashboard                   },
+  { href: '/leads',     label: 'Leads',       icon: Users,          adminOnly: true   },
+  { href: '/funnel',    label: 'Funil',       icon: Filter                            },
+  { href: '/insights',  label: 'Insights',    icon: Lightbulb                         },
+  { href: '/goals',     label: 'Metas',       icon: Target                            },
+  { href: '/reports',   label: 'Relatórios',  icon: BarChart2                         },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { open, close } = useSidebar();
+  const { role } = useUser();
+
+  // Leads expõe PII — só admin vê o item (rota e API também são protegidas).
+  const navItems = NAV_ITEMS.filter((item) => !item.adminOnly || role === 'admin');
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -67,7 +72,7 @@ export function Sidebar() {
       {/* Nav */}
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 py-4">
         <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-muted">Principal</p>
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        {navItems.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/');
           return (
             <Link
