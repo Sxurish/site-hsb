@@ -138,8 +138,10 @@ export function paramsToRange(params: {
 
 // Número de dias do range (inclusive). Clamp em 1..365.
 export function rangeDays(r: DateRange): number {
+  // `to` é fim-do-dia (23:59:59.999), então o span é ~N dias inteiros menos 1ms.
+  // ceil recupera o número de dias inclusive (N), sem contar um dia a mais.
   const ms = r.to.getTime() - r.from.getTime();
-  const days = Math.round(ms / 86_400_000) + 1;
+  const days = Math.ceil(ms / 86_400_000);
   return Math.min(Math.max(days, 1), 365);
 }
 
