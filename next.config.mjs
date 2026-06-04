@@ -30,24 +30,9 @@ const nextConfig = {
     ];
   },
   async headers() {
-    // Next.js 14 injeta scripts inline no HTML (hydration/runtime), logo 'unsafe-inline'
-    // em script-src é necessário enquanto não houver suporte a nonces via middleware.
-    const CSP = [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline'",
-      "font-src 'self' data:",
-      "img-src 'self' data: blob:",
-      // PostHog vai via proxy reverso /ingest (mesmo origin); n8n é server-side apenas.
-      "connect-src 'self'",
-      "worker-src 'self' blob:",
-      "object-src 'none'",
-      "frame-src 'none'",
-      "frame-ancestors 'self'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join('; ');
-
+    // CSP é definida por request no middleware.ts (nonce + 'strict-dynamic'),
+    // pois precisa de um nonce único por resposta. Os demais headers são
+    // estáticos e ficam aqui, aplicados a todas as rotas (inclusive assets/API).
     const securityHeaders = [
       { key: 'X-DNS-Prefetch-Control',          value: 'on' },
       { key: 'X-Content-Type-Options',           value: 'nosniff' },
@@ -55,7 +40,6 @@ const nextConfig = {
       { key: 'Referrer-Policy',                  value: 'strict-origin-when-cross-origin' },
       { key: 'Permissions-Policy',               value: 'camera=(), microphone=(), geolocation=(), payment=()' },
       { key: 'Strict-Transport-Security',        value: 'max-age=63072000; includeSubDomains; preload' },
-      { key: 'Content-Security-Policy',          value: CSP },
       { key: 'Cross-Origin-Opener-Policy',       value: 'same-origin' },
       { key: 'Cross-Origin-Embedder-Policy',     value: 'require-corp' },
       { key: 'Cross-Origin-Resource-Policy',     value: 'same-origin' },
