@@ -62,17 +62,9 @@ const ROOT = path.resolve(__dirname, '..');
 const SRC_FILE = path.join(ROOT, 'messages', 'pt-BR.json');
 const OUT_DIR  = path.join(ROOT, 'messages');
 
-const API_KEY = process.env.DEEPL_API_KEY;
-const API_URL = process.env.DEEPL_PRO === 'true'
-  ? 'https://api.deepl.com/v2/translate'
-  : 'https://api-free.deepl.com/v2/translate';
-
-if (!API_KEY) {
-  console.error('❌ DEEPL_API_KEY missing. Add it to .env.local (see .env.example).');
-  process.exit(1);
-}
-
-/* ── Load .env.local manually (avoid extra deps) ─────── */
+/* ── Load .env.local manually (avoid extra deps) ───────
+   Precisa rodar ANTES de ler DEEPL_API_KEY/DEEPL_PRO, senão as chaves
+   definidas só no .env.local nunca são vistas. */
 try {
   const envPath = path.join(ROOT, '.env.local');
   if (fs.existsSync(envPath)) {
@@ -87,6 +79,16 @@ try {
       });
   }
 } catch { /* ignore */ }
+
+const API_KEY = process.env.DEEPL_API_KEY;
+const API_URL = process.env.DEEPL_PRO === 'true'
+  ? 'https://api.deepl.com/v2/translate'
+  : 'https://api-free.deepl.com/v2/translate';
+
+if (!API_KEY) {
+  console.error('❌ DEEPL_API_KEY missing. Add it to .env.local (see .env.example).');
+  process.exit(1);
+}
 
 /* ── CLI args ───────────────────────────────────────── */
 const args = process.argv.slice(2);

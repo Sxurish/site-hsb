@@ -1,61 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PostHog } from 'posthog-node';
-import crypto from 'node:crypto';
+import { createRateLimiter } from '@/lib/server/rate-limit';
+import { getIp, ph, pseudonymousId } from '@/lib/server/telemetry';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Rate limit em memória — suficiente pra single-instance.
-// Para produção multi-region, troque por Upstash/Redis.
-const RATE_WINDOW_MS = 60_000;        // 1 min
-const RATE_MAX       = 10;            // 10 msgs/min/ip
-const buckets        = new Map<string, { count: number; resetAt: number }>();
+const rateLimit = createRateLimiter(10, 60_000); // 10 msgs/min/ip
 
 type Step = 'service_identified' | 'contact_data_collecting' | 'contact_data_complete';
-
-let _ph: PostHog | null = null;
-function ph(): PostHog | null {
-  if (_ph) return _ph;
-  const key = process.env.POSTHOG_API_KEY;
-  if (!key) return null;
-  _ph = new PostHog(key, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
-    flushAt: 1,
-    flushInterval: 0,
-  });
-  return _ph;
-}
-
-function pseudonymousId(ip: string): string | null {
-  const salt = process.env.POSTHOG_ID_SALT;
-  // Sem salt configurado não gera ID derivado de IP — evita pseudonimização previsível.
-  if (!salt) return null;
-  return 'anon_' + crypto.createHash('sha256').update(ip + '|' + salt).digest('hex').slice(0, 24);
-}
-
-function getIp(req: NextRequest): string {
-  // x-real-ip é definido pelo proxy/CDN (Vercel/nginx) e não pode ser forjado pelo cliente.
-  const realIp = req.headers.get('x-real-ip');
-  if (realIp) return realIp.trim();
-  // Fallback: último valor do XFF — adicionado pelo proxy mais próximo, não pelo cliente.
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',').at(-1)!.trim();
-  return 'unknown';
-}
-
-function rateLimit(ip: string): { ok: boolean; retryAfter?: number } {
-  const now = Date.now();
-  const b = buckets.get(ip);
-  if (!b || now > b.resetAt) {
-    buckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
-    return { ok: true };
-  }
-  if (b.count >= RATE_MAX) {
-    return { ok: false, retryAfter: Math.ceil((b.resetAt - now) / 1000) };
-  }
-  b.count += 1;
-  return { ok: true };
-}
 
 const FALLBACKS: Record<string, string> = {
   ia:      'Nossa área de Automação & IA usa n8n, GPT e integrações customizadas para escalar operações. Quer agendar uma conversa com um especialista?',
@@ -151,21 +103,19 @@ export async function POST(req: NextRequest) {
         if (replies.length) {
           const client = ph();
           const distinctId = pseudonymousId(ip);
-          if (client && distinctId) {
+          if (client && distinctId && step) {
             try {
-              if (step) {
+              client.capture({
+                distinctId,
+                event: 'chatbot_step_reached',
+                properties: { step, source: 'server' },
+              });
+              if (step === 'contact_data_complete') {
                 client.capture({
                   distinctId,
-                  event: 'chatbot_step_reached',
-                  properties: { step, source: 'server' },
+                  event: 'chatbot_completed',
+                  properties: { source: 'server' },
                 });
-                if (step === 'contact_data_complete') {
-                  client.capture({
-                    distinctId,
-                    event: 'chatbot_completed',
-                    properties: { source: 'server' },
-                  });
-                }
               }
               await client.flush();
             } catch { /* ignore */ }

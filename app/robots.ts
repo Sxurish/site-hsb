@@ -5,7 +5,7 @@ const SITE = 'https://hsb.company';
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: ['/api/'] },
+      { userAgent: '*', allow: '/', disallow: ['/api/', '/ingest/'] },
     ],
     sitemap: `${SITE}/sitemap.xml`,
     host: SITE,

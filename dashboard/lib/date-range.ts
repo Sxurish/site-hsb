@@ -128,11 +128,25 @@ export function paramsToRange(params: {
   const mt = params.to ? re.exec(params.to) : null;
   if (!mf || !mt) return DEFAULT_RANGE;
 
-  const from = startOfDaySP(Number(mf[1]), Number(mf[2]), Number(mf[3]));
+  let from = startOfDaySP(Number(mf[1]), Number(mf[2]), Number(mf[3]));
   const to = endOfDaySP(Number(mt[1]), Number(mt[2]), Number(mt[3]));
   if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime()) || from.getTime() > to.getTime()) {
     return DEFAULT_RANGE;
   }
+
+  // Clamp: from/to vêm da URL — sem limite, um range de décadas viraria
+  // query HogQL gigante no PostHog (custo + latência) a partir de qualquer
+  // sessão autenticada. Máximo de 366 dias, ancorado no `to`.
+  const MAX_SPAN_DAYS = 366;
+  const spanDays = Math.round((to.getTime() - from.getTime()) / 86_400_000) + 1;
+  if (spanDays > MAX_SPAN_DAYS) {
+    const t = addDaysSP(
+      { y: Number(mt[1]), m: Number(mt[2]), d: Number(mt[3]) },
+      -(MAX_SPAN_DAYS - 1),
+    );
+    from = startOfDaySP(t.y, t.m, t.d);
+  }
+
   return { from, to, preset: 'custom' };
 }
 

@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
 import { DottedSurface } from '@/components/dotted-surface';
@@ -57,6 +56,8 @@ export async function generateMetadata({
   const { locale } = await params;
   const isDefault = locale === routing.defaultLocale;
   const path = isDefault ? '/' : `/${locale}`;
+  // Metadados localizados por idioma (SEO multilíngue) — namespace Meta em messages/.
+  const t = await getTranslations({ locale, namespace: 'Meta' });
 
   const ogLocaleMap: Record<string, string> = {
     'pt-BR': 'pt_BR',
@@ -70,11 +71,10 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: 'HSB Company | Agência de Marketing & Audiovisual em São Paulo',
+      default: t('title'),
       template: '%s | HSB Company',
     },
-    description:
-      'A HSB Company é uma agência de marketing orientada a resultados em São Paulo, especializada em sites, SEO, tráfego pago, branding, produção de vídeo e fotografia comercial.',
+    description: t('description'),
     applicationName: 'HSB Company',
     authors: [{ name: 'HSB Company' }],
     creator: 'HSB Company',
@@ -99,9 +99,8 @@ export async function generateMetadata({
       ),
     },
     openGraph: {
-      title: 'HSB Company | Agência de Marketing & Audiovisual em São Paulo',
-      description:
-        'Estratégia digital focada em performance e produção audiovisual de alto impacto para marcas ambiciosas em São Paulo.',
+      title: t('title'),
+      description: t('ogDescription'),
       url: `${SITE_URL}${path}`,
       siteName: 'HSB Company',
       locale: ogLocaleMap[locale] ?? 'pt_BR',
@@ -109,9 +108,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'HSB Company | Agência de Marketing & Audiovisual',
-      description:
-        'Performance digital e produção audiovisual premium para marcas que querem crescer em São Paulo.',
+      title: t('twitterTitle'),
+      description: t('twitterDescription'),
     },
     robots: {
       index: true,
@@ -148,8 +146,12 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  const theme = cookies().get('theme')?.value;
-  const htmlClass = `${instrumentSerif.variable} ${interTight.variable} ${jetbrainsMono.variable}${theme === 'light' ? '' : ' dark'}`;
+  // Tema aplicado por script inline ANTES do paint (lê localStorage/cookie no
+  // cliente). Evita ler cookies() no server — que forçaria SSR dinâmico em
+  // todas as páginas e mataria o SSG. Default: dark.
+  const htmlClass = `${instrumentSerif.variable} ${interTight.variable} ${jetbrainsMono.variable}`;
+  const themeScript =
+    "(function(){try{var t=localStorage.getItem('theme');if(!t){var m=document.cookie.match(/(?:^|; )theme=([^;]*)/);t=m?m[1]:null}if(t!=='light')document.documentElement.classList.add('dark')}catch(e){document.documentElement.classList.add('dark')}})()";
 
   return (
     <html
@@ -158,8 +160,7 @@ export default async function LocaleLayout({
       className={htmlClass}
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         <DottedSurface />

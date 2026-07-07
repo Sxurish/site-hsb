@@ -50,9 +50,11 @@ export function PasswordForm() {
   const [status, setStatus]         = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [errorMsg, setErrorMsg]     = useState('');
 
+  // 12 caracteres — mesmo mínimo do fluxo de reset (/auth/update-password).
+  const MIN_LEN = 12;
   const mismatch = confirmPass.length > 0 && newPass !== confirmPass;
-  const tooShort = newPass.length > 0 && newPass.length < 8;
-  const canSubmit = newPass.length >= 8 && newPass === confirmPass && status !== 'loading';
+  const tooShort = newPass.length > 0 && newPass.length < MIN_LEN;
+  const canSubmit = newPass.length >= MIN_LEN && newPass === confirmPass && status !== 'loading';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,12 +85,12 @@ export function PasswordForm() {
         <PasswordInput
           value={newPass}
           onChange={(v) => { setNewPass(v); setStatus('idle'); }}
-          placeholder="Mínimo 8 caracteres"
+          placeholder="Mínimo 12 caracteres"
           disabled={status === 'loading'}
           autoComplete="new-password"
         />
         {tooShort && (
-          <p className="mt-1 text-[11px] text-danger">Mínimo 8 caracteres.</p>
+          <p className="mt-1 text-[11px] text-danger">Mínimo 12 caracteres.</p>
         )}
       </div>
 

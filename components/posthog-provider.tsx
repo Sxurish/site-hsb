@@ -52,10 +52,19 @@ export function PostHogPageview() {
   }, [pathname, searchParams]);
 
   useEffect(() => {
-    const onConsentChange = () => bootIfAllowed();
+    const onConsentChange = () => {
+      const wasInitialized = initialized;
+      bootIfAllowed();
+      // Consentimento acabou de ser dado: captura o pageview da página atual,
+      // senão a primeira visita da sessão nunca entra no funil.
+      if (!wasInitialized && initialized) {
+        const url = window.origin + pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+        posthog.capture('$pageview', { $current_url: url });
+      }
+    };
     window.addEventListener('hsb:consent-changed', onConsentChange);
     return () => window.removeEventListener('hsb:consent-changed', onConsentChange);
-  }, []);
+  }, [pathname, searchParams]);
 
   return null;
 }

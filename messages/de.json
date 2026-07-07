@@ -1,4 +1,11 @@
 {
+  "Meta": {
+    "title": "HSB Company | Agentur für Marketing & Audiovisuelles in São Paulo",
+    "description": "HSB Company ist eine ergebnisorientierte Marketingagentur in São Paulo, spezialisiert auf Websites, SEO, Paid Media, Branding, Videoproduktion und kommerzielle Fotografie.",
+    "ogDescription": "Performance-orientierte Digitalstrategie und wirkungsvolle audiovisuelle Produktion für ambitionierte Marken in São Paulo.",
+    "twitterTitle": "HSB Company | Marketing & Audiovisuelle Agentur",
+    "twitterDescription": "Premium Digital-Performance und audiovisuelle Produktion für Marken, die wachsen wollen."
+  },
   "Header": {
     "logoAriaLabel": "HSB Company Startseite",
     "openMenu": "Menü öffnen",

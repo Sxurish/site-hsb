@@ -1,4 +1,11 @@
 {
+  "Meta": {
+    "title": "HSB Company | 圣保罗营销与影音制作机构",
+    "description": "HSB Company 是一家位于圣保罗、以结果为导向的营销机构，专注于网站建设、SEO、付费流量、品牌塑造、视频制作和商业摄影。",
+    "ogDescription": "以效果为核心的数字营销策略与高影响力影音制作，服务于圣保罗雄心勃勃的品牌。",
+    "twitterTitle": "HSB Company | 营销与影音制作机构",
+    "twitterDescription": "为希望成长的品牌提供优质数字营销表现与影音制作。"
+  },
   "Header": {
     "logoAriaLabel": "HSB Company 首页",
     "openMenu": "打开菜单",

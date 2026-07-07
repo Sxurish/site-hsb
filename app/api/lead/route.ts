@@ -1,54 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PostHog } from 'posthog-node';
-import crypto from 'node:crypto';
+import { createRateLimiter } from '@/lib/server/rate-limit';
+import { getIp, captureServerEvent } from '@/lib/server/telemetry';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const RATE_WINDOW_MS = 60_000;
-const RATE_MAX       = 5;
-const buckets        = new Map<string, { count: number; resetAt: number }>();
-
-let _ph: PostHog | null = null;
-function ph(): PostHog | null {
-  if (_ph) return _ph;
-  const key = process.env.POSTHOG_API_KEY;
-  if (!key) return null;
-  _ph = new PostHog(key, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
-    flushAt: 1,
-    flushInterval: 0,
-  });
-  return _ph;
-}
-
-function pseudonymousId(ip: string): string | null {
-  const salt = process.env.POSTHOG_ID_SALT;
-  if (!salt) return null;
-  return 'anon_' + crypto.createHash('sha256').update(ip + '|' + salt).digest('hex').slice(0, 24);
-}
-
-function getIp(req: NextRequest): string {
-  const realIp = req.headers.get('x-real-ip');
-  if (realIp) return realIp.trim();
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) return xff.split(',').at(-1)!.trim();
-  return 'unknown';
-}
-
-function rateLimit(ip: string): { ok: boolean; retryAfter?: number } {
-  const now = Date.now();
-  const b = buckets.get(ip);
-  if (!b || now > b.resetAt) {
-    buckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
-    return { ok: true };
-  }
-  if (b.count >= RATE_MAX) {
-    return { ok: false, retryAfter: Math.ceil((b.resetAt - now) / 1000) };
-  }
-  b.count += 1;
-  return { ok: true };
-}
+const rateLimit = createRateLimiter(5, 60_000); // 5 envios/min/ip
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -98,6 +55,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'invalid_json' }, { status: 400 });
     }
 
+    // Honeypot: campo `website` fica invisível pra humanos; bot que preenche
+    // recebe um "ok" silencioso e o lead nunca é encaminhado pro n8n.
+    const honeypot = sanitize((body as Record<string, unknown>)?.website, 200);
+    if (honeypot) {
+      await captureServerEvent(ip, 'lead_honeypot_triggered');
+      return NextResponse.json({ ok: true });
+    }
+
     const result = validate(body);
     if ('error' in result) {
       return NextResponse.json({ ok: false, error: result.error }, { status: 400 });
@@ -107,18 +72,7 @@ export async function POST(req: NextRequest) {
     if (!webhookUrl) {
       // Sem webhook configurado, ainda assim aceita o lead pra UX não quebrar.
       // O lead será perdido — logamos no PostHog pra alertar config faltando.
-      const client = ph();
-      const distinctId = pseudonymousId(ip);
-      if (client && distinctId) {
-        try {
-          client.capture({
-            distinctId,
-            event: 'lead_webhook_missing',
-            properties: { source: 'server' },
-          });
-          await client.flush();
-        } catch { /* ignore */ }
-      }
+      await captureServerEvent(ip, 'lead_webhook_missing');
       return NextResponse.json({ ok: true, warning: 'no_webhook_configured' });
     }
 
@@ -141,18 +95,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: false, error: 'webhook_failed' }, { status: 502 });
       }
 
-      const client = ph();
-      const distinctId = pseudonymousId(ip);
-      if (client && distinctId) {
-        try {
-          client.capture({
-            distinctId,
-            event: 'lead_form_submitted',
-            properties: { source: 'server', locale: result.locale },
-          });
-          await client.flush();
-        } catch { /* ignore */ }
-      }
+      await captureServerEvent(ip, 'lead_form_submitted', { locale: result.locale });
 
       return NextResponse.json({ ok: true });
     } catch {

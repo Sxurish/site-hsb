@@ -28,6 +28,7 @@ export function LeadForm() {
       email:   String(fd.get('email')   ?? '').trim(),
       phone:   String(fd.get('phone')   ?? '').trim(),
       message: String(fd.get('message') ?? '').trim(),
+      website: String(fd.get('website') ?? '').trim(), // honeypot — humano nunca preenche
       locale,
     };
 
@@ -64,8 +65,16 @@ export function LeadForm() {
     <form
       onSubmit={handleSubmit}
       onFocus={handleFirstFocus}
-      className="rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7"
+      className="relative rounded-2xl border border-border/[0.08] bg-surface/40 p-5 sm:p-7"
     >
+      {/* Honeypot anti-spam: invisível e fora do fluxo de foco/leitores de tela */}
+      <div className="absolute h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
+
       <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
         <label className={label}>
           {t('name')}

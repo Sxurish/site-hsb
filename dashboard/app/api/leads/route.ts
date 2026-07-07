@@ -33,7 +33,10 @@ export async function PATCH(req: Request) {
     if (!id || !status || !VALID_STATUS.includes(status as LeadStatus)) {
       return NextResponse.json({ error: 'Parâmetros inválidos: id e status são obrigatórios.' }, { status: 400 });
     }
-    await updateLeadStatus(id, status as LeadStatus);
+    const found = await updateLeadStatus(id, status as LeadStatus);
+    if (!found) {
+      return NextResponse.json({ error: 'Lead não encontrado.' }, { status: 404 });
+    }
     // Invalida o cache de fetchLeads pra próxima leitura refletir a mudança.
     revalidateTag(LEADS_CACHE_TAG);
     return NextResponse.json({ ok: true });

@@ -43,7 +43,9 @@ function mapLead(row: LeadRow): Lead {
     ? (row.prioridade as Lead['prioridade'])
     : 'baixa';
   return {
-    id: String(row.id ?? row.lead_key),
+    // lead_key é a chave natural usada pelo n8n E pelo PATCH /api/leads —
+    // expor row.id aqui quebraria o update (filtra por lead_key).
+    id: String(row.lead_key ?? row.id),
     leadKey: row.lead_key,
     nome: row.nome?.trim() || 'Sem nome',
     email: row.email ?? '',
@@ -77,9 +79,15 @@ export const fetchLeads = unstable_cache(
   { revalidate: 60, tags: [LEADS_CACHE_TAG] },
 );
 
-export async function updateLeadStatus(id: string, status: LeadStatus): Promise<void> {
-  const { error } = await getClient().from('leads').update({ status }).eq('lead_key', id);
+// Retorna false se nenhum lead casou com a lead_key (update silencioso = bug).
+export async function updateLeadStatus(id: string, status: LeadStatus): Promise<boolean> {
+  const { data, error } = await getClient()
+    .from('leads')
+    .update({ status })
+    .eq('lead_key', id)
+    .select('lead_key');
   if (error) throw new Error(`Supabase updateLeadStatus: ${error.message}`);
+  return (data?.length ?? 0) > 0;
 }
 
 export interface LeadCounts {
