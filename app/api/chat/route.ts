@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRateLimiter } from '@/lib/server/rate-limit';
 import { getIp, ph, pseudonymousId } from '@/lib/server/telemetry';
+import {
+  CHAT_MESSAGES, DEFAULT_CHAT_LOCALE, fallbackReply, normalizeChatLocale,
+} from '@/lib/server/chat-fallbacks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -8,27 +11,6 @@ export const dynamic = 'force-dynamic';
 const rateLimit = createRateLimiter(10, 60_000); // 10 msgs/min/ip
 
 type Step = 'service_identified' | 'contact_data_collecting' | 'contact_data_complete';
-
-const FALLBACKS: Record<string, string> = {
-  ia:      'Nossa área de Automação & IA usa n8n, GPT e integrações customizadas para escalar operações. Quer agendar uma conversa com um especialista?',
-  landing: 'Criamos landing pages de alta conversão com copy estratégico e design premium. Me conta mais sobre o seu projeto!',
-  tráfego: 'Gerenciamos Google Ads e Meta Ads com foco em ROAS. Qual é o seu orçamento mensal e segmento?',
-  trafego: 'Gerenciamos Google Ads e Meta Ads com foco em ROAS. Qual é o seu orçamento mensal e segmento?',
-  humano:  'Certo! Vou te conectar com um especialista HSB. Qual o melhor horário para uma conversa rápida?',
-  seo:     'Trabalhamos SEO técnico, conteúdo e SEO local em SP. Você já tem site e o que mais te incomoda hoje no orgânico?',
-  preço:   'O investimento varia por escopo. Me conta o objetivo principal e te trago uma faixa em segundos.',
-  preco:   'O investimento varia por escopo. Me conta o objetivo principal e te trago uma faixa em segundos.',
-  vídeo:   'Produzimos vídeos cinematográficos e pacotes de criativos pra mídia. Qual o uso principal — campanha, branding ou social?',
-  video:   'Produzimos vídeos cinematográficos e pacotes de criativos pra mídia. Qual o uso principal — campanha, branding ou social?',
-};
-
-function fallbackReply(message: string): string {
-  const lower = message.toLowerCase();
-  const match = Object.keys(FALLBACKS).find((k) => lower.includes(k));
-  return match
-    ? FALLBACKS[match]!
-    : 'Obrigado pela mensagem! Um especialista da HSB vai entrar em contato em breve. Enquanto isso, explore nossos serviços na página.';
-}
 
 // Remove markdown que a IA às vezes manda apesar do prompt proibir.
 function stripMarkdown(s: string): string {
@@ -45,24 +27,29 @@ function stripMarkdown(s: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Locale resolvido cedo pra TODAS as respostas (inclusive 429/400/500)
+  // saírem no idioma do visitante. Default: pt-BR.
+  let locale = DEFAULT_CHAT_LOCALE;
   try {
+    let body: unknown;
+    try { body = await req.json(); } catch {
+      return NextResponse.json({ reply: CHAT_MESSAGES[locale].invalid }, { status: 400 });
+    }
+    locale = normalizeChatLocale((body as { locale?: unknown })?.locale);
+    const t = CHAT_MESSAGES[locale];
+
     const ip = getIp(req);
     const rl = rateLimit(ip);
     if (!rl.ok) {
       return NextResponse.json(
-        { reply: 'Calma aí 🙂 muitas mensagens em sequência. Aguarde um instante e tente de novo.' },
+        { reply: t.rateLimited },
         { status: 429, headers: { 'Retry-After': String(rl.retryAfter ?? 30) } }
       );
     }
 
-    let body: unknown;
-    try { body = await req.json(); } catch {
-      return NextResponse.json({ reply: 'Mensagem inválida.' }, { status: 400 });
-    }
-
     const message = (body as { message?: unknown })?.message;
     if (typeof message !== 'string' || !message.trim()) {
-      return NextResponse.json({ reply: 'Envie um texto válido.' }, { status: 400 });
+      return NextResponse.json({ reply: t.invalid }, { status: 400 });
     }
     const cleaned = message.trim().slice(0, 500);
 
@@ -73,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     const webhookUrl = process.env.N8N_WEBHOOK_URL;
     if (!webhookUrl) {
-      return NextResponse.json({ reply: fallbackReply(cleaned) });
+      return NextResponse.json({ reply: fallbackReply(cleaned, locale) });
     }
 
     try {
@@ -82,7 +69,9 @@ export async function POST(req: NextRequest) {
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: cleaned, ...(sessionId ? { sessionId } : {}) }),
+        // locale segue pro n8n — o workflow pode instruir a IA a responder
+        // no idioma do visitante.
+        body: JSON.stringify({ message: cleaned, locale, ...(sessionId ? { sessionId } : {}) }),
         signal: ctrl.signal,
       });
       clearTimeout(tid);
@@ -131,11 +120,11 @@ export async function POST(req: NextRequest) {
       // fallthrough → fallback
     }
 
-    const fb = fallbackReply(cleaned);
+    const fb = fallbackReply(cleaned, locale);
     return NextResponse.json({ replies: [fb], reply: fb });
   } catch {
     return NextResponse.json(
-      { reply: 'Ops, tivemos uma instabilidade. Tente novamente ou fale conosco pelo WhatsApp.' },
+      { reply: CHAT_MESSAGES[locale].internal },
       { status: 500 }
     );
   }

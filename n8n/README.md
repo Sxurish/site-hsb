@@ -89,9 +89,13 @@ Content-Type: application/json
 
 {
   "message": "Quero IA pra atendimento",
-  "sessionId": "550e8400-e29b-41d4-a716-446655440000"
+  "sessionId": "550e8400-e29b-41d4-a716-446655440000",
+  "locale": "pt-BR"
 }
 ```
+
+> `locale` (pt-BR | en | es | fr | de | zh-CN) é o idioma da página em que o
+> visitante está — use no prompt do agente pra IA responder no idioma certo.
 
 **Response** (do n8n pro site):
 ```json

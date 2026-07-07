@@ -143,7 +143,9 @@ export function ChatbotWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: q, sessionId: getOrCreateSessionId() }),
+        // locale permite fallbacks localizados no server e resposta da IA
+        // no idioma do visitante (repassado ao n8n).
+        body: JSON.stringify({ message: q, sessionId: getOrCreateSessionId(), locale }),
         signal: ctrl.signal,
       });
       clearTimeout(timeoutId);
@@ -186,7 +188,7 @@ export function ChatbotWidget() {
     } finally {
       setBusy(false);
     }
-  }, [text, busy, t]);
+  }, [text, busy, t, locale]);
 
   const retry = () => { if (lastUserMsg.current) send(lastUserMsg.current); };
 
