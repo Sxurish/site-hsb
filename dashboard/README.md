@@ -59,6 +59,7 @@ Migrations SQL ficam em `db/migrations/` e devem ser aplicadas no Supabase em or
 1. `001_dashboard_users.sql` — tabela de usuários do dashboard
 2. `002_fix_dashboard_users_rls.sql` — ajuste de policies RLS
 3. `003_dashboard_users_self_update.sql` — self-update de perfil (nome) sem permitir troca do próprio role
+4. `004_harden_functions.sql` — revoga EXECUTE do `anon` nas funções SECURITY DEFINER e pina `search_path` das funções de trigger (advisors do Supabase)
 
 Aplique via SQL Editor do Supabase ou pelo CLI (`supabase db push`).
 
