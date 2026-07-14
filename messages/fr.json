@@ -299,5 +299,35 @@
         "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Questions fréquentes",
+    "items": {
+      "q1": {
+        "q": "Combien coûte un site web ou une landing page ?",
+        "a": "L'investissement dépend du périmètre : nombre de pages, niveau de design, intégrations et délai. Nous ne travaillons pas avec une grille fixe — après un diagnostic rapide de votre objectif, nous envoyons une proposition avec une fourchette d'investissement claire. Demandez un devis via le formulaire de cette page, sans engagement."
+      },
+      "q2": {
+        "q": "En combien de temps le site est-il prêt ?",
+        "a": "Le délai dépend du périmètre du projet : les landing pages sont plus rapides que les sites corporate complets. Nous travaillons en sprints avec des livraisons partielles hebdomadaires, vous suivez donc l'avancement dès le début. Le délai exact est fixé dans la proposition, avant le lancement, et devient un engagement contractuel."
+      },
+      "q3": {
+        "q": "Que comprend la gestion de la publicité payante ?",
+        "a": "La gestion comprend la stratégie média, la structure des campagnes Google Ads et Meta Ads, la production des créas et du copy, l'optimisation continue et des rapports hebdomadaires de performance. Le focus est le ROAS : chaque campagne suit des objectifs d'acquisition clairs définis avec vous au démarrage."
+      },
+      "q4": {
+        "q": "HSB travaille-t-elle avec des entreprises hors de São Paulo ?",
+        "a": "Oui. HSB est basée à São Paulo et accompagne à distance des clients dans tout le Brésil et à l'étranger, avec des réunions en ligne et un suivi continu. Tout le processus — du diagnostic à la livraison — fonctionne à distance, du briefing initial aux rapports de résultats."
+      },
+      "q5": {
+        "q": "Comment HSB utilise-t-elle l'intelligence artificielle dans les projets ?",
+        "a": "Nous appliquons l'IA aux opérations : workflows n8n, assistants IA sur mesure et intégrations CRM et WhatsApp pour faire passer à l'échelle le support, la qualification des leads et les ventes. L'objectif est d'automatiser les tâches répétitives sans perdre le ton de la marque, en libérant l'équipe pour le travail stratégique."
+      },
+      "q6": {
+        "q": "Comment demander un devis ?",
+        "a": "Remplissez le formulaire de la section contact de cette page ou parlez au concierge dans le chat, en précisant objectif, délai et budget disponible. Avec ces informations, l'équipe revient avec un diagnostic initial et une proposition sur mesure — sans engagement."
+      }
+    }
   }
 }

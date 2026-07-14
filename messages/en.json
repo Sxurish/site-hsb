@@ -299,5 +299,35 @@
         "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Frequently asked questions",
+    "items": {
+      "q1": {
+        "q": "How much does a website or landing page cost?",
+        "a": "Investment depends on scope: number of pages, design level, integrations and timeline. We don't work with a fixed price list — after a quick diagnosis of your goal, we send a proposal with a clear investment range. Request a quote through the form on this page, with no commitment."
+      },
+      "q2": {
+        "q": "How long does it take to launch a website?",
+        "a": "Timelines depend on project scope: landing pages ship faster than full corporate websites. We work in sprints with weekly partial deliveries, so you follow progress from day one. The exact deadline is set in the proposal, before the project starts, and becomes a contract commitment."
+      },
+      "q3": {
+        "q": "What is included in paid media management?",
+        "a": "Management includes media strategy, campaign structure on Google Ads and Meta Ads, creative and copy production, continuous optimization and weekly performance reports. The focus is ROAS: every campaign runs against clear acquisition goals defined with you at the start of the engagement."
+      },
+      "q4": {
+        "q": "Does HSB work with companies outside São Paulo?",
+        "a": "Yes. HSB is based in São Paulo and serves clients across Brazil and abroad remotely, with online meetings and continuous follow-up. The whole process — from diagnosis to delivery — works at a distance, from the initial briefing to results reporting."
+      },
+      "q5": {
+        "q": "How does HSB use artificial intelligence in projects?",
+        "a": "We apply AI to operations: n8n workflows, custom AI assistants and CRM and WhatsApp integrations to scale support, lead qualification and sales. The goal is to automate repetitive tasks without losing the brand's voice, freeing your team for strategic work."
+      },
+      "q6": {
+        "q": "How do I request a quote?",
+        "a": "Fill in the form in the contact section of this page or talk to the concierge in the chat, sharing your goal, timeline and available budget. With that information, the team returns with an initial diagnosis and a tailored proposal — no commitment required."
+      }
+    }
   }
 }

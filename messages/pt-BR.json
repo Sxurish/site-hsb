@@ -299,5 +299,35 @@
         "body": "Esta política pode ser atualizada periodicamente. A data da última revisão está no topo. Para dúvidas, reclamações ou denúncias, fale conosco em contato@hsbcompany.com.br.\n\nVocê também tem o direito de apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD)."
       }
     }
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Perguntas frequentes",
+    "items": {
+      "q1": {
+        "q": "Quanto custa um site institucional ou uma landing page?",
+        "a": "O investimento varia conforme o escopo: número de páginas, nível de design, integrações e prazo. Por isso não trabalhamos com tabela fechada — após um diagnóstico rápido do seu objetivo, enviamos uma proposta com faixa de investimento clara. Peça um orçamento pelo formulário desta página, sem compromisso."
+      },
+      "q2": {
+        "q": "Em quanto tempo o site fica pronto?",
+        "a": "O prazo depende do escopo do projeto: landing pages são mais rápidas que sites institucionais completos. Trabalhamos em sprints com entregas parciais semanais, então você acompanha a evolução desde o início. O prazo exato é definido na proposta, antes do projeto começar, e vira compromisso de contrato."
+      },
+      "q3": {
+        "q": "O que está incluso na gestão de tráfego pago?",
+        "a": "A gestão inclui estratégia de mídia, estrutura de campanhas no Google Ads e Meta Ads, produção de criativos e copy, otimização contínua e relatórios semanais de performance. O foco é ROAS: cada campanha é acompanhada de metas claras de aquisição definidas junto com você no início do trabalho."
+      },
+      "q4": {
+        "q": "A HSB atende empresas fora de São Paulo?",
+        "a": "Sim. A HSB tem base em São Paulo e atende clientes de todo o Brasil e do exterior de forma remota, com reuniões online e acompanhamento contínuo. Todo o processo — do diagnóstico à entrega — funciona a distância, do briefing inicial aos relatórios de resultado."
+      },
+      "q5": {
+        "q": "Como a HSB usa inteligência artificial nos projetos?",
+        "a": "Usamos IA aplicada a operações: workflows com n8n, assistentes de IA customizados e integrações com CRM e WhatsApp para escalar atendimento, qualificação de leads e vendas. O objetivo é automatizar tarefas repetitivas sem perder o tom da marca, liberando o time para o trabalho estratégico."
+      },
+      "q6": {
+        "q": "Como solicitar um orçamento?",
+        "a": "Preencha o formulário na seção de contato desta página ou converse com o concierge no chat, contando objetivo, prazo e orçamento disponível. Com essas informações, o time retorna com um diagnóstico inicial e uma proposta sob medida para o seu momento — sem compromisso."
+      }
+    }
   }
 }

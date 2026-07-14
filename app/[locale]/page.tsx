@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { About } from '@/components/about';
 import { ContactCta } from '@/components/contact-cta';
+import { Faq, FAQ_IDS } from '@/components/faq';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Hero } from '@/components/hero';
@@ -30,6 +31,7 @@ const AREA_SERVED = [
 async function buildJsonLd(locale: string) {
   const tMeta = await getTranslations({ locale, namespace: 'Meta' });
   const tServices = await getTranslations({ locale, namespace: 'Services' });
+  const tFaq = await getTranslations({ locale, namespace: 'Faq' });
 
   const localBusiness = {
     '@type': 'LocalBusiness',
@@ -82,7 +84,23 @@ async function buildJsonLd(locale: string) {
     inLanguage: locale,
   }));
 
-  return { '@context': 'https://schema.org', '@graph': [localBusiness, website, ...services] };
+  // Espelha 1:1 a seção <Faq /> visível na página (exigência do Google:
+  // FAQPage só com conteúdo presente na página).
+  const faqPage = {
+    '@type': 'FAQPage',
+    '@id': `${SITE}/#faq`,
+    inLanguage: locale,
+    mainEntity: FAQ_IDS.map((id) => ({
+      '@type': 'Question',
+      name: tFaq(`items.${id}.q`),
+      acceptedAnswer: { '@type': 'Answer', text: tFaq(`items.${id}.a`) },
+    })),
+  };
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [localBusiness, website, ...services, faqPage],
+  };
 }
 
 // `</script>` embutido quebraria o parse do HTML — escapa `<` por segurança.
@@ -112,6 +130,7 @@ export default async function Home({
         <Services />
         <MidCta />
         <Process />
+        <Faq />
         <ContactCta />
       </main>
       <Footer />

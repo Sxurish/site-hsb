@@ -299,5 +299,35 @@
         "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Häufige Fragen",
+    "items": {
+      "q1": {
+        "q": "Was kostet eine Website oder Landing Page?",
+        "a": "Die Investition hängt vom Umfang ab: Seitenanzahl, Designniveau, Integrationen und Zeitplan. Wir arbeiten nicht mit festen Preislisten — nach einer kurzen Diagnose Ihres Ziels senden wir ein Angebot mit einer klaren Investitionsspanne. Fordern Sie über das Formular auf dieser Seite unverbindlich ein Angebot an."
+      },
+      "q2": {
+        "q": "Wie lange dauert es, bis die Website fertig ist?",
+        "a": "Der Zeitrahmen hängt vom Projektumfang ab: Landing Pages sind schneller fertig als komplette Unternehmenswebsites. Wir arbeiten in Sprints mit wöchentlichen Teillieferungen, sodass Sie den Fortschritt von Anfang an verfolgen. Der genaue Termin wird im Angebot festgelegt — vor Projektstart und vertraglich verbindlich."
+      },
+      "q3": {
+        "q": "Was umfasst das Paid-Media-Management?",
+        "a": "Das Management umfasst Mediastrategie, Kampagnenstruktur in Google Ads und Meta Ads, Produktion von Creatives und Copy, laufende Optimierung und wöchentliche Performance-Reports. Der Fokus liegt auf ROAS: Jede Kampagne läuft gegen klare Akquisitionsziele, die zu Beginn gemeinsam mit Ihnen definiert werden."
+      },
+      "q4": {
+        "q": "Arbeitet HSB mit Unternehmen außerhalb von São Paulo?",
+        "a": "Ja. HSB sitzt in São Paulo und betreut Kunden in ganz Brasilien und im Ausland remote, mit Online-Meetings und kontinuierlicher Begleitung. Der gesamte Prozess — von der Diagnose bis zur Lieferung — funktioniert auf Distanz, vom ersten Briefing bis zum Ergebnisreport."
+      },
+      "q5": {
+        "q": "Wie setzt HSB künstliche Intelligenz in Projekten ein?",
+        "a": "Wir wenden KI auf Abläufe an: n8n-Workflows, maßgeschneiderte KI-Assistenten sowie CRM- und WhatsApp-Integrationen, um Support, Lead-Qualifizierung und Vertrieb zu skalieren. Ziel ist es, repetitive Aufgaben zu automatisieren, ohne die Stimme der Marke zu verlieren — und das Team für strategische Arbeit freizuspielen."
+      },
+      "q6": {
+        "q": "Wie fordere ich ein Angebot an?",
+        "a": "Füllen Sie das Formular im Kontaktbereich dieser Seite aus oder sprechen Sie mit dem Concierge im Chat — mit Ziel, Zeitplan und verfügbarem Budget. Mit diesen Informationen meldet sich das Team mit einer ersten Diagnose und einem maßgeschneiderten Angebot zurück — unverbindlich."
+      }
+    }
   }
 }

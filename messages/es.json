@@ -299,5 +299,35 @@
         "body": "This policy may be updated periodically. The last revision date appears at the top. For questions, complaints, or reports, contact us at contato@hsbcompany.com.br.\n\nYou also have the right to file a complaint with Brazil's data protection authority (ANPD)."
       }
     }
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Preguntas frecuentes",
+    "items": {
+      "q1": {
+        "q": "¿Cuánto cuesta un sitio web o una landing page?",
+        "a": "La inversión depende del alcance: número de páginas, nivel de diseño, integraciones y plazo. No trabajamos con tarifas cerradas — tras un diagnóstico rápido de tu objetivo, enviamos una propuesta con un rango de inversión claro. Pide un presupuesto en el formulario de esta página, sin compromiso."
+      },
+      "q2": {
+        "q": "¿En cuánto tiempo está listo el sitio?",
+        "a": "El plazo depende del alcance del proyecto: las landing pages son más rápidas que los sitios corporativos completos. Trabajamos en sprints con entregas parciales semanales, así sigues la evolución desde el inicio. El plazo exacto se define en la propuesta, antes de empezar, y es un compromiso contractual."
+      },
+      "q3": {
+        "q": "¿Qué incluye la gestión de tráfico de pago?",
+        "a": "La gestión incluye estrategia de medios, estructura de campañas en Google Ads y Meta Ads, producción de creativos y copy, optimización continua e informes semanales de rendimiento. El foco es el ROAS: cada campaña se acompaña de metas claras de adquisición definidas contigo al inicio del trabajo."
+      },
+      "q4": {
+        "q": "¿HSB atiende empresas fuera de São Paulo?",
+        "a": "Sí. HSB tiene base en São Paulo y atiende clientes de todo Brasil y del exterior de forma remota, con reuniones online y seguimiento continuo. Todo el proceso — del diagnóstico a la entrega — funciona a distancia, del briefing inicial a los informes de resultados."
+      },
+      "q5": {
+        "q": "¿Cómo usa HSB la inteligencia artificial en los proyectos?",
+        "a": "Aplicamos IA a las operaciones: workflows con n8n, asistentes de IA personalizados e integraciones con CRM y WhatsApp para escalar atención, calificación de leads y ventas. El objetivo es automatizar tareas repetitivas sin perder el tono de la marca, liberando al equipo para el trabajo estratégico."
+      },
+      "q6": {
+        "q": "¿Cómo solicito un presupuesto?",
+        "a": "Completa el formulario en la sección de contacto de esta página o habla con el concierge en el chat, contando objetivo, plazo y presupuesto disponible. Con esa información, el equipo responde con un diagnóstico inicial y una propuesta a medida — sin compromiso."
+      }
+    }
   }
 }
