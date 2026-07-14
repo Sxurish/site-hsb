@@ -135,15 +135,18 @@ export function LeadForm() {
         <label className={`${label} sm:col-span-2`}>
           {t('phone')}
           <div className="mt-2 flex gap-2">
+            {/* color-scheme sincroniza o popup nativo com o tema; sem isso o
+                sistema abre dropdown branco com o texto creme do tema escuro
+                (ilegível). As <option> ganham cor/fundo explícitos de reforço. */}
             <select
               name="phoneCountry"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               aria-label={t('country')}
-              className={`${fieldBase} w-[42%] max-w-[13rem] shrink-0 cursor-pointer`}
+              className={`${fieldBase} w-[42%] max-w-[13rem] shrink-0 cursor-pointer [color-scheme:light] dark:[color-scheme:dark]`}
             >
               {countryOptions.map((c) => (
-                <option key={c.code} value={c.code}>
+                <option key={c.code} value={c.code} className="bg-bg text-fg">
                   {flagEmoji(c.code)} {c.name} (+{c.dial})
                 </option>
               ))}

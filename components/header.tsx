@@ -12,6 +12,7 @@ const navKeys = [
   { href: '#sobre',     key: 'about' },
   { href: '#servicos',  key: 'services' },
   { href: '#processo',  key: 'process' },
+  { href: '#faq',       key: 'faq' },
   { href: '#contato',   key: 'contact' },
 ] as const;
 
