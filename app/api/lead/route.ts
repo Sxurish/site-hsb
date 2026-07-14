@@ -34,6 +34,9 @@ function validate(body: unknown): LeadPayload | { error: string } {
   if (!name)           return { error: 'name_required' };
   if (!EMAIL_RE.test(email)) return { error: 'email_invalid' };
   if (!phone)          return { error: 'phone_required' };
+  // Formato livre (o front manda "+<código> <DDD + número>"), mas precisa
+  // ter dígitos suficientes pra ser um telefone discável.
+  if ((phone.match(/\d/g) ?? []).length < 8) return { error: 'phone_invalid' };
   if (!message)        return { error: 'message_required' };
 
   return { name, email, phone, message, locale };
