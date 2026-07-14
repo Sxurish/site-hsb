@@ -4,25 +4,28 @@ import { routing } from '@/i18n/routing';
 const SITE = 'https://hsb.company';
 
 // Sitemaps não aceitam fragmentos (#secao) — buscadores ignoram a parte após
-// o #, então só entram páginas canônicas: a home em cada idioma.
+// o #, então só entram páginas canônicas: home e privacidade em cada idioma.
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  const languages = Object.fromEntries(
-    routing.locales.map((l) => {
-      const p = l === routing.defaultLocale ? '' : `/${l}`;
-      return [l, `${SITE}${p}/`];
-    }),
-  );
-
-  return routing.locales.map((locale) => {
+  const urlFor = (locale: string, path: string) => {
     const prefix = locale === routing.defaultLocale ? '' : `/${locale}`;
-    return {
-      url: `${SITE}${prefix}/`,
+    return `${SITE}${prefix}${path}`;
+  };
+
+  const pages: { path: string; changeFrequency: 'monthly' | 'yearly'; priority: (l: string) => number }[] = [
+    { path: '/', changeFrequency: 'monthly', priority: (l) => (l === routing.defaultLocale ? 1 : 0.8) },
+    { path: '/privacidade', changeFrequency: 'yearly', priority: () => 0.3 },
+  ];
+
+  return pages.flatMap(({ path, changeFrequency, priority }) => {
+    const languages = Object.fromEntries(routing.locales.map((l) => [l, urlFor(l, path)]));
+    return routing.locales.map((locale) => ({
+      url: urlFor(locale, path),
       lastModified,
-      changeFrequency: 'monthly' as const,
-      priority: locale === routing.defaultLocale ? 1 : 0.8,
+      changeFrequency,
+      priority: priority(locale),
       alternates: { languages },
-    };
+    }));
   });
 }

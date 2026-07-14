@@ -7,6 +7,12 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Meta description ≤155 chars — corta no limite da palavra.
+function truncate(s: string, max = 155): string {
+  if (s.length <= max) return s;
+  return s.slice(0, max - 1).replace(/\s+\S*$/, '') + '…';
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -14,9 +20,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Privacy' });
+  // Sem override, a página herdaria o canonical do layout (que aponta pra
+  // home) — a página se auto-anularia pros buscadores.
+  const pathFor = (l: string) =>
+    l === routing.defaultLocale ? '/privacidade' : `/${l}/privacidade`;
   return {
     title: t('title'),
-    description: t('intro'),
+    description: truncate(t('intro')),
+    alternates: {
+      canonical: pathFor(locale),
+      languages: Object.fromEntries(routing.locales.map((l) => [l, pathFor(l)])),
+    },
     robots: { index: true, follow: true },
   };
 }
