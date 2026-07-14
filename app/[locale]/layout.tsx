@@ -6,7 +6,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { LanguageBanner } from '@/components/language-banner';
-import { DottedSurface } from '@/components/dotted-surface';
+import { DottedSurfaceLazy } from '@/components/dotted-surface-lazy';
 import { PostHogPageview } from '@/components/posthog-provider';
 import { CookieConsent } from '@/components/cookie-consent';
 import '../globals.css';
@@ -163,7 +163,7 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <DottedSurface />
+        <DottedSurfaceLazy />
         <Suspense fallback={null}>
           <PostHogPageview />
         </Suspense>

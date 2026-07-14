@@ -395,9 +395,10 @@ export function Services() {
             <p>{cur.detail.audience}</p>
           </div>
           <div className={styles.detCta}>
-            <button className={styles.btnPrimary}>
+            {/* Âncora (não button): leva direto pra seção de contato */}
+            <a href="#contato" className={styles.btnPrimary}>
               {t('details.requestProposal')} <span aria-hidden>→</span>
-            </button>
+            </a>
             <button className={styles.btnClose} onClick={() => setOpen(false)} aria-label={t('closeDetails')}>
               {t('close')}
             </button>
